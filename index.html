@@ -17,6 +17,8 @@
     --brass:      #c69a5a;
     --brass-light:#e7cd97;
     --verdigris:  #6f9384;
+    --plum:       #a8436f;
+    --gold-flash: #ffe066;
     --stone:      #ece5d6;
     --stone-dim:  rgba(236,229,214,0.62);
     --stone-faint:rgba(236,229,214,0.14);
@@ -89,10 +91,11 @@
     padding:14px 0;
   }
   .nav-row{ display:flex; align-items:center; justify-content:space-between; }
-  .brand{ display:flex; align-items:center; gap:10px; font-family:var(--mono); font-size:14px; letter-spacing:0.08em; }
-  .brand-mark{ width:22px; height:22px; object-fit:contain; transition:transform 0.1s linear; will-change:transform; }
-  .brand-name{ text-transform:uppercase; }
+  .brand{ display:flex; align-items:flex-end; gap:10px; font-family:var(--mono); font-size:14px; letter-spacing:0.08em; }
+  .brand-mark{ width:22px; height:22px; object-fit:contain; object-position:bottom; transition:transform 0.1s linear; will-change:transform; }
+  .brand-name{ text-transform:none; }
   .brand-name b{ color:var(--brass-light); font-weight:500; }
+  .brand-suffix{ font-weight:400; letter-spacing:0.02em; color:#000; opacity:1; margin-left:2px; }
 
   .nav-links{ display:flex; gap:36px; align-items:center; }
   .nav-links a{
@@ -105,12 +108,14 @@
     transform:scaleX(0); transform-origin:left; transition:transform 0.3s ease;
   }
   .nav-links a:hover::after{ transform:scaleX(1); }
+  .nav-links a.nav-cta::after{ display:none; }
 
   .nav-cta{
     border:var(--edge-brass); padding:9px 18px; border-radius:999px; font-family:var(--mono);
     font-size:12px; letter-spacing:0.06em; text-transform:uppercase; color:var(--brass-light);
     transition:background 0.25s ease, color 0.25s ease;
   }
+  .nav-links a.nav-cta{ padding-bottom:9px; }
   .nav-cta:hover{ background:var(--brass); color:var(--ink); }
 
   .nav-toggle{ display:none; background:none; border:0; color:var(--stone); }
@@ -135,19 +140,96 @@
   .hero-arch{ display:none; }
   .hero-inner{ position:relative; z-index:2; }
   .hero-eyebrow{ margin-bottom:28px; }
-  .hero-grid{ display:grid; grid-template-columns:1.5fr 0.9fr; gap:60px; align-items:end; }
-  .hero-title{
-    font-size:clamp(48px, 7vw, 92px); line-height:1.02; color:var(--stone); font-weight:700; letter-spacing:-0.02em;
+  .eyebrow-shimmer{
+    color:var(--brass);
+    animation:eyebrowColorShift 9s ease-in-out infinite;
   }
+  @keyframes eyebrowColorShift{
+    0%{ color:var(--brass); text-shadow:0 0 0 transparent; }
+    20%{ color:var(--gold-flash); text-shadow:0 0 16px rgba(255,224,102,0.7); }
+    28%{ color:var(--gold-flash); text-shadow:0 0 16px rgba(255,224,102,0.7); }
+    55%{ color:var(--plum); text-shadow:0 0 0 transparent; }
+    80%{ color:var(--brass-light); text-shadow:0 0 0 transparent; }
+    100%{ color:var(--brass); text-shadow:0 0 0 transparent; }
+  }
+  @media (prefers-reduced-motion: reduce){
+    .eyebrow-shimmer{ animation:none; }
+    .hero-title-rotator .hero-line.is-active .key-door,
+    .hero-title-rotator .hero-line.is-active .key-city{ animation:none; }
+  }
+  .hero-grid{ display:grid; grid-template-columns:1.8fr 0.7fr; gap:60px; align-items:end; }
+  .hero-title{
+    font-size:clamp(36px, 5vw, 58px); line-height:1.12; color:var(--stone); font-weight:700; letter-spacing:-0.02em;
+  }
+  .hero-title-rotator{ position:relative; min-height:1.2em; }
+  .hero-line-gold{ --line-glow: rgba(198,154,90,0.55); }
+  .hero-line-teal{ --line-glow: rgba(111,147,132,0.55); }
+  .hero-title-rotator .hero-line{
+    position:absolute; top:0; left:0; transform-origin:left center;
+    opacity:0; transform:scale(0.96) translateY(4px); filter:blur(7px); letter-spacing:0.04em;
+    text-shadow:0 0 0 transparent;
+    transition:opacity 1.1s ease, transform 1.1s ease, filter 1.1s ease, letter-spacing 1.1s ease, text-shadow 1.1s ease;
+    pointer-events:none;
+  }
+  .hero-title-rotator .hero-line::before{
+    content:''; position:absolute; left:-8%; top:50%; width:56%; height:260%;
+    transform:translateY(-50%); background:radial-gradient(circle, var(--line-glow) 0%, transparent 68%);
+    opacity:0; filter:blur(22px); z-index:-1; pointer-events:none;
+    transition:opacity 1.1s ease;
+  }
+  .hero-title-rotator .hero-line.is-active{
+    pointer-events:auto;
+    animation:heroLineBreatheIn 1.3s cubic-bezier(0.33,0,0.2,1) forwards,
+              heroLineIdle 2.6s ease-in-out 1.3s infinite;
+  }
+  .hero-title-rotator .hero-line.is-active::before{
+    opacity:0.55;
+    animation:heroAuraIn 1.3s ease forwards, heroAuraIdle 2.6s ease-in-out 1.3s infinite;
+  }
+  @keyframes heroLineBreatheIn{
+    0%{ opacity:0; transform:scale(0.96) translateY(4px); filter:blur(7px); letter-spacing:0.04em; text-shadow:0 0 0 transparent; }
+    45%{ opacity:1; transform:scale(1.03) translateY(-1px); filter:blur(0px); letter-spacing:0.004em; text-shadow:0 0 26px var(--line-glow); }
+    72%{ transform:scale(0.995) translateY(0px); text-shadow:0 0 16px var(--line-glow); }
+    100%{ opacity:1; transform:scale(1) translateY(0); filter:blur(0px); letter-spacing:0; text-shadow:0 0 18px var(--line-glow); }
+  }
+  @keyframes heroLineIdle{
+    0%,100%{ transform:scale(1) translateY(0); text-shadow:0 0 18px var(--line-glow); }
+    50%{ transform:scale(1.015) translateY(-2px); text-shadow:0 0 26px var(--line-glow); }
+  }
+  @keyframes heroAuraIn{
+    0%{ opacity:0; }
+    100%{ opacity:0.55; }
+  }
+  @keyframes heroAuraIdle{
+    0%,100%{ opacity:0.4; }
+    50%{ opacity:0.62; }
+  }
+  .hero-line-nowrap{ white-space:nowrap; }
   .hero-title em{ font-style:normal; }
   .hero-title .key-door{ color:var(--brass-light); }
   .hero-title .key-city{ color:var(--verdigris); }
+  .hero-title-rotator .hero-line.is-active .key-door{
+    animation:emFlashGold 0.6s ease-out 0.55s 1;
+  }
+  .hero-title-rotator .hero-line.is-active .key-city{
+    animation:emFlashTeal 0.6s ease-out 0.55s 1;
+  }
+  @keyframes emFlashGold{
+    0%{ color:var(--brass-light); text-shadow:0 0 0 transparent; }
+    35%{ color:#fff6e4; text-shadow:0 0 20px rgba(231,205,151,0.95); }
+    100%{ color:var(--brass-light); text-shadow:0 0 0 transparent; }
+  }
+  @keyframes emFlashTeal{
+    0%{ color:var(--verdigris); text-shadow:0 0 0 transparent; }
+    35%{ color:#d7f0e4; text-shadow:0 0 20px rgba(111,147,132,0.95); }
+    100%{ color:var(--verdigris); text-shadow:0 0 0 transparent; }
+  }
   .hero-sub{
-    font-size:17px; color:var(--stone-dim); max-width:36ch; margin-top:26px; font-weight:400;
+    font-size:17px; color:var(--stone-dim); max-width:62ch; margin-top:26px; font-weight:400;
   }
   .hero-key-wrap{ justify-self:end; will-change:transform; }
   .hero-key{
-    width:180px; opacity:0; transform:rotate(-24deg) scale(0.85);
+    width:180px; height:auto; display:block; opacity:0; transform:rotate(-24deg) scale(0.85);
     animation:keyIntro 1.1s cubic-bezier(.2,.8,.2,1) 0.3s forwards, keySway 7s ease-in-out 1.6s infinite;
   }
   @keyframes keyIntro{
@@ -224,8 +306,10 @@
 
   /* ===================== TWO WAYS ===================== */
   .split{ background:var(--ink-2); border-top:var(--edge); border-bottom:var(--edge); }
-  .split-grid{ display:grid; grid-template-columns:1fr 1fr; gap:1px; background:rgba(236,229,214,0.14); }
+  .split-grid{ display:grid; grid-template-columns:1fr 1fr; gap:1px; background:rgba(236,229,214,0.14); max-width:1180px; margin:0 auto; }
   .split-card{ background:var(--ink-2); padding:56px 48px; }
+  .split-card:first-child{ padding-left:32px; }
+  .split-card:last-child{ padding-right:32px; }
   .split-num{ font-family:var(--serif); font-weight:700; font-size:64px; color:var(--brass); line-height:1; letter-spacing:-0.01em; }
   .split-card h3{ font-size:28px; color:var(--stone); margin-top:18px; }
   .split-card p{ color:var(--stone-dim); margin-top:14px; max-width:42ch; }
@@ -342,6 +426,7 @@
     .key-divider::before{ margin-bottom:10px; }
     .key-divider::after{ margin-top:10px; }
     .split-grid{ grid-template-columns:1fr; }
+    .split-card:first-child, .split-card:last-child{ padding-left:32px; padding-right:32px; }
     .fob-grid{ grid-template-columns:1fr; }
     .location-grid{ grid-template-columns:1fr; gap:44px; }
     .steps-grid{ grid-template-columns:1fr; }
@@ -358,6 +443,8 @@
     .wrap{ padding:0 20px; }
     section{ padding:80px 0; }
     .split-card{ padding:40px 26px; }
+    .split-card:first-child, .split-card:last-child{ padding-left:20px; padding-right:20px; }
+    .hero-line-nowrap{ white-space:normal; }
   }
 </style>
 </head>
@@ -368,15 +455,16 @@
 <nav class="nav" id="nav">
   <div class="wrap nav-row">
     <a href="#" class="brand">
-      <img class="brand-mark" src="https://pub-6b46fd29ec2c4176b76828bf1155b68a.r2.dev/Images/KEY%20%26%20KEY_logo.png" alt="Key & Key logo">
-      <span class="brand-name">Key <b>&</b> Key</span>
+      <img class="brand-mark" src="https://pub-6b46fd29ec2c4176b76828bf1155b68a.r2.dev/Images/KEY%26KEY_logo.png" alt="Key & Key logo">
+      <span class="brand-name">Key<b>&amp;</b>Key <span class="brand-suffix">Property</span></span>
     </a>
     <ul class="nav-links" id="navLinks">
       <li><a href="#home">Home</a></li>
+      <li><a href="#residences">Properties</a></li>
       <li><a href="#stays">Stays</a></li>
-      <li><a href="#residences">Residences</a></li>
-      <li><a href="#location">Location</a></li>
-      <li><a href="#contact" class="nav-cta">Enquire</a></li>
+      <li><a href="#location">Locations</a></li>
+      <li><a href="#keys">Explore</a></li>
+      <li><a href="#contact" class="nav-cta">Enquiries</a></li>
     </ul>
     <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M4 7H20M4 12H20M4 17H20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
@@ -392,25 +480,18 @@
   <div class="hero-video-overlay"></div>
 
   <div class="wrap hero-inner">
-    <div class="hero-eyebrow eyebrow">Rue de Louvain 10, 1000 Brussels</div>
+    <div class="hero-eyebrow eyebrow"><span class="eyebrow-shimmer">Rue de Louvain 10, 1000 Brussels, Belgium</span></div>
     <div class="hero-grid">
       <div>
-        <h1 class="hero-title">One <em class="key-door">key</em> for the door.<br>One <em class="key-city">key</em> to the city.</h1>
+        <h1 class="hero-title hero-title-rotator" id="heroTitleRotator"><span class="hero-line hero-line-nowrap hero-line-gold is-active" data-line="1">One <em class="key-door">key</em> for the <em class="key-door">door</em>.</span><span class="hero-line hero-line-nowrap hero-line-teal" data-line="2">One <em class="key-city">key</em> to the <em class="key-city">city</em>.</span></h1>
         <p class="hero-sub">Key & Key manages self-check-in stays and long-term residences from an address at the centre of Brussels — just steps from the Royal Palace and Parliament; it also puts many of the city's most iconic landmarks and must-see attractions within easy walking distance.</p>
         <div class="hero-cta-row">
           <a href="#stays" class="btn btn-solid">View the stays</a>
-          <a href="#contact" class="btn btn-ghost">Enquire about a residence</a>
+          <a href="#contact" class="btn btn-ghost">Enquire about properties</a>
         </div>
       </div>
       <div class="hero-key-wrap" id="heroKeyWrap">
-        <svg class="hero-key" viewBox="0 0 160 260" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <circle cx="80" cy="46" r="34" stroke="#c69a5a" stroke-width="4"/>
-          <circle cx="80" cy="46" r="12" fill="#101c16"/>
-          <rect x="74" y="80" width="12" height="150" rx="2" fill="#c69a5a"/>
-          <rect x="86" y="184" width="22" height="10" fill="#c69a5a"/>
-          <rect x="86" y="204" width="30" height="10" fill="#c69a5a"/>
-          <rect x="86" y="222" width="16" height="10" fill="#c69a5a"/>
-        </svg>
+        <img class="hero-key" src="https://pub-6b46fd29ec2c4176b76828bf1155b68a.r2.dev/Images/KEY%20%26%20KEY_logo.png" alt="Key & Key logo">
       </div>
     </div>
 
@@ -429,7 +510,7 @@
 </header>
 
 <!-- ============ TWO KEYS (BRAND STORY) ============ -->
-<section class="keys">
+<section class="keys" id="keys">
   <div class="wrap">
     <div class="section-head reveal">
       <div class="eyebrow">The name</div>
@@ -691,6 +772,20 @@
   const heroKeyWrap = document.getElementById('heroKeyWrap');
   const brandMarks = document.querySelectorAll('.brand-mark');
   const hero = document.querySelector('.hero');
+
+  // Rotate the two hero title lines in the same spot, one at a time
+  const heroTitleRotator = document.getElementById('heroTitleRotator');
+  if (heroTitleRotator && !reduceMotion){
+    const heroLines = heroTitleRotator.querySelectorAll('.hero-line');
+    let activeIndex = 0;
+    if (heroLines.length > 1){
+      setInterval(() => {
+        heroLines[activeIndex].classList.remove('is-active');
+        activeIndex = (activeIndex + 1) % heroLines.length;
+        heroLines[activeIndex].classList.add('is-active');
+      }, 2800);
+    }
+  }
 
   let lastY = window.scrollY;
   let ticking = false;
