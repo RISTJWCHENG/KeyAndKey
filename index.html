@@ -162,7 +162,7 @@
   }
   .hero-grid{ display:grid; grid-template-columns:1.8fr 0.7fr; gap:60px; align-items:end; }
   .hero-title{
-    font-size:clamp(36px, 5vw, 58px); line-height:1.12; color:var(--stone); font-weight:700; letter-spacing:-0.02em;
+    font-size:clamp(36px, 5vw, 58px); line-height:1.12; color:#ffffff; font-weight:700; letter-spacing:-0.02em;
   }
   .hero-title-rotator{ position:relative; min-height:1.2em; }
   .hero-line-gold{ --line-glow: rgba(198,154,90,0.55); }
@@ -245,8 +245,8 @@
   .hero-meta{
     display:flex; flex-wrap:wrap; gap:40px; margin-top:56px; padding-top:28px; border-top:var(--edge);
   }
-  .hero-meta-item{ font-family:var(--mono); font-size:13px; color:var(--stone-dim); }
-  .hero-meta-item b{ display:block; color:var(--stone); font-size:14px; margin-bottom:4px; letter-spacing:0.02em; }
+  .hero-meta-item{ font-family:var(--mono); font-size:13px; color:var(--stone-dim); text-shadow:0 1px 3px rgba(0,0,0,0.7); }
+  .hero-meta-item b{ font-family:var(--sans); display:block; color:#ffffff; font-weight:600; font-size:14.5px; margin-bottom:4px; letter-spacing:0.01em; text-shadow:0 1px 3px rgba(0,0,0,0.7); }
   .loc-dot{
     display:inline-block; width:8px; height:8px; border-radius:50%; background:#ff5a46;
     margin-right:8px; vertical-align:middle; position:relative;
@@ -328,13 +328,14 @@
   }
   .btn-solid{ background:var(--brass); color:var(--ink); border:1px solid var(--brass); }
   .btn-solid:hover{ transform:translateY(-2px); background:var(--brass-light); }
-  .btn-ghost{ border:var(--edge-brass); color:var(--stone); }
+  .btn-ghost{ border:var(--edge-brass); color:#ffffff; }
   .btn-ghost:hover{ transform:translateY(-2px); border-color:var(--brass-light); color:var(--brass-light); }
 
   /* ===================== SECTION SCAFFOLDING ===================== */
   section{ padding:120px 0; position:relative; }
   .section-head{ max-width:640px; margin-bottom:64px; }
   .section-head h2{ font-size:clamp(32px,4vw,46px); margin-top:18px; color:var(--stone); }
+  .steps h2, .explore-header h2, .memories-header h2{ font-size:clamp(32px,4vw,46px); }
   .section-head p{ color:var(--stone-dim); margin-top:16px; font-size:16px; max-width:52ch; }
 
   .reveal{ opacity:0; transform:translateY(28px); transition:opacity 0.8s ease, transform 0.8s ease; }
@@ -797,7 +798,7 @@
       <li><a href="#location">Locations</a></li>
       <li><a href="#explore">Explore</a></li>
       <li><a href="#memories">Memories</a></li>
-      <li><a href="#">Shop</a></li>
+      <li><a href="javascript:void(0)">Shop</a></li>
       <li><a href="#contact" class="nav-cta">Enquiries</a></li>
     </ul>
     <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
@@ -913,7 +914,7 @@
   <div class="wrap">
     <div class="section-head reveal" style="margin-bottom:0; padding:64px 0 0;">
       <div class="eyebrow">The offering</div>
-      <h2 style="font-size:clamp(28px,3.4vw,38px);">Two ways to stay.</h2>
+      <h2>Two ways to stay.</h2>
     </div>
   </div>
   <div class="split-grid stagger-group">
@@ -1004,7 +1005,7 @@
 
     <div class="steps on-dark reveal">
       <div class="eyebrow" style="margin-bottom:12px;">How self check-in works</div>
-      <h2 style="font-size:28px;">No front desk, no waiting.</h2>
+      <h2>No front desk, no waiting.</h2>
       <div class="steps-grid">
         <div class="step">
           <div class="step-num">01</div>
@@ -1054,7 +1055,7 @@
   <div class="wrap">
     <div class="section-head reveal" style="max-width:none;">
       <div class="eyebrow">Location</div>
-      <h2 style="white-space:nowrap; font-size:clamp(22px,4vw,46px);">In the shadow of the Royal Palace.</h2>
+      <h2 style="white-space:nowrap;">In the shadow of the Royal Palace.</h2>
       <p style="max-width:920px;">Every property is located in one of Brussels' most walkable and central areas — between the Royal Quarter and the European Quarter. From here, the Royal Museums of Fine Arts of Belgium, Grand Place, Brussels Central Station, and many of the city's most iconic cultural and historic landmarks are all within easy walking distance.</p>
     </div>
 
@@ -1327,7 +1328,7 @@
     <div class="explore-header">
       <div>
         <div class="eyebrow">Explore</div>
-        <h2 style="margin-top:18px; font-size:clamp(28px,3.6vw,40px);">What's nearby, worth seeing.</h2>
+        <h2 style="margin-top:18px;">What's nearby, worth seeing.</h2>
       </div>
       <button class="explore-arrow-btn" id="exploreOpenBtn" aria-label="View all Explore articles" title="View all">
         <svg viewBox="0 0 24 24" fill="none"><path d="M7 17L17 7M17 7H9M17 7V15" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -1386,7 +1387,7 @@
     <div class="memories-header">
       <div>
         <div class="eyebrow">Memories</div>
-        <h2 style="margin-top:18px; font-size:clamp(28px,3.6vw,40px);">Moments shared by guests from around the world.</h2>
+        <h2 style="margin-top:18px;">Moments shared by guests from around the world.</h2>
       </div>
     </div>
     <div class="memories-toggle">
