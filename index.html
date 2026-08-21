@@ -364,20 +364,23 @@
 
   /* ===================== TWO WAYS ===================== */
   .split{ background:var(--ink-2); border-top:var(--edge); border-bottom:var(--edge); }
-  .split-grid{ display:grid; grid-template-columns:1fr 1fr; gap:1px; background:rgba(236,229,214,0.14); max-width:1180px; margin:0 auto; }
-  .split-card{ background:var(--ink-2); padding:56px 48px; }
-  .split-card:first-child{ padding-left:32px; }
-  .split-card:last-child{ padding-right:32px; }
+  .split-grid{ display:grid; grid-template-columns:1fr 1fr; gap:24px; max-width:1180px; margin:44px auto 0; padding:0 32px; }
+  .split-card{
+    background:var(--ink-3); border:1px solid rgba(236,229,214,0.12); border-radius:20px;
+    padding:44px 40px; transition:border-color 0.3s ease;
+  }
+  .split-card:hover{ border-color:rgba(198,154,90,0.32); }
   .split-num{ display:flex; align-items:baseline; gap:12px; flex-wrap:wrap; }
-  .split-num-count{ font-family:var(--serif); font-weight:700; font-size:56px; color:var(--brass); line-height:1; letter-spacing:-0.01em; }
-  .split-num-label{ font-family:var(--serif); font-weight:600; font-size:19px; color:var(--stone); letter-spacing:-0.005em; }
-  .split-card h3{ font-size:28px; color:var(--stone); margin-top:18px; }
+  .split-num-count{ font-family:var(--serif); font-weight:700; font-size:48px; color:var(--brass); line-height:1; letter-spacing:-0.01em; }
+  .split-num-label{ font-family:var(--serif); font-weight:600; font-size:17px; color:var(--stone); letter-spacing:-0.005em; }
+  .split-card h3{ font-size:26px; color:var(--stone); margin-top:16px; }
   .split-card p{ color:var(--stone-dim); margin-top:14px; max-width:42ch; }
-  .tag-row{ display:flex; flex-wrap:wrap; gap:10px; margin-top:26px; }
+  .tag-row{ display:flex; flex-wrap:wrap; gap:10px; margin-top:24px; }
   .tag{
     font-family:var(--mono); font-size:11.5px; letter-spacing:0.04em; text-transform:uppercase;
     padding:7px 12px; border:1px solid rgba(236,229,214,0.2); border-radius:999px; color:var(--stone-dim);
   }
+  .steps-connector{ max-width:1180px; margin:64px auto 0; padding:40px 32px 0; border-top:1px solid rgba(236,229,214,0.12); }
 
   /* ===================== STAYS (KEY FOBS) ===================== */
   .fob-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:28px; }
@@ -460,6 +463,56 @@
     padding:16px 0; border-bottom:1px solid rgba(32,28,20,0.12);
   }
   .landmark-item:last-child{ border-bottom:0; }
+  .landmark-item.last-visible{ border-bottom:0; }
+  .landmark-item.landmark-extra{ display:none; }
+  #mainLandmarksList.expanded .landmark-item.landmark-extra{ display:grid; }
+  .landmark-toggle-row{ position:relative; margin-top:0; height:1px; }
+  .landmark-dotted-line{
+    position:absolute; left:0; right:0; top:0; border-top:2px dotted rgba(138,106,48,0.45);
+    animation:landmarkLineColor 2.2s linear infinite;
+  }
+  #mainLandmarksList.expanded ~ .landmark-toggle-row .landmark-dotted-line,
+  #mainLandmarksList.expanded + .landmark-toggle-row .landmark-dotted-line{
+    border-top:1px solid rgba(32,28,20,0.12); animation:none;
+  }
+  @keyframes landmarkLineColor{
+    0%   { border-top-color:rgba(198,154,90,0.55); }
+    25%  { border-top-color:rgba(111,147,132,0.55); }
+    50%  { border-top-color:rgba(143,178,217,0.55); }
+    75%  { border-top-color:rgba(168,67,111,0.45); }
+    100% { border-top-color:rgba(198,154,90,0.55); }
+  }
+  .landmark-toggle-btn{
+    position:absolute; left:50%; top:0; transform:translate(-50%,-50%); z-index:1;
+    width:30px; height:30px; border-radius:50%; flex:none;
+    background:var(--paper); border:1.5px solid rgba(198,154,90,0.5); color:#8a6a30;
+    display:flex; align-items:center; justify-content:center; cursor:pointer;
+    transition:transform 0.3s ease, background 0.2s ease, border-color 0.2s ease;
+    animation:landmarkToggleColor 3s ease-in-out infinite;
+  }
+  .landmark-toggle-btn::before, .landmark-toggle-btn::after{
+    content:''; position:absolute; inset:0; border-radius:50%; border:1.5px solid rgba(198,154,90,0.55);
+    animation:landmarkTogglePulse 2.4s ease-out infinite; pointer-events:none;
+  }
+  .landmark-toggle-btn::after{ animation-delay:1.2s; }
+  .landmark-toggle-btn svg{ width:15px; height:15px; transition:transform 0.3s ease; animation:landmarkToggleBounce 1.8s ease-in-out infinite; }
+  .landmark-toggle-btn:hover{ background:linear-gradient(rgba(138,106,48,0.14), rgba(138,106,48,0.14)), var(--paper); border-color:#8a6a30; }
+  .landmark-toggle-btn:hover::before, .landmark-toggle-btn:hover::after{ animation-play-state:paused; opacity:0; }
+  .landmark-toggle-btn.is-open svg{ transform:rotate(180deg); animation:none; }
+  .landmark-toggle-btn.is-open{ animation:none; border-color:rgba(32,28,20,0.2); }
+  .landmark-toggle-btn.is-open::before, .landmark-toggle-btn.is-open::after{ display:none; }
+  @keyframes landmarkTogglePulse{
+    0%{ transform:scale(1); opacity:0.7; }
+    100%{ transform:scale(1.7); opacity:0; }
+  }
+  @keyframes landmarkToggleBounce{
+    0%, 100%{ transform:translateY(0); }
+    50%{ transform:translateY(3px); }
+  }
+  @keyframes landmarkToggleColor{
+    0%, 100%{ border-color:rgba(198,154,90,0.5); color:#8a6a30; }
+    50%{ border-color:rgba(198,154,90,1); color:#c69a5a; }
+  }
   .landmark-name{ font-size:14.5px; color:rgba(32,28,20,0.58); font-weight:600; line-height:1.3; overflow-wrap:break-word; min-width:0; }
   .landmark-desc{ font-size:13px; color:rgba(32,28,20,0.58); line-height:1.5; overflow-wrap:break-word; min-width:0; }
   .landmark-meta{
@@ -487,7 +540,7 @@
   }
 
   .steps{ margin-top:60px; }
-  .steps-grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:0; border-top:1px solid rgba(32,28,20,0.16); }
+  .steps-grid{ display:grid; grid-template-columns:repeat(5,1fr); gap:0; border-top:1px solid rgba(32,28,20,0.16); }
   .step{ padding:26px 26px 0 0; border-right:1px solid rgba(32,28,20,0.16); }
   .step:last-child{ border-right:0; }
   .step-num{ font-family:var(--mono); font-size:12px; color:#8a6a30; }
@@ -757,8 +810,7 @@
     .key-divider::before, .key-divider::after{ height:28px; }
     .key-divider::before{ margin-bottom:10px; }
     .key-divider::after{ margin-top:10px; }
-    .split-grid{ grid-template-columns:1fr; }
-    .split-card:first-child, .split-card:last-child{ padding-left:32px; padding-right:32px; }
+    .split-grid{ grid-template-columns:1fr; gap:20px; }
     .fob-grid{ grid-template-columns:1fr; }
     .location-grid{ grid-template-columns:1fr; gap:44px; }
     .steps-grid{ grid-template-columns:1fr; }
@@ -775,8 +827,7 @@
     .nav-toggle{ display:block; }
     .wrap{ padding:0 20px; }
     section{ padding:80px 0; }
-    .split-card{ padding:40px 26px; }
-    .split-card:first-child, .split-card:last-child{ padding-left:20px; padding-right:20px; }
+    .split-card{ padding:36px 28px; }
     .hero-line-nowrap{ white-space:normal; }
   }
 </style>
@@ -793,7 +844,7 @@
     </a>
     <ul class="nav-links" id="navLinks">
       <li><a href="#home">Home</a></li>
-      <li><a href="#residences">Properties</a></li>
+      <li><a href="#keys">Properties</a></li>
       <li><a href="#stays">Stays</a></li>
       <li><a href="#location">Locations</a></li>
       <li><a href="#explore">Explore</a></li>
@@ -880,62 +931,81 @@
 <section class="keys" id="keys">
   <div class="wrap">
     <div class="section-head reveal">
-      <div class="eyebrow">The name</div>
+      <div class="eyebrow">KEY&amp;KEY</div>
       <h2>Two keys, two meanings.</h2>
-      <p>The first key unlocks your stay — effortless password self-check-in, 24/7.<br>The second key unlocks Brussels — stay in the heart of the city, surrounded by iconic landmarks, classical architecture, and convenient transport connections.</p>
     </div>
 
     <div class="keys-grid stagger-group">
       <div class="key-panel door">
         <div class="key-icon">
-          <svg viewBox="0 0 44 44" fill="none"><circle cx="22" cy="13" r="9" stroke="#c69a5a" stroke-width="2"/><circle cx="22" cy="13" r="3" fill="#c69a5a"/><rect x="19.5" y="21" width="5" height="18" rx="1" fill="#c69a5a"/><rect x="24.5" y="30" width="7" height="3.4" fill="#c69a5a"/><rect x="24.5" y="35" width="5" height="3.4" fill="#c69a5a"/></svg>
+          <svg viewBox="0 0 44 44" fill="none">
+            <rect x="7" y="9" width="19" height="26" rx="4.5" stroke="#d4a24c" stroke-width="1.8"/>
+            <g fill="#d4a24c">
+              <circle cx="12.3" cy="15" r="1.15"/>
+              <circle cx="16.5" cy="15" r="1.15"/>
+              <circle cx="20.7" cy="15" r="1.15"/>
+              <circle cx="12.3" cy="19.7" r="1.15"/>
+              <circle cx="16.5" cy="19.7" r="1.15"/>
+              <circle cx="20.7" cy="19.7" r="1.15"/>
+              <circle cx="12.3" cy="24.4" r="1.15"/>
+              <circle cx="16.5" cy="24.4" r="1.15"/>
+              <circle cx="20.7" cy="24.4" r="1.15"/>
+              <circle cx="16.5" cy="29.6" r="1.15"/>
+            </g>
+            <rect x="30" y="14" width="6" height="19" rx="3" fill="#d4a24c"/>
+          </svg>
         </div>
-        <div class="key-label">Key One</div>
+        <div class="key-label">KEY PASSWORD</div>
         <h3>The Door</h3>
-        <p>Every stay and residence opens with its own private code — no front desk, no handover, no waiting on anyone else's schedule.</p>
+        <p>Key to your stay &mdash; your own password code to open the door. Self check-in, 24/7. No front desk.</p>
       </div>
 
       <div class="key-divider">&amp;</div>
 
       <div class="key-panel city">
         <div class="key-icon">
-          <svg viewBox="0 0 44 44" fill="none"><path d="M22 4C13 4 6 12 6 21C6 33 22 40 22 40C22 40 38 33 38 21C38 12 31 4 22 4Z" stroke="#6f9384" stroke-width="2"/><circle cx="22" cy="19" r="6" fill="#6f9384"/></svg>
+          <svg viewBox="0 0 44 44" fill="none"><circle cx="22" cy="22" r="16" stroke="#6f9384" stroke-width="2"/><circle cx="22" cy="22" r="5" fill="#6f9384"/></svg>
         </div>
-        <div class="key-label">Key Two</div>
+        <div class="key-label">KEY LOCATION</div>
         <h3>The City</h3>
-        <p>Every address sits inside Brussels' royal and political core — a few streets from the Palais Royal, the federal parliament and the embassies around them.</p>
+        <p>Key to the city &mdash; step into Brussels&rsquo; royal and political heart, by iconic sights and convenient transport connections.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ============ TWO WAYS ============ -->
+<!-- ============ HOW SELF CHECK-IN WORKS ============ -->
 <section class="split">
   <div class="wrap">
-    <div class="section-head reveal" style="margin-bottom:0; padding:64px 0 0;">
-      <div class="eyebrow">The offering</div>
-      <h2>Two ways to stay.</h2>
-    </div>
-  </div>
-  <div class="split-grid stagger-group">
-    <div class="split-card">
-      <div class="split-num"><span class="split-num-count count-num" data-count="3" data-nopad="1">0</span><span class="split-num-label">Airbnb Listings</span></div>
-      <h3>Short stays</h3>
-      <p>Fully furnished apartments, ready for arrival at any hour. Every stay unlocks and locks itself — no front desk, no handover.</p>
-      <div class="tag-row">
-        <span class="tag">Self check-in</span>
-        <span class="tag">Self check-out</span>
-        <span class="tag">Cleaned between stays</span>
-      </div>
-    </div>
-    <div class="split-card">
-      <div class="split-num"><span class="split-num-count count-num" data-count="7" data-nopad="1">0</span><span class="split-num-label">Rental Properties</span></div>
-      <h3>Long-term residences</h3>
-      <p>Homes let on standard and extended leases, managed end to end — from tenant search to maintenance — for owners and residents alike.</p>
-      <div class="tag-row">
-        <span class="tag">1&ndash;3 year leases</span>
-        <span class="tag">Maintenance included</span>
-        <span class="tag">Direct management</span>
+    <div class="steps on-dark reveal" style="margin-top:0;">
+      <div class="eyebrow" style="margin-bottom:12px;">How self check-in works</div>
+      <h2>No front desk, no waiting.</h2>
+      <div class="steps-grid">
+        <div class="step">
+          <div class="step-num">00</div>
+          <h4>Two ways to stay</h4>
+          <p>Short stays and long-term residences — both guaranteed and thoroughly cleaned, so there's never anything to worry about.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">01</div>
+          <h4>Book your stay</h4>
+          <p>Reserve directly and receive your arrival window and street directions in advance.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">02</div>
+          <h4>Receive your code</h4>
+          <p>A private entry code is sent the day of arrival, valid for the length of your stay.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">03</div>
+          <h4>Let yourself in</h4>
+          <p>Arrive whenever suits you — no calls, no waiting, no front desk to find.</p>
+        </div>
+        <div class="step">
+          <div class="step-num">04</div>
+          <h4>Check out</h4>
+          <p>Lock up the same way you came in. No key exchange, no checkout call, no drop-off.</p>
+        </div>
       </div>
     </div>
   </div>
@@ -1002,51 +1072,6 @@
         </div>
       </article>
     </div>
-
-    <div class="steps on-dark reveal">
-      <div class="eyebrow" style="margin-bottom:12px;">How self check-in works</div>
-      <h2>No front desk, no waiting.</h2>
-      <div class="steps-grid">
-        <div class="step">
-          <div class="step-num">01</div>
-          <h4>Book your stay</h4>
-          <p>Reserve directly and receive your arrival window and street directions in advance.</p>
-        </div>
-        <div class="step">
-          <div class="step-num">02</div>
-          <h4>Receive your code</h4>
-          <p>A private entry code is sent the day of arrival, valid for the length of your stay.</p>
-        </div>
-        <div class="step">
-          <div class="step-num">03</div>
-          <h4>Let yourself in</h4>
-          <p>Arrive whenever suits you and lock up the same way when you leave — no key exchange.</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ============ RESIDENCES ============ -->
-<section id="residences" class="rack">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <div class="eyebrow">The residences</div>
-      <h2>Seven homes, let on the long term.</h2>
-      <p>Managed for owners and let to residents across the same central streets — from studios to two-bedroom apartments.</p>
-    </div>
-
-    <div class="stagger-group">
-        <span>No.</span><span>Residence</span><span>Type</span><span>Area</span><span>Status</span>
-      </div>
-      <div class="rack-row"><span class="rack-num">01</span><span class="rack-name">Residence Royale<span>Quartier Royal</span></span><span class="rack-type">Studio</span><span class="rack-area">38 m&sup2;</span><span class="rack-status">On application</span></div>
-      <div class="rack-row"><span class="rack-num">02</span><span class="rack-name">Maison Ducale<span>Rue Ducale</span></span><span class="rack-type">1 bedroom</span><span class="rack-area">55 m&sup2;</span><span class="rack-status">On application</span></div>
-      <div class="rack-row"><span class="rack-num">03</span><span class="rack-name">Appartement Sablon<span>Grand Sablon</span></span><span class="rack-type">2 bedroom</span><span class="rack-area">78 m&sup2;</span><span class="rack-status">Let</span></div>
-      <div class="rack-row"><span class="rack-num">04</span><span class="rack-name">Le Namur<span>Rue de Namur</span></span><span class="rack-type">1 bedroom</span><span class="rack-area">48 m&sup2;</span><span class="rack-status">On application</span></div>
-      <div class="rack-row"><span class="rack-num">05</span><span class="rack-name">Rue Brederode<span>Quartier L&eacute;opold</span></span><span class="rack-type">Studio</span><span class="rack-area">34 m&sup2;</span><span class="rack-status">Let</span></div>
-      <div class="rack-row"><span class="rack-num">06</span><span class="rack-name">Le Louvain<span>Rue de Louvain</span></span><span class="rack-type">2 bedroom</span><span class="rack-area">82 m&sup2;</span><span class="rack-status">On application</span></div>
-      <div class="rack-row"><span class="rack-num">07</span><span class="rack-name">Cour de la R&eacute;gence<span>Rue de la R&eacute;gence</span></span><span class="rack-type">1 bedroom</span><span class="rack-area">51 m&sup2;</span><span class="rack-status">Let</span></div>
-    </div>
   </div>
 </section>
 
@@ -1086,7 +1111,7 @@
         <div class="addr-block">
           <div class="addr area-subheading">Local Landmarks &amp; Attractions</div>
         </div>
-        <ul class="landmark-list">
+        <ul class="landmark-list" id="mainLandmarksList">
           <li class="landmark-item">
             <span class="landmark-name">Central Station</span>
             <span class="landmark-desc">One of Brussels’ main railway hubs, offering convenient connections across the city and direct train services to major destinations throughout Belgium.</span>
@@ -1129,56 +1154,56 @@
               <svg viewBox="0 0 24 24" fill="none"><path d="M7 17L17 7M17 7H10M17 7V14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a></span>
             </li>
-          <li class="landmark-item">
+          <li class="landmark-item landmark-extra">
             <span class="landmark-name">Belgian Federal Parliament</span>
             <span class="landmark-desc">The seat of Belgium's federal legislature, housed in the Palace of the Nation.</span>
             <span class="landmark-meta"><span>10 m</span><span>6 min walk</span><span>3 min by public transport</span><a class="landmark-link" href="https://www.google.com/maps/search/?api=1&query=Belgian%20Federal%20Parliament%2C%20Brussels" target="_blank" rel="noopener" aria-label="Open in Google Maps" title="Open in Google Maps">
               <svg viewBox="0 0 24 24" fill="none"><path d="M7 17L17 7M17 7H10M17 7V14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a></span>
             </li>
-          <li class="landmark-item">
+          <li class="landmark-item landmark-extra">
             <span class="landmark-name">Grand Sablon</span>
             <span class="landmark-desc">An antiques and chocolate quarter built around a Gothic church, known for its boutiques and cafés.</span>
             <span class="landmark-meta"><span>15 m</span><span>12 min walk</span><span>6 min by public transport</span><a class="landmark-link" href="https://www.google.com/maps/search/?api=1&query=Grand%20Sablon%2C%20Brussels" target="_blank" rel="noopener" aria-label="Open in Google Maps" title="Open in Google Maps">
               <svg viewBox="0 0 24 24" fill="none"><path d="M7 17L17 7M17 7H10M17 7V14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a></span>
             </li>
-          <li class="landmark-item">
+          <li class="landmark-item landmark-extra">
             <span class="landmark-name">Place Royale</span>
             <span class="landmark-desc">A neoclassical square at the top of the city, home to the Royal Museums of Fine Arts and Église Saint-Jacques-sur-Coudenberg.</span>
             <span class="landmark-meta"><span>760 m</span><span>9 min walk</span><span>6 min by public transport</span><a class="landmark-link" href="https://www.google.com/maps/search/?api=1&query=Place%20Royale%2C%20Brussels" target="_blank" rel="noopener" aria-label="Open in Google Maps" title="Open in Google Maps">
               <svg viewBox="0 0 24 24" fill="none"><path d="M7 17L17 7M17 7H10M17 7V14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a></span>
             </li>
-          <li class="landmark-item">
+          <li class="landmark-item landmark-extra">
             <span class="landmark-name">Royal Museums of Fine Arts of Belgium</span>
             <span class="landmark-desc">One of Belgium's largest art collections, spanning Old Masters to modern works across several linked museums.</span>
             <span class="landmark-meta"><span>700 m</span><span>9 min walk</span><span>45 min by public transport</span><a class="landmark-link" href="https://www.google.com/maps/search/?api=1&query=Royal%20Museums%20of%20Fine%20Arts%20of%20Belgium%2C%20Brussels" target="_blank" rel="noopener" aria-label="Open in Google Maps" title="Open in Google Maps">
               <svg viewBox="0 0 24 24" fill="none"><path d="M7 17L17 7M17 7H10M17 7V14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a></span>
             </li>
-          <li class="landmark-item">
+          <li class="landmark-item landmark-extra">
             <span class="landmark-name">Magritte Museum</span>
             <span class="landmark-desc">A museum dedicated to the surrealist painter René Magritte, holding the world's largest collection of his work.</span>
             <span class="landmark-meta"><span>710 m</span><span>9 min walk</span><span>4 min by public transport</span><a class="landmark-link" href="https://www.google.com/maps/search/?api=1&query=Magritte%20Museum%2C%20Brussels" target="_blank" rel="noopener" aria-label="Open in Google Maps" title="Open in Google Maps">
               <svg viewBox="0 0 24 24" fill="none"><path d="M7 17L17 7M17 7H10M17 7V14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a></span>
             </li>
-          <li class="landmark-item">
+          <li class="landmark-item landmark-extra">
             <span class="landmark-name">Palace of Justice</span>
             <span class="landmark-desc">A monumental 19th-century courthouse, one of the largest buildings constructed anywhere in the world in its era.</span>
             <span class="landmark-meta"><span>730 m</span><span>9 min walk</span><span>42 min by public transport</span><a class="landmark-link" href="https://www.google.com/maps/search/?api=1&query=Palace%20of%20Justice%2C%20Brussels" target="_blank" rel="noopener" aria-label="Open in Google Maps" title="Open in Google Maps">
               <svg viewBox="0 0 24 24" fill="none"><path d="M7 17L17 7M17 7H10M17 7V14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a></span>
             </li>
-          <li class="landmark-item">
+          <li class="landmark-item landmark-extra">
             <span class="landmark-name">European Commission</span>
             <span class="landmark-desc">The executive branch of the European Union, headquartered in the Berlaymont building in the European Quarter.</span>
             <span class="landmark-meta"><span>20 m</span><span>9 min walk</span><span>4 min by public transport</span><a class="landmark-link" href="https://www.google.com/maps/search/?api=1&query=European%20Commission%2C%20Brussels" target="_blank" rel="noopener" aria-label="Open in Google Maps" title="Open in Google Maps">
               <svg viewBox="0 0 24 24" fill="none"><path d="M7 17L17 7M17 7H10M17 7V14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </a></span>
             </li>
-          <li class="landmark-item">
+          <li class="landmark-item landmark-extra">
             <span class="landmark-name">Bourse</span>
             <span class="landmark-desc">Brussels' former stock exchange building, a 19th-century landmark now home to a beer museum and event space.</span>
             <span class="landmark-meta"><span>740 m</span><span>9 min walk</span><span>44 min by public transport</span><a class="landmark-link" href="https://www.google.com/maps/search/?api=1&query=Bourse%2C%20Brussels" target="_blank" rel="noopener" aria-label="Open in Google Maps" title="Open in Google Maps">
@@ -1186,6 +1211,12 @@
             </a></span>
             </li>
         </ul>
+        <div class="landmark-toggle-row">
+          <div class="landmark-dotted-line"></div>
+          <button class="landmark-toggle-btn" id="landmarksToggleBtn" aria-expanded="false" aria-label="Show all landmarks">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
       </div>
 
       <div class="reveal">
@@ -1820,6 +1851,34 @@
     openBtn.addEventListener('click', openPage);
     if (backBtn) backBtn.addEventListener('click', closePage);
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closePage(); });
+  })();
+
+  // Local Landmarks & Attractions: show 6 by default, expand/collapse the rest
+  (function(){
+    const list = document.getElementById('mainLandmarksList');
+    const toggleBtn = document.getElementById('landmarksToggleBtn');
+    if (!list || !toggleBtn) return;
+
+    function updateLastVisibleBorder(){
+      const allItems = Array.from(list.querySelectorAll('.landmark-item'));
+      allItems.forEach(item => item.classList.remove('last-visible'));
+      const isExpanded = list.classList.contains('expanded');
+      const visibleItems = isExpanded ? allItems : allItems.filter(item => !item.classList.contains('landmark-extra'));
+      if (visibleItems.length) visibleItems[visibleItems.length - 1].classList.add('last-visible');
+    }
+
+    toggleBtn.addEventListener('click', () => {
+      const isExpanded = list.classList.toggle('expanded');
+      toggleBtn.classList.toggle('is-open', isExpanded);
+      toggleBtn.setAttribute('aria-expanded', isExpanded ? 'true' : 'false');
+      toggleBtn.setAttribute('aria-label', isExpanded ? 'Show fewer landmarks' : 'Show all landmarks');
+      updateLastVisibleBorder();
+      if (!isExpanded) {
+        list.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'nearest' });
+      }
+    });
+
+    updateLastVisibleBorder();
   })();
 
   // Book Your Stay Now info modal
