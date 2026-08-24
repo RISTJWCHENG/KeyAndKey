@@ -540,16 +540,27 @@
   }
 
   .steps{ margin-top:60px; }
-  .steps-grid{ display:grid; grid-template-columns:repeat(5,1fr); gap:0; border-top:1px solid rgba(32,28,20,0.16); }
-  .step{ padding:26px 26px 0 0; border-right:1px solid rgba(32,28,20,0.16); }
-  .step:last-child{ border-right:0; }
-  .step-num{ font-family:var(--mono); font-size:12px; color:#8a6a30; }
-  .step h4{ font-family:var(--serif); font-weight:600; font-size:22px; margin-top:10px; color:var(--paper-ink); }
+  .steps-grid{
+    display:grid; grid-template-columns:repeat(5,1fr); gap:36px;
+    border-top:0; position:relative; padding-top:8px;
+  }
+  .steps-grid::before{
+    content:''; position:absolute; left:0; right:0; top:25px; height:1px;
+    background:rgba(32,28,20,0.18); z-index:0;
+  }
+  .step{ position:relative; padding:0; border-right:0; z-index:1; }
+  .step-num{
+    position:relative; z-index:1; width:34px; height:34px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--mono); font-size:12px; color:#8a6a30;
+    background:var(--paper); border:1.5px solid rgba(138,106,48,0.4);
+    margin-bottom:20px;
+  }
+  .step h4{ font-family:var(--serif); font-weight:600; font-size:22px; margin-top:0; color:var(--paper-ink); }
   .step p{ font-size:13.5px; margin-top:8px; color:rgba(32,28,20,0.62); }
 
-  .steps.on-dark .steps-grid{ border-top-color:rgba(236,229,214,0.16); }
-  .steps.on-dark .step{ border-right-color:rgba(236,229,214,0.16); }
-  .steps.on-dark .step-num{ color:var(--brass-light); }
+  .steps.on-dark .steps-grid::before{ background:rgba(236,229,214,0.18); }
+  .steps.on-dark .step-num{ color:var(--brass-light); background:var(--ink); border-color:rgba(198,154,90,0.4); }
   .steps.on-dark .step h4{ color:var(--stone); }
   .steps.on-dark .step p{ color:var(--stone-dim); }
 
@@ -744,6 +755,7 @@
   .social-icon svg{ width:15px; height:15px; stroke:var(--brass-light); }
   @media (max-width:480px){ .social-row{ flex-wrap:wrap; } }
   @media (max-width:420px){ #location .section-head h2{ white-space:normal; font-size:clamp(24px,7vw,32px); } }
+  @media (max-width:600px){ #stays .section-head h2 span{ white-space:normal; } }
 
   /* ===================== WECHAT QR MODAL ===================== */
   .qr-modal{
@@ -813,9 +825,9 @@
     .split-grid{ grid-template-columns:1fr; gap:20px; }
     .fob-grid{ grid-template-columns:1fr; }
     .location-grid{ grid-template-columns:1fr; gap:44px; }
-    .steps-grid{ grid-template-columns:1fr; }
-    .step{ border-right:0; border-bottom:1px solid rgba(32,28,20,0.16); padding-bottom:22px; margin-bottom:22px; }
-    .steps.on-dark .step{ border-bottom-color:rgba(236,229,214,0.16); }
+    .steps-grid{ grid-template-columns:1fr; gap:28px; }
+    .steps-grid::before{ display:none; }
+    .step{ padding-bottom:0; margin-bottom:0; }
     .foot-grid{ grid-template-columns:1fr; gap:36px; }
     .rack-row{ grid-template-columns:40px 1fr; row-gap:6px; }
     .rack-type, .rack-area, .rack-status{ display:none; }
@@ -979,32 +991,32 @@
   <div class="wrap">
     <div class="steps on-dark reveal" style="margin-top:0;">
       <div class="eyebrow" style="margin-bottom:12px;">How self check-in works</div>
-      <h2>No front desk, no waiting.</h2>
+      <h2>No front desk</h2>
       <div class="steps-grid">
         <div class="step">
           <div class="step-num">00</div>
           <h4>Two ways to stay</h4>
-          <p>Short stays and long-term residences — both guaranteed and thoroughly cleaned, so there's never anything to worry about.</p>
+          <p>Short Stays &amp; Long-Term Residences &mdash; Fresh linens, duvet covers, and towels are always provided and thoroughly cleaned.</p>
         </div>
         <div class="step">
           <div class="step-num">01</div>
           <h4>Book your stay</h4>
-          <p>Reserve directly and receive your arrival window and street directions in advance.</p>
+          <p>Please message me via Email, WhatsApp, &#24494;&#20449;, or Instagram, whichever is most convenient for you. You&rsquo;re also welcome to call me directly.</p>
         </div>
         <div class="step">
           <div class="step-num">02</div>
           <h4>Receive your code</h4>
-          <p>A private entry code is sent the day of arrival, valid for the length of your stay.</p>
+          <p>A private entry passworld code will be sent one week before your arrival, along with detailed check-in instructions.</p>
         </div>
         <div class="step">
           <div class="step-num">03</div>
-          <h4>Let yourself in</h4>
-          <p>Arrive whenever suits you — no calls, no waiting, no front desk to find.</p>
+          <h4>Self Check-In</h4>
+          <p>Self-check in anytime after the time stated in your arrival guide. If needed, you&rsquo;re welcome to store your luggage here before check-in.</p>
         </div>
         <div class="step">
           <div class="step-num">04</div>
-          <h4>Check out</h4>
-          <p>Lock up the same way you came in. No key exchange, no checkout call, no drop-off.</p>
+          <h4>Easy Check-Out</h4>
+          <p>Simply lock up when you leave. No key exchange, no checkout call, and no cleaning required.</p>
         </div>
       </div>
     </div>
@@ -1014,10 +1026,10 @@
 <!-- ============ STAYS ============ -->
 <section id="stays">
   <div class="wrap">
-    <div class="section-head reveal">
-      <div class="eyebrow">The Airbnb stays</div>
-      <h2>Three doors, each with its own key.</h2>
-      <p>Every stay is entered independently — a private code replaces the front desk, so guests come and go on their own schedule.</p>
+    <div class="section-head reveal" style="max-width:900px;">
+      <div class="eyebrow">THE STAY APARTMENTS</div>
+      <h2 style="white-space:normal;"><span style="white-space:nowrap;">Three apartments, three different floors</span><br>&mdash; all in one building.</h2>
+      <p>Choose the apartment that best suits your preferences, then click to explore more details.</p>
     </div>
 
     <div class="fob-grid stagger-group">
@@ -1647,7 +1659,7 @@
             <span class="social-icon">
               <svg viewBox="0 0 24 24" fill="none"><path d="M8.6 3.2C4.4 3.2 1 5.9 1 9.3c0 1.9 1.03 3.55 2.66 4.66L3 16.4l2.77-1.14c.72.2 1.48.32 2.27.32.24 0 .48 0 .71-.03-.14-.48-.22-.99-.22-1.51 0-3.2 3.24-5.8 7.24-5.8.25 0 .5.01.74.03C15.98 5.16 12.6 3.2 8.6 3.2z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><circle cx="5.9" cy="8.4" r="0.85" fill="currentColor"/><circle cx="10.6" cy="8.4" r="0.85" fill="currentColor"/><path d="M15.9 9.5c-3.53 0-6.4 2.4-6.4 5.35 0 2.95 2.87 5.35 6.4 5.35.6 0 1.18-.07 1.73-.2L20.7 21.6l-.85-2.15c1.3-.9 2.15-2.25 2.15-3.6 0-2.95-2.87-5.35-6.4-5.35z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><circle cx="14.1" cy="14.6" r="0.75" fill="currentColor"/><circle cx="17.7" cy="14.6" r="0.75" fill="currentColor"/></svg>
             </span>
-            <span>WeChat</span>
+            <span>微信</span>
           </a>
           <a class="social-btn" href="https://www.instagram.com/timeless.in.europe/" target="_blank" rel="noopener">
             <span class="social-icon">
@@ -1685,7 +1697,7 @@
       <a class="icon-badge icon-whatsapp" href="#" id="modalWhatsappBtn" aria-label="WhatsApp">
         <svg viewBox="0 0 24 24" fill="none"><path d="M12 3a9 9 0 00-7.79 13.5L3 21l4.7-1.23A9 9 0 1012 3z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><path d="M8.5 9.5c0 4 3 6.5 6.5 6.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
       </a>
-      <a class="icon-badge icon-wechat" href="#" id="modalWechatBtn" aria-label="WeChat">
+      <a class="icon-badge icon-wechat" href="#" id="modalWechatBtn" aria-label="微信">
         <svg viewBox="0 0 24 24" fill="none"><path d="M8.6 3.2C4.4 3.2 1 5.9 1 9.3c0 1.9 1.03 3.55 2.66 4.66L3 16.4l2.77-1.14c.72.2 1.48.32 2.27.32.24 0 .48 0 .71-.03-.14-.48-.22-.99-.22-1.51 0-3.2 3.24-5.8 7.24-5.8.25 0 .5.01.74.03C15.98 5.16 12.6 3.2 8.6 3.2z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><circle cx="5.9" cy="8.4" r="0.85" fill="currentColor"/><circle cx="10.6" cy="8.4" r="0.85" fill="currentColor"/><path d="M15.9 9.5c-3.53 0-6.4 2.4-6.4 5.35 0 2.95 2.87 5.35 6.4 5.35.6 0 1.18-.07 1.73-.2L20.7 21.6l-.85-2.15c1.3-.9 2.15-2.25 2.15-3.6 0-2.95-2.87-5.35-6.4-5.35z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><circle cx="14.1" cy="14.6" r="0.75" fill="currentColor"/><circle cx="17.7" cy="14.6" r="0.75" fill="currentColor"/></svg>
       </a>
       <a class="icon-badge icon-instagram" href="https://www.instagram.com/timeless.in.europe/" target="_blank" rel="noopener" aria-label="Instagram">
@@ -1695,7 +1707,7 @@
         <svg viewBox="0 0 24 24" fill="none"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
       </a>
     </div>
-    <p class="info-modal-text">Send me a message via <span class="chan-email">Email</span>, <span class="chan-whatsapp">WhatsApp</span>, <span class="chan-wechat">WeChat</span>, or <span class="chan-instagram">Instagram</span>, whichever is most convenient for you. You&rsquo;re also welcome to <span class="chan-call">call</span> me directly.</p>
+    <p class="info-modal-text">Please send me a message via <span class="chan-email">Email</span>, <span class="chan-whatsapp">WhatsApp</span>, <span class="chan-wechat">微信</span>, or <span class="chan-instagram">Instagram</span>, whichever is most convenient for you. You&rsquo;re also welcome to <span class="chan-call">call</span> me directly.</p>
     <div class="email-toast" id="emailToast">naan5me@gmail.com &mdash; copied to clipboard</div>
   </div>
 </div>
@@ -1941,9 +1953,9 @@
     const whatsappBtn = document.getElementById('whatsappBtn');
     const modalWechatBtn = document.getElementById('modalWechatBtn');
     const modalWhatsappBtn = document.getElementById('modalWhatsappBtn');
-    if (wechatBtn) wechatBtn.addEventListener('click', openModal('https://pub-6b46fd29ec2c4176b76828bf1155b68a.r2.dev/Images/WeChat_Contact_QR_Code.png', 'Scan to connect on WeChat'));
+    if (wechatBtn) wechatBtn.addEventListener('click', openModal('https://pub-6b46fd29ec2c4176b76828bf1155b68a.r2.dev/Images/WeChat_Contact_QR_Code.png', 'Scan to connect on 微信'));
     if (whatsappBtn) whatsappBtn.addEventListener('click', openModal('https://pub-6b46fd29ec2c4176b76828bf1155b68a.r2.dev/Images/WhatsApp_Contact_QR_Code.png', 'Scan to connect on WhatsApp'));
-    if (modalWechatBtn) modalWechatBtn.addEventListener('click', openModal('https://pub-6b46fd29ec2c4176b76828bf1155b68a.r2.dev/Images/WeChat_Contact_QR_Code.png', 'Scan to connect on WeChat'));
+    if (modalWechatBtn) modalWechatBtn.addEventListener('click', openModal('https://pub-6b46fd29ec2c4176b76828bf1155b68a.r2.dev/Images/WeChat_Contact_QR_Code.png', 'Scan to connect on 微信'));
     if (modalWhatsappBtn) modalWhatsappBtn.addEventListener('click', openModal('https://pub-6b46fd29ec2c4176b76828bf1155b68a.r2.dev/Images/WhatsApp_Contact_QR_Code.png', 'Scan to connect on WhatsApp'));
 
     backdrop.addEventListener('click', closeModal);
