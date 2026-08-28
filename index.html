@@ -94,7 +94,7 @@
     padding:14px 0;
   }
   .nav-row{ display:flex; align-items:center; justify-content:space-between; }
-  .brand{ display:flex; align-items:flex-end; gap:10px; font-family:var(--mono); font-size:14px; letter-spacing:0.08em; }
+  .brand{ display:flex; align-items:baseline; gap:10px; font-family:var(--mono); font-size:14px; letter-spacing:0.08em; }
   .brand-mark{ width:22px; height:22px; object-fit:contain; object-position:bottom; transition:transform 0.1s linear; will-change:transform; }
   .brand-name{ text-transform:none; }
   .brand-name b{ color:var(--brass-light); font-weight:500; }
@@ -402,7 +402,8 @@
   .fob p.desc{ color:var(--stone-dim); font-size:14.5px; margin-top:20px; text-align:center; }
   .fob-amenities{ display:flex; justify-content:center; gap:16px; margin-top:22px; padding-top:20px; border-top:1px dashed rgba(236,229,214,0.18); }
   .amenity{ display:flex; flex-direction:column; align-items:center; gap:6px; font-family:var(--mono); font-size:10.5px; color:var(--stone-dim); text-transform:uppercase; letter-spacing:0.03em; }
-  .amenity svg{ width:18px; height:18px; stroke:var(--brass-light); }
+  .amenity-icon{ height:20px; display:flex; align-items:center; justify-content:center; }
+  .amenity-icon svg{ width:18px; height:18px; max-height:100%; stroke:var(--brass-light); }
   .fob-badge{
     display:flex; align-items:center; justify-content:center; gap:8px; margin-top:22px;
     font-family:var(--mono); font-size:11px; letter-spacing:0.06em; text-transform:uppercase;
@@ -581,6 +582,13 @@
   .steps.on-dark .step-num{ color:var(--brass-light); background:var(--ink); border-color:rgba(198,154,90,0.4); }
   .steps.on-dark .step h4{ color:var(--stone); }
   .steps.on-dark .step p{ color:var(--stone-dim); }
+  .step-num.pt-step-lit{
+    background:var(--brass-light); color:var(--ink); border-color:var(--brass-light);
+    box-shadow:0 0 0 4px rgba(198,154,90,0.25);
+    transform:scale(1.12);
+    transition:background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+  }
+  .step-num{ transition:background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease; }
 
   /* ===================== CLOSING / FOOTER ===================== */
   .closing{
@@ -740,6 +748,34 @@
   .explore-page-grid{ display:grid; grid-template-columns:repeat(3, 1fr); gap:26px; }
   @media (max-width:980px){ .explore-page-grid{ grid-template-columns:1fr 1fr; } }
   @media (max-width:640px){ .explore-page-grid{ grid-template-columns:1fr; } }
+  .explore-page-header-inner{ display:flex; align-items:center; justify-content:space-between; }
+  .explore-close-btn{
+    display:inline-flex; align-items:center; justify-content:center; width:34px; height:34px;
+    border-radius:50%; border:1px solid rgba(236,229,214,0.18); background:none; color:var(--stone); cursor:pointer;
+    transition:background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  }
+  .explore-close-btn svg{ width:16px; height:16px; }
+  .explore-close-btn:hover{ background:rgba(236,229,214,0.08); color:var(--brass-light); border-color:rgba(198,154,90,0.4); }
+  .explore-search{ position:relative; max-width:560px; margin:0 auto 28px; }
+  .explore-search svg{ position:absolute; left:18px; top:50%; transform:translateY(-50%); width:17px; height:17px; color:var(--stone-dim); pointer-events:none; }
+  .explore-search input{
+    width:100%; padding:13px 18px 13px 46px; border-radius:999px; border:var(--edge);
+    background:var(--ink-2); color:var(--stone); font-family:var(--sans); font-size:14.5px; outline:none;
+    transition:border-color 0.2s ease;
+  }
+  .explore-search input::placeholder{ color:var(--stone-dim); }
+  .explore-search input:focus{ border-color:rgba(198,154,90,0.5); }
+  .explore-filters{ display:flex; flex-wrap:wrap; justify-content:center; gap:8px; margin-bottom:44px; }
+  .explore-filter-btn{
+    font-family:var(--sans); font-size:13px; font-weight:600; padding:8px 18px; border-radius:999px;
+    border:1px solid rgba(236,229,214,0.18); background:none; color:var(--stone-dim); cursor:pointer;
+    transition:background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  }
+  .explore-filter-btn.active{ background:var(--brass-light); color:var(--ink); border-color:var(--brass-light); }
+  .explore-filter-btn:not(.active):hover{ color:var(--stone); border-color:rgba(236,229,214,0.35); }
+  .explore-card.pt-hide{ display:none; }
+  .explore-empty{ text-align:center; color:var(--stone-dim); font-size:14.5px; padding:40px 0; display:none; }
+  .explore-empty.show{ display:block; }
 
   /* ===================== PHOTO TOUR ===================== */
   .photo-tour-page{
@@ -1171,7 +1207,7 @@
     <div class="steps on-dark reveal" style="margin-top:0;">
       <div class="eyebrow" style="margin-bottom:12px;">How self check-in works</div>
       <h2>No front desk</h2>
-      <div class="steps-grid">
+      <div class="steps-grid" id="checkinStepsGrid">
         <div class="step">
           <div class="step-num">00</div>
           <h4>Two ways to stay</h4>
@@ -1223,9 +1259,45 @@
         <h3 style="font-size:21px;">Duplex Apartment</h3>
         <div class="fob-loc">Ground Floor (Level 0) &middot; Entire rental unit in the heart of Brussels, Belgium</div>
         <div class="fob-amenities">
-          <div class="amenity"><svg viewBox="0 0 24 24" fill="none"><rect x="4" y="10" width="16" height="10" rx="1.5" stroke="currentColor" stroke-width="1.4"/><path d="M8 10V7a4 4 0 018 0v3" stroke="currentColor" stroke-width="1.4"/></svg>Self entry</div>
-          <div class="amenity"><svg viewBox="0 0 24 24" fill="none"><circle cx="4" cy="7.5" r="1.7" stroke="currentColor" stroke-width="1.3"/><path d="M2 16c0-2.6 0.9-4.3 2-4.3s2 1.7 2 4.3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><circle cx="9.3" cy="7.5" r="1.7" stroke="currentColor" stroke-width="1.3"/><path d="M7.3 16c0-2.6 0.9-4.3 2-4.3s2 1.7 2 4.3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><circle cx="14.7" cy="7.5" r="1.7" stroke="currentColor" stroke-width="1.3"/><path d="M12.7 16c0-2.6 0.9-4.3 2-4.3s2 1.7 2 4.3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><circle cx="20" cy="7.5" r="1.7" stroke="currentColor" stroke-width="1.3"/><path d="M18 16c0-2.6 0.9-4.3 2-4.3s2 1.7 2 4.3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>4 guest</div>
-          <div class="amenity"><svg viewBox="0 0 24 24" fill="none"><path d="M4 9h16M4 15h16M8 4v16" stroke="currentColor" stroke-width="1.4"/></svg>Kitchen</div>
+          <div class="amenity"><div class="amenity-icon"><svg viewBox="0 0 24 24" fill="none"><rect x="4" y="10" width="16" height="10" rx="1.5" stroke="currentColor" stroke-width="1.4"/><path d="M8 10V7a4 4 0 018 0v3" stroke="currentColor" stroke-width="1.4"/></svg></div>Self entry</div>
+          <div class="amenity"><div class="amenity-icon"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><g transform="translate(3.2655,0) scale(0.0355059959707707)"><g transform="translate(-18,675.942171) scale(0.1,-0.1)"><path d="M317 6736 c-69 -26 -116 -78 -128 -139 -5 -23 -8 -1517 -9 -3319 l0
+-3278 210 0 210 0 0 3139 c0 2235 3 3147 11 3169 8 24 18 33 42 37 18 3 645 5
+1393 3 1323 -3 1363 -4 1383 -22 21 -19 21 -20 21 -733 0 -468 -4 -721 -10
+-733 -11 -21 -83 -45 -167 -54 -28 -4 -104 -27 -170 -52 -65 -25 -142 -54
+-170 -65 -29 -11 -55 -25 -59 -30 -3 -5 -26 -21 -52 -35 -97 -52 -126 -74
+-233 -173 -185 -174 -280 -333 -334 -561 -36 -154 -33 -245 10 -310 17 -24 50
+-58 73 -75 l44 -30 1272 -3 1272 -2 45 23 c24 13 63 47 87 76 l42 52 0 103 c0
+93 -4 117 -39 228 -39 123 -84 233 -101 243 -5 3 -29 36 -53 73 -72 108 -224
+251 -341 322 -32 19 -74 45 -93 58 -20 13 -81 41 -137 63 -56 22 -119 48 -142
+58 -23 11 -88 27 -145 36 -119 20 -156 35 -169 71 -6 15 -10 358 -10 875 0
+829 0 851 -20 889 -23 44 -66 80 -128 103 -39 16 -182 17 -1695 16 l-1652 0
+-58 -23z m3603 -2331 c47 -14 110 -31 140 -39 91 -24 171 -56 214 -85 23 -15
+66 -44 96 -63 52 -33 180 -153 180 -168 0 -4 16 -27 35 -51 37 -47 43 -70 21
+-88 -10 -8 -265 -10 -946 -9 -1068 3 -982 -5 -915 93 128 186 319 320 530 372
+33 8 87 24 120 36 125 43 378 44 525 2z"/><path d="M4410 3190 c-36 -12 -66 -31 -87 -55 -61 -71 -63 -80 -63 -335 0
+-262 2 -273 76 -347 82 -82 193 -81 279 2 25 25 50 56 55 70 6 15 10 138 10
+279 l0 252 -28 45 c-37 57 -47 65 -117 89 -69 24 -57 24 -125 0z"/><path d="M2827 3185 c-51 -18 -81 -47 -112 -109 -24 -49 -25 -55 -25 -273 0
+-241 3 -259 56 -329 63 -82 186 -104 267 -48 23 16 55 49 72 73 l30 43 3 219
+c2 132 -1 240 -7 270 -28 128 -158 199 -284 154z"/><path d="M3605 3181 c-44 -20 -72 -47 -104 -101 -20 -33 -21 -49 -21 -280 l0
+-246 34 -55 c45 -71 100 -104 176 -103 31 0 68 7 86 16 46 25 103 89 114 128
+13 45 13 465 1 508 -14 48 -69 112 -115 133 -52 24 -120 24 -171 0z"/><path d="M2825 2036 c-48 -18 -108 -84 -124 -136 -14 -47 -15 -560 -1 -611 5
+-19 27 -55 47 -79 62 -72 151 -98 228 -66 46 20 123 102 135 145 16 56 12 568
+-4 614 -18 51 -61 104 -98 123 -44 23 -134 27 -183 10z"/><path d="M3595 2032 c-40 -19 -68 -50 -98 -109 -15 -28 -17 -72 -17 -325 0
+-323 3 -339 66 -402 92 -91 209 -85 301 15 49 54 53 80 53 366 -1 147 -5 287
+-9 311 -10 53 -55 118 -95 139 -49 25 -153 28 -201 5z"/><path d="M4384 2032 c-42 -20 -78 -60 -108 -120 -15 -29 -16 -69 -14 -330 l3
+-297 33 -47 c18 -26 49 -60 69 -75 31 -24 46 -28 103 -28 58 0 73 4 110 30 24
+17 56 50 72 75 l29 45 -3 322 -3 321 -31 39 c-44 54 -85 75 -157 80 -47 3 -72
+-1 -103 -15z"/><path d="M2815 776 c-44 -19 -102 -88 -115 -136 -7 -27 -10 -123 -8 -269 l3
+-228 30 -43 c17 -23 38 -55 48 -71 l19 -29 116 0 117 0 23 38 c13 20 34 52 47
+71 25 34 25 35 25 270 0 208 -3 241 -19 277 -27 60 -77 112 -119 124 -51 14
+-131 12 -167 -4z"/><path d="M3595 771 c-43 -27 -82 -70 -99 -113 -13 -30 -16 -83 -16 -277 l0
+-239 40 -60 c22 -33 40 -65 40 -71 0 -7 39 -11 125 -11 76 0 125 4 125 10 0 5
+17 28 37 51 26 28 39 54 44 87 10 63 10 436 0 490 -10 50 -66 116 -118 138
+-48 21 -142 18 -178 -5z"/><path d="M4400 780 c-39 -9 -97 -68 -124 -125 -15 -30 -17 -68 -14 -278 l3
+-242 43 -56 c23 -31 42 -61 42 -67 0 -9 36 -12 120 -12 68 0 120 4 120 9 0 6
+18 31 40 56 22 25 42 56 45 68 3 12 5 138 3 279 l-3 256 -31 39 c-57 71 -141
+97 -244 73z"/></g></g></svg></div>Bath</div>
+          <div class="amenity"><div class="amenity-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M4 9h16M4 15h16M8 4v16" stroke="currentColor" stroke-width="1.4"/></svg></div>Kitchen</div>
         </div>
         <div class="fob-badge" id="viewDetailsGroundFloor" style="cursor:pointer;">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M2 12C2 12 5.5 5.5 12 5.5C18.5 5.5 22 12 22 12C22 12 18.5 18.5 12 18.5C5.5 18.5 2 12 2 12Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.6" class="eye-pupil-blink"/></svg>
@@ -1244,9 +1316,45 @@
         <h3 style="font-size:21px;">Duplex Apartment</h3>
         <div class="fob-loc">First Floor (Level 1) &middot; Entire rental unit in the heart of Brussels, Belgium</div>
         <div class="fob-amenities">
-          <div class="amenity"><svg viewBox="0 0 24 24" fill="none"><rect x="4" y="10" width="16" height="10" rx="1.5" stroke="currentColor" stroke-width="1.4"/><path d="M8 10V7a4 4 0 018 0v3" stroke="currentColor" stroke-width="1.4"/></svg>Self entry</div>
-          <div class="amenity"><svg viewBox="0 0 24 24" fill="none"><circle cx="4" cy="7.5" r="1.7" stroke="currentColor" stroke-width="1.3"/><path d="M2 16c0-2.6 0.9-4.3 2-4.3s2 1.7 2 4.3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><circle cx="9.3" cy="7.5" r="1.7" stroke="currentColor" stroke-width="1.3"/><path d="M7.3 16c0-2.6 0.9-4.3 2-4.3s2 1.7 2 4.3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><circle cx="14.7" cy="7.5" r="1.7" stroke="currentColor" stroke-width="1.3"/><path d="M12.7 16c0-2.6 0.9-4.3 2-4.3s2 1.7 2 4.3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><circle cx="20" cy="7.5" r="1.7" stroke="currentColor" stroke-width="1.3"/><path d="M18 16c0-2.6 0.9-4.3 2-4.3s2 1.7 2 4.3" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>4 guests</div>
-          <div class="amenity"><svg viewBox="0 0 24 24" fill="none"><path d="M4 9h16M4 15h16M8 4v16" stroke="currentColor" stroke-width="1.4"/></svg>Kitchen</div>
+          <div class="amenity"><div class="amenity-icon"><svg viewBox="0 0 24 24" fill="none"><rect x="4" y="10" width="16" height="10" rx="1.5" stroke="currentColor" stroke-width="1.4"/><path d="M8 10V7a4 4 0 018 0v3" stroke="currentColor" stroke-width="1.4"/></svg></div>Self entry</div>
+          <div class="amenity"><div class="amenity-icon"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><g transform="translate(3.2655,0) scale(0.0355059959707707)"><g transform="translate(-18,675.942171) scale(0.1,-0.1)"><path d="M317 6736 c-69 -26 -116 -78 -128 -139 -5 -23 -8 -1517 -9 -3319 l0
+-3278 210 0 210 0 0 3139 c0 2235 3 3147 11 3169 8 24 18 33 42 37 18 3 645 5
+1393 3 1323 -3 1363 -4 1383 -22 21 -19 21 -20 21 -733 0 -468 -4 -721 -10
+-733 -11 -21 -83 -45 -167 -54 -28 -4 -104 -27 -170 -52 -65 -25 -142 -54
+-170 -65 -29 -11 -55 -25 -59 -30 -3 -5 -26 -21 -52 -35 -97 -52 -126 -74
+-233 -173 -185 -174 -280 -333 -334 -561 -36 -154 -33 -245 10 -310 17 -24 50
+-58 73 -75 l44 -30 1272 -3 1272 -2 45 23 c24 13 63 47 87 76 l42 52 0 103 c0
+93 -4 117 -39 228 -39 123 -84 233 -101 243 -5 3 -29 36 -53 73 -72 108 -224
+251 -341 322 -32 19 -74 45 -93 58 -20 13 -81 41 -137 63 -56 22 -119 48 -142
+58 -23 11 -88 27 -145 36 -119 20 -156 35 -169 71 -6 15 -10 358 -10 875 0
+829 0 851 -20 889 -23 44 -66 80 -128 103 -39 16 -182 17 -1695 16 l-1652 0
+-58 -23z m3603 -2331 c47 -14 110 -31 140 -39 91 -24 171 -56 214 -85 23 -15
+66 -44 96 -63 52 -33 180 -153 180 -168 0 -4 16 -27 35 -51 37 -47 43 -70 21
+-88 -10 -8 -265 -10 -946 -9 -1068 3 -982 -5 -915 93 128 186 319 320 530 372
+33 8 87 24 120 36 125 43 378 44 525 2z"/><path d="M4410 3190 c-36 -12 -66 -31 -87 -55 -61 -71 -63 -80 -63 -335 0
+-262 2 -273 76 -347 82 -82 193 -81 279 2 25 25 50 56 55 70 6 15 10 138 10
+279 l0 252 -28 45 c-37 57 -47 65 -117 89 -69 24 -57 24 -125 0z"/><path d="M2827 3185 c-51 -18 -81 -47 -112 -109 -24 -49 -25 -55 -25 -273 0
+-241 3 -259 56 -329 63 -82 186 -104 267 -48 23 16 55 49 72 73 l30 43 3 219
+c2 132 -1 240 -7 270 -28 128 -158 199 -284 154z"/><path d="M3605 3181 c-44 -20 -72 -47 -104 -101 -20 -33 -21 -49 -21 -280 l0
+-246 34 -55 c45 -71 100 -104 176 -103 31 0 68 7 86 16 46 25 103 89 114 128
+13 45 13 465 1 508 -14 48 -69 112 -115 133 -52 24 -120 24 -171 0z"/><path d="M2825 2036 c-48 -18 -108 -84 -124 -136 -14 -47 -15 -560 -1 -611 5
+-19 27 -55 47 -79 62 -72 151 -98 228 -66 46 20 123 102 135 145 16 56 12 568
+-4 614 -18 51 -61 104 -98 123 -44 23 -134 27 -183 10z"/><path d="M3595 2032 c-40 -19 -68 -50 -98 -109 -15 -28 -17 -72 -17 -325 0
+-323 3 -339 66 -402 92 -91 209 -85 301 15 49 54 53 80 53 366 -1 147 -5 287
+-9 311 -10 53 -55 118 -95 139 -49 25 -153 28 -201 5z"/><path d="M4384 2032 c-42 -20 -78 -60 -108 -120 -15 -29 -16 -69 -14 -330 l3
+-297 33 -47 c18 -26 49 -60 69 -75 31 -24 46 -28 103 -28 58 0 73 4 110 30 24
+17 56 50 72 75 l29 45 -3 322 -3 321 -31 39 c-44 54 -85 75 -157 80 -47 3 -72
+-1 -103 -15z"/><path d="M2815 776 c-44 -19 -102 -88 -115 -136 -7 -27 -10 -123 -8 -269 l3
+-228 30 -43 c17 -23 38 -55 48 -71 l19 -29 116 0 117 0 23 38 c13 20 34 52 47
+71 25 34 25 35 25 270 0 208 -3 241 -19 277 -27 60 -77 112 -119 124 -51 14
+-131 12 -167 -4z"/><path d="M3595 771 c-43 -27 -82 -70 -99 -113 -13 -30 -16 -83 -16 -277 l0
+-239 40 -60 c22 -33 40 -65 40 -71 0 -7 39 -11 125 -11 76 0 125 4 125 10 0 5
+17 28 37 51 26 28 39 54 44 87 10 63 10 436 0 490 -10 50 -66 116 -118 138
+-48 21 -142 18 -178 -5z"/><path d="M4400 780 c-39 -9 -97 -68 -124 -125 -15 -30 -17 -68 -14 -278 l3
+-242 43 -56 c23 -31 42 -61 42 -67 0 -9 36 -12 120 -12 68 0 120 4 120 9 0 6
+18 31 40 56 22 25 42 56 45 68 3 12 5 138 3 279 l-3 256 -31 39 c-57 71 -141
+97 -244 73z"/></g></g></svg></div>Bath</div>
+          <div class="amenity"><div class="amenity-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M4 9h16M4 15h16M8 4v16" stroke="currentColor" stroke-width="1.4"/></svg></div>Kitchen</div>
         </div>
         <div class="fob-badge">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M2 12C2 12 5.5 5.5 12 5.5C18.5 5.5 22 12 22 12C22 12 18.5 18.5 12 18.5C5.5 18.5 2 12 2 12Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.6" class="eye-pupil-blink"/></svg>
@@ -1265,9 +1373,45 @@
         <h3 style="font-size:21px; white-space:nowrap;">Two Bedrooms Apartment</h3>
         <div class="fob-loc">Second Floor (Level 2) &middot; Entire rental unit in the heart of Brussels, Belgium</div>
         <div class="fob-amenities">
-          <div class="amenity"><svg viewBox="0 0 24 24" fill="none"><rect x="4" y="10" width="16" height="10" rx="1.5" stroke="currentColor" stroke-width="1.4"/><path d="M8 10V7a4 4 0 018 0v3" stroke="currentColor" stroke-width="1.4"/></svg>Self entry</div>
-          <div class="amenity"><svg viewBox="0 0 24 24" fill="none"><circle cx="5" cy="7.5" r="1.9" stroke="currentColor" stroke-width="1.3"/><path d="M2.3 16.2c0-2.9 1.1-4.7 2.7-4.7s2.7 1.8 2.7 4.7" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><circle cx="12" cy="7.5" r="1.9" stroke="currentColor" stroke-width="1.3"/><path d="M9.3 16.2c0-2.9 1.1-4.7 2.7-4.7s2.7 1.8 2.7 4.7" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/><circle cx="19" cy="7.5" r="1.9" stroke="currentColor" stroke-width="1.3"/><path d="M16.3 16.2c0-2.9 1.1-4.7 2.7-4.7s2.7 1.8 2.7 4.7" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/></svg>3 guests</div>
-          <div class="amenity"><svg viewBox="0 0 24 24" fill="none"><path d="M4 9h16M4 15h16M8 4v16" stroke="currentColor" stroke-width="1.4"/></svg>Kitchen</div>
+          <div class="amenity"><div class="amenity-icon"><svg viewBox="0 0 24 24" fill="none"><rect x="4" y="10" width="16" height="10" rx="1.5" stroke="currentColor" stroke-width="1.4"/><path d="M8 10V7a4 4 0 018 0v3" stroke="currentColor" stroke-width="1.4"/></svg></div>Self entry</div>
+          <div class="amenity"><div class="amenity-icon"><svg viewBox="0 0 24 24" fill="currentColor" stroke="none"><g transform="translate(3.2655,0) scale(0.0355059959707707)"><g transform="translate(-18,675.942171) scale(0.1,-0.1)"><path d="M317 6736 c-69 -26 -116 -78 -128 -139 -5 -23 -8 -1517 -9 -3319 l0
+-3278 210 0 210 0 0 3139 c0 2235 3 3147 11 3169 8 24 18 33 42 37 18 3 645 5
+1393 3 1323 -3 1363 -4 1383 -22 21 -19 21 -20 21 -733 0 -468 -4 -721 -10
+-733 -11 -21 -83 -45 -167 -54 -28 -4 -104 -27 -170 -52 -65 -25 -142 -54
+-170 -65 -29 -11 -55 -25 -59 -30 -3 -5 -26 -21 -52 -35 -97 -52 -126 -74
+-233 -173 -185 -174 -280 -333 -334 -561 -36 -154 -33 -245 10 -310 17 -24 50
+-58 73 -75 l44 -30 1272 -3 1272 -2 45 23 c24 13 63 47 87 76 l42 52 0 103 c0
+93 -4 117 -39 228 -39 123 -84 233 -101 243 -5 3 -29 36 -53 73 -72 108 -224
+251 -341 322 -32 19 -74 45 -93 58 -20 13 -81 41 -137 63 -56 22 -119 48 -142
+58 -23 11 -88 27 -145 36 -119 20 -156 35 -169 71 -6 15 -10 358 -10 875 0
+829 0 851 -20 889 -23 44 -66 80 -128 103 -39 16 -182 17 -1695 16 l-1652 0
+-58 -23z m3603 -2331 c47 -14 110 -31 140 -39 91 -24 171 -56 214 -85 23 -15
+66 -44 96 -63 52 -33 180 -153 180 -168 0 -4 16 -27 35 -51 37 -47 43 -70 21
+-88 -10 -8 -265 -10 -946 -9 -1068 3 -982 -5 -915 93 128 186 319 320 530 372
+33 8 87 24 120 36 125 43 378 44 525 2z"/><path d="M4410 3190 c-36 -12 -66 -31 -87 -55 -61 -71 -63 -80 -63 -335 0
+-262 2 -273 76 -347 82 -82 193 -81 279 2 25 25 50 56 55 70 6 15 10 138 10
+279 l0 252 -28 45 c-37 57 -47 65 -117 89 -69 24 -57 24 -125 0z"/><path d="M2827 3185 c-51 -18 -81 -47 -112 -109 -24 -49 -25 -55 -25 -273 0
+-241 3 -259 56 -329 63 -82 186 -104 267 -48 23 16 55 49 72 73 l30 43 3 219
+c2 132 -1 240 -7 270 -28 128 -158 199 -284 154z"/><path d="M3605 3181 c-44 -20 -72 -47 -104 -101 -20 -33 -21 -49 -21 -280 l0
+-246 34 -55 c45 -71 100 -104 176 -103 31 0 68 7 86 16 46 25 103 89 114 128
+13 45 13 465 1 508 -14 48 -69 112 -115 133 -52 24 -120 24 -171 0z"/><path d="M2825 2036 c-48 -18 -108 -84 -124 -136 -14 -47 -15 -560 -1 -611 5
+-19 27 -55 47 -79 62 -72 151 -98 228 -66 46 20 123 102 135 145 16 56 12 568
+-4 614 -18 51 -61 104 -98 123 -44 23 -134 27 -183 10z"/><path d="M3595 2032 c-40 -19 -68 -50 -98 -109 -15 -28 -17 -72 -17 -325 0
+-323 3 -339 66 -402 92 -91 209 -85 301 15 49 54 53 80 53 366 -1 147 -5 287
+-9 311 -10 53 -55 118 -95 139 -49 25 -153 28 -201 5z"/><path d="M4384 2032 c-42 -20 -78 -60 -108 -120 -15 -29 -16 -69 -14 -330 l3
+-297 33 -47 c18 -26 49 -60 69 -75 31 -24 46 -28 103 -28 58 0 73 4 110 30 24
+17 56 50 72 75 l29 45 -3 322 -3 321 -31 39 c-44 54 -85 75 -157 80 -47 3 -72
+-1 -103 -15z"/><path d="M2815 776 c-44 -19 -102 -88 -115 -136 -7 -27 -10 -123 -8 -269 l3
+-228 30 -43 c17 -23 38 -55 48 -71 l19 -29 116 0 117 0 23 38 c13 20 34 52 47
+71 25 34 25 35 25 270 0 208 -3 241 -19 277 -27 60 -77 112 -119 124 -51 14
+-131 12 -167 -4z"/><path d="M3595 771 c-43 -27 -82 -70 -99 -113 -13 -30 -16 -83 -16 -277 l0
+-239 40 -60 c22 -33 40 -65 40 -71 0 -7 39 -11 125 -11 76 0 125 4 125 10 0 5
+17 28 37 51 26 28 39 54 44 87 10 63 10 436 0 490 -10 50 -66 116 -118 138
+-48 21 -142 18 -178 -5z"/><path d="M4400 780 c-39 -9 -97 -68 -124 -125 -15 -30 -17 -68 -14 -278 l3
+-242 43 -56 c23 -31 42 -61 42 -67 0 -9 36 -12 120 -12 68 0 120 4 120 9 0 6
+18 31 40 56 22 25 42 56 45 68 3 12 5 138 3 279 l-3 256 -31 39 c-57 71 -141
+97 -244 73z"/></g></g></svg></div>Bath</div>
+          <div class="amenity"><div class="amenity-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M4 9h16M4 15h16M8 4v16" stroke="currentColor" stroke-width="1.4"/></svg></div>Kitchen</div>
         </div>
         <div class="fob-badge">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M2 12C2 12 5.5 5.5 12 5.5C18.5 5.5 22 12 22 12C22 12 18.5 18.5 12 18.5C5.5 18.5 2 12 2 12Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.6" class="eye-pupil-blink"/></svg>
@@ -1680,10 +1824,13 @@
 <!-- ============ EXPLORE (full page overlay) ============ -->
 <div class="explore-page" id="explorePage" aria-hidden="true">
   <div class="explore-page-header">
-    <div class="wrap">
+    <div class="wrap explore-page-header-inner">
       <button class="back-btn" id="exploreBackBtn">
         <svg viewBox="0 0 24 24" fill="none"><path d="M15 18l-6-6 6-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
         Back
+      </button>
+      <button class="explore-close-btn" id="exploreCloseBtn" aria-label="Close">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
       </button>
     </div>
   </div>
@@ -1692,8 +1839,22 @@
       <div class="explore-page-title">Explore Brussels</div>
       <p class="explore-page-sub">A short list of landmarks and neighbourhoods within easy walking distance of every Key&amp;Key stay and residence.</p>
 
-      <div class="explore-page-grid">
-        <article class="explore-card">
+      <div class="explore-search">
+        <svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.6"/><path d="M21 21l-4.3-4.3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <input type="text" id="exploreSearchInput" placeholder="Search places&hellip;" autocomplete="off">
+      </div>
+
+      <div class="explore-filters" id="exploreFilters">
+        <button type="button" class="explore-filter-btn active" data-filter="all">All</button>
+        <button type="button" class="explore-filter-btn" data-filter="landmark">Landmark</button>
+        <button type="button" class="explore-filter-btn" data-filter="royal-parks">Royal &amp; Parks</button>
+        <button type="button" class="explore-filter-btn" data-filter="shopping">Shopping</button>
+        <button type="button" class="explore-filter-btn" data-filter="museum">Museum</button>
+        <button type="button" class="explore-filter-btn" data-filter="park">Park</button>
+      </div>
+
+      <div class="explore-page-grid" id="explorePageGrid">
+        <article class="explore-card" data-tag="landmark">
           <div class="explore-card-visual" style="background:linear-gradient(135deg, #2a2116, #c69a5a);">
             <svg viewBox="0 0 24 24" fill="none"><path d="M4 21V9l8-6 8 6v12" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M9 21v-7h6v7" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M12 3v3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
           </div>
@@ -1707,7 +1868,7 @@
           </div>
         </article>
 
-        <article class="explore-card">
+        <article class="explore-card" data-tag="landmark">
           <div class="explore-card-visual" style="background:linear-gradient(135deg, #1d2b24, #6f9384);">
             <svg viewBox="0 0 24 24" fill="none"><circle cx="6" cy="6" r="2.3" stroke="currentColor" stroke-width="1.4"/><circle cx="18" cy="6" r="2.3" stroke="currentColor" stroke-width="1.4"/><circle cx="12" cy="14" r="2.6" stroke="currentColor" stroke-width="1.4"/><circle cx="6" cy="20" r="2" stroke="currentColor" stroke-width="1.4"/><circle cx="18" cy="20" r="2" stroke="currentColor" stroke-width="1.4"/><path d="M7.6 7.2L10.3 12.2M16.4 7.2L13.7 12.2M7.4 18.5L10.3 15.7M16.6 18.5L13.7 15.7M7.9 6.4L16.1 6.4" stroke="currentColor" stroke-width="1.2"/></svg>
           </div>
@@ -1721,7 +1882,7 @@
           </div>
         </article>
 
-        <article class="explore-card">
+        <article class="explore-card" data-tag="royal-parks">
           <div class="explore-card-visual" style="background:linear-gradient(135deg, #1a2a30, #8fb2d9);">
             <svg viewBox="0 0 24 24" fill="none"><path d="M4 21h16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M6 21V10l6-5 6 5v11" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M9 21v-6h6v6" stroke="currentColor" stroke-width="1.5"/><path d="M12 3l1.4 2.4L16 6l-2.6.6L12 9l-1.4-2.4L8 6l2.6-.6z" stroke="currentColor" stroke-width="1.2" stroke-linejoin="round"/></svg>
           </div>
@@ -1735,7 +1896,7 @@
           </div>
         </article>
 
-        <article class="explore-card">
+        <article class="explore-card" data-tag="shopping">
           <div class="explore-card-visual" style="background:linear-gradient(135deg, #2f2418, #a8436f);">
             <svg viewBox="0 0 24 24" fill="none"><path d="M12 3l3 5-3 13-3-13z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M9 8h6" stroke="currentColor" stroke-width="1.2"/></svg>
           </div>
@@ -1749,7 +1910,7 @@
           </div>
         </article>
 
-        <article class="explore-card">
+        <article class="explore-card" data-tag="museum">
           <div class="explore-card-visual" style="background:linear-gradient(135deg, #241d2e, #6f5aa8);">
             <svg viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="16" height="16" rx="1.5" stroke="currentColor" stroke-width="1.4"/><circle cx="9" cy="9.5" r="1.6" stroke="currentColor" stroke-width="1.2"/><path d="M5 17l4.5-5 3 3.2 2.5-3 4 4.8" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/></svg>
           </div>
@@ -1763,7 +1924,7 @@
           </div>
         </article>
 
-        <article class="explore-card">
+        <article class="explore-card" data-tag="park">
           <div class="explore-card-visual" style="background:linear-gradient(135deg, #1f2a1e, #6f9384);">
             <svg viewBox="0 0 24 24" fill="none"><path d="M4 21V11l4-5h8l4 5v10" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M9 21v-6h6v6" stroke="currentColor" stroke-width="1.4"/><path d="M4 11h16" stroke="currentColor" stroke-width="1.2"/></svg>
           </div>
@@ -1777,6 +1938,7 @@
           </div>
         </article>
       </div>
+      <p class="explore-empty" id="exploreEmpty">No places match your search.</p>
     </div>
   </div>
 </div>
@@ -1872,7 +2034,7 @@ l2199 0 0 -1322z"/><path d="M2600 3058 c-52 -36 -65 -50 -85 -97 -13 -29 -15 -140
       </div>
 
       <div class="photo-tour-section" id="pt-living">
-        <div class="photo-tour-label">Living room<span class="photo-tour-label-sub">Sofa bed</span></div>
+        <div class="photo-tour-label">Living room<span class="photo-tour-label-sub">1 Sofa Bed</span></div>
                         <div class="photo-tour-grid">
           <div class="photo-tour-row-wrap" style="padding-top:55.65%;">
             <div class="photo-tour-row">
@@ -1945,7 +2107,7 @@ l2199 0 0 -1322z"/><path d="M2600 3058 c-52 -36 -65 -50 -85 -97 -13 -29 -15 -140
       </div>
 
       <div class="photo-tour-section" id="pt-bedroom">
-        <div class="photo-tour-label">Bedroom<span class="photo-tour-label-sub">Queen bed<br>Single bed</span></div>
+        <div class="photo-tour-label">Bedroom<span class="photo-tour-label-sub">1 Queen Bed<br>1 Single Bed</span></div>
                         <div class="photo-tour-grid">
           <div class="photo-tour-row full">
             <img src="https://pub-6b46fd29ec2c4176b76828bf1155b68a.r2.dev/Images/apartment_0_floor/Bedroom_01.png" alt="Bedroom">
@@ -3196,6 +3358,25 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
 <script>
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  // How self check-in works: sequentially highlight step numbers every 2s
+  (function(){
+    const grid = document.getElementById('checkinStepsGrid');
+    if (!grid) return;
+    const nums = Array.from(grid.querySelectorAll('.step-num'));
+    if (!nums.length) return;
+
+    let i = 0;
+    function light(){
+      nums.forEach(n => n.classList.remove('pt-step-lit'));
+      nums[i].classList.add('pt-step-lit');
+      i = (i + 1) % nums.length;
+    }
+    light();
+    if (!reduceMotion) {
+      setInterval(light, 2000);
+    }
+  })();
+
   // Memories: guest map + gallery
   (function(){
     const mapView = document.getElementById('memoriesMapView');
@@ -3327,6 +3508,7 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
   (function(){
     const openBtn = document.getElementById('exploreOpenBtn');
     const backBtn = document.getElementById('exploreBackBtn');
+    const closeBtn = document.getElementById('exploreCloseBtn');
     const page = document.getElementById('explorePage');
     if (!openBtn || !page) return;
     function openPage(e){
@@ -3343,7 +3525,47 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
     }
     openBtn.addEventListener('click', openPage);
     if (backBtn) backBtn.addEventListener('click', closePage);
-    document.addEventListener('keydown', (e) => { if (e.key === 'Escape') closePage(); });
+    if (closeBtn) closeBtn.addEventListener('click', closePage);
+    document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && page.classList.contains('open')) closePage(); });
+  })();
+
+  // Explore page: search + category filter
+  (function(){
+    const grid = document.getElementById('explorePageGrid');
+    const searchInput = document.getElementById('exploreSearchInput');
+    const filtersWrap = document.getElementById('exploreFilters');
+    const emptyMsg = document.getElementById('exploreEmpty');
+    if (!grid || !searchInput || !filtersWrap) return;
+
+    const cards = Array.from(grid.querySelectorAll('.explore-card'));
+    let activeFilter = 'all';
+
+    function applyFilters(){
+      const q = searchInput.value.trim().toLowerCase();
+      let visibleCount = 0;
+      cards.forEach(card => {
+        const tag = card.getAttribute('data-tag') || '';
+        const title = (card.querySelector('h3')?.textContent || '').toLowerCase();
+        const desc = (card.querySelector('p')?.textContent || '').toLowerCase();
+        const matchesFilter = activeFilter === 'all' || tag === activeFilter;
+        const matchesSearch = !q || title.includes(q) || desc.includes(q);
+        const show = matchesFilter && matchesSearch;
+        card.classList.toggle('pt-hide', !show);
+        if (show) visibleCount++;
+      });
+      if (emptyMsg) emptyMsg.classList.toggle('show', visibleCount === 0);
+    }
+
+    filtersWrap.addEventListener('click', (e) => {
+      const btn = e.target.closest('.explore-filter-btn');
+      if (!btn) return;
+      filtersWrap.querySelectorAll('.explore-filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      activeFilter = btn.getAttribute('data-filter');
+      applyFilters();
+    });
+
+    searchInput.addEventListener('input', applyFilters);
   })();
 
   // Photo Tour overlay (Duplex Apartment - Ground Floor)
@@ -3654,8 +3876,7 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
     }
     lastY = y;
 
-    // brand mark turns with page progress
-    brandMarks.forEach(m => { m.style.transform = `rotate(${progress * 90}deg)`; });
+    // brand mark stays fixed (no rotation on scroll)
 
     // hero parallax (only worth computing near the top)
     if (!reduceMotion && hero && y < hero.offsetHeight * 1.2) {
