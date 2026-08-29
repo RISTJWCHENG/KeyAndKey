@@ -3959,17 +3959,38 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
     (function(){
       // Matches the site's own mobile breakpoint (see .nav-toggle at max-width:720px).
       const mobileQuery = window.matchMedia('(max-width: 720px)');
+      // Fallback: the <source> already hardcoded in the markup.
+      const fallbackSrc = heroVideo.querySelector('source') ? heroVideo.querySelector('source').src : heroVideo.currentSrc;
 
       let homeHeroData = null; // { desktop: [urls...], mobile: [urls...] }
       let playlist = null;
       let playIdx = 0;
       let activeMode = null; // 'desktop' | 'mobile'
+      let usingFallback = false;
 
       function currentMode(){
         return mobileQuery.matches ? 'mobile' : 'desktop';
       }
 
+      // Reject anything that isn't a clean, playable http(s) URL — guards
+      // against the JSON accidentally containing Markdown link syntax
+      // (e.g. "[https://a.mov](https://b.mov)") or other stray characters.
+      function isValidVideoUrl(u){
+        return typeof u === 'string' && /^https?:\/\/\S+$/.test(u) && !/[\[\]()<>\s]/.test(u);
+      }
+
+      function playFallback(){
+        if (usingFallback) return;
+        usingFallback = true;
+        playlist = null;
+        heroVideo.loop = true;
+        heroVideo.src = fallbackSrc;
+        heroVideo.load();
+        heroVideo.play().catch(() => {});
+      }
+
       function playAt(i){
+        usingFallback = false;
         playIdx = i;
         heroVideo.loop = false; // looping is handled manually via 'ended' below
         heroVideo.src = playlist[playIdx];
@@ -3991,6 +4012,18 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
         playAt((playIdx + 1) % playlist.length);
       });
 
+      // If a listed video fails to load/play (bad URL, unsupported format,
+      // 404, etc.), skip to the next one in the list instead of going blank;
+      // if the whole list is bad, drop back to the hardcoded fallback video.
+      heroVideo.addEventListener('error', () => {
+        if (usingFallback) return; // fallback itself is broken — nothing more we can do
+        if (playlist && playlist.length > 1) {
+          playAt((playIdx + 1) % playlist.length);
+        } else {
+          playFallback();
+        }
+      });
+
       // If the viewport crosses the mobile/desktop breakpoint (resize, rotation,
       // devtools), switch to the matching list — but only if it actually changed.
       mobileQuery.addEventListener('change', () => {
@@ -4010,7 +4043,7 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
             if (!Array.isArray(entries)) return [];
             return entries
               .map((e) => (typeof e === 'string' ? e : (e && e.url)))
-              .filter(Boolean);
+              .filter(isValidVideoUrl);
           }
           homeHeroData = {
             desktop: toUrls(homeHero.desktop),
