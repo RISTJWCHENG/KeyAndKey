@@ -1,0 +1,60 @@
+{
+  "guestReviews": [
+    {
+      "id": "guest-review-01",
+      "name": "Sarah M.",
+      "flag": "🇺🇸",
+      "initials": "SM",
+      "quote": "Checking in with the smart locker at midnight was so easy — no waiting around."
+    },
+    {
+      "id": "guest-review-02",
+      "name": "Lukas B.",
+      "flag": "🇩🇪",
+      "initials": "LB",
+      "quote": "Location right by the Royal Palace made every day of sightseeing effortless."
+    },
+    {
+      "id": "guest-review-03",
+      "name": "Aiko T.",
+      "flag": "🇯🇵",
+      "initials": "AT",
+      "quote": "Spotless apartment and the self check-in code worked perfectly on arrival."
+    },
+    {
+      "id": "guest-review-04",
+      "name": "Camille D.",
+      "flag": "🇫🇷",
+      "initials": "CD",
+      "quote": "Loved waking up minutes from Parc de Bruxelles every morning."
+    },
+    {
+      "id": "guest-review-05",
+      "name": "Noah K.",
+      "flag": "🇬🇧",
+      "initials": "NK",
+      "quote": "Smooth communication and a beautifully kept studio in the heart of Brussels."
+    },
+    {
+      "id": "guest-review-06",
+      "name": "Valentina R.",
+      "flag": "🇮🇹",
+      "initials": "VR",
+      "quote": "The self check-in saved us after a delayed flight — arrived at 1am, no problem."
+    },
+    {
+      "id": "guest-review-07",
+      "name": "Minji P.",
+      "flag": "🇰🇷",
+      "initials": "MP",
+      "quote": "Central, quiet, and exactly as described. Would book with Key & Key again."
+    },
+    {
+      "id": "guest-review-08",
+      "name": "Diego S.",
+      "flag": "🇲🇽",
+      "initials": "DS",
+      "quote": "Walked to the Palace, the Sablon, everything — this address is unbeatable."
+    }
+  ]
+}
