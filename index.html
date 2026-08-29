@@ -48,6 +48,7 @@
     overflow-x:hidden;
   }
   ::selection{ background:var(--brass); color:var(--ink); }
+  .anim-paused, .anim-paused *, .anim-paused::before, .anim-paused::after, .anim-paused *::before, .anim-paused *::after{ animation-play-state:paused !important; }
   a{ color:inherit; text-decoration:none; }
   img,svg{ display:block; max-width:100%; }
   ul{ list-style:none; }
@@ -3185,7 +3186,24 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
 <script>
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  // Several sections have decorative CSS animations set to run "infinite" —
+  // fine while on screen, wasteful (and a real contributor to phone heat/
+  // battery drain) if left running in the background after the user has
+  // scrolled away. This pauses all animations within a container the moment
+  // it leaves the viewport, and resumes them the moment it's back — no
+  // visual change while actually visible.
+  function pauseAnimationsWhenOffscreen(containerEl){
+    if (!containerEl || reduceMotion) return;
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        containerEl.classList.toggle('anim-paused', !entry.isIntersecting);
+      });
+    }, { threshold: 0 });
+    io.observe(containerEl);
+  }
+
   // How self check-in works: sequentially highlight step numbers every 2s
+  // — only while this section is actually on screen, not forever from load.
   (function(){
     const grid = document.getElementById('checkinStepsGrid');
     if (!grid) return;
@@ -3193,6 +3211,7 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
     if (!nums.length) return;
 
     let i = 0;
+    let timer = null;
     function light(){
       nums.forEach(n => n.classList.remove('pt-step-lit'));
       nums[i].classList.add('pt-step-lit');
@@ -3200,7 +3219,17 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
     }
     light();
     if (!reduceMotion) {
-      setInterval(light, 2000);
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            if (!timer) timer = setInterval(light, 2000);
+          } else if (timer) {
+            clearInterval(timer);
+            timer = null;
+          }
+        });
+      }, { threshold: 0.1 });
+      io.observe(grid);
     }
   })();
 
@@ -3910,24 +3939,40 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
   })();
 
   const nav = document.getElementById('nav');
+  pauseAnimationsWhenOffscreen(document.getElementById('keys'));
+  pauseAnimationsWhenOffscreen(document.getElementById('landmarksToggleBtn'));
   const navLinks = document.getElementById('navLinks');
   const scrollProgress = document.getElementById('scrollProgress');
   const heroArch = document.querySelector('.hero-arch');
   const heroKeyWrap = document.getElementById('heroKeyWrap');
   const brandMarks = document.querySelectorAll('.brand-mark');
   const hero = document.querySelector('.hero');
+  pauseAnimationsWhenOffscreen(hero);
 
   // Rotate the two hero title lines in the same spot, one at a time
+  // — only while the hero is on screen, not forever after scrolling past it.
   const heroTitleRotator = document.getElementById('heroTitleRotator');
   if (heroTitleRotator && !reduceMotion){
     const heroLines = heroTitleRotator.querySelectorAll('.hero-line');
     let activeIndex = 0;
     if (heroLines.length > 1){
-      setInterval(() => {
+      let heroTitleTimer = null;
+      function rotateHeroTitle(){
         heroLines[activeIndex].classList.remove('is-active');
         activeIndex = (activeIndex + 1) % heroLines.length;
         heroLines[activeIndex].classList.add('is-active');
-      }, 2800);
+      }
+      const heroTitleIo = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            if (!heroTitleTimer) heroTitleTimer = setInterval(rotateHeroTitle, 2800);
+          } else if (heroTitleTimer) {
+            clearInterval(heroTitleTimer);
+            heroTitleTimer = null;
+          }
+        });
+      }, { threshold: 0.1 });
+      heroTitleIo.observe(heroTitleRotator);
     }
   }
 
@@ -4224,6 +4269,7 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
 
     let i = 0;
     let rotateTimer = null;
+    let isVisible = false;
 
     function render(idx){
       const t = testimonials[idx % testimonials.length];
@@ -4233,12 +4279,8 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
       quoteEl.textContent = t.quote;
     }
 
-    function startRotation(){
-      if (!testimonials.length) return;
-      render(i);
-      requestAnimationFrame(() => card.classList.add('show'));
-      if (reduceMotion || testimonials.length < 2) return;
-      if (rotateTimer) clearInterval(rotateTimer);
+    function startTimer(){
+      if (rotateTimer || reduceMotion || testimonials.length < 2) return;
       rotateTimer = setInterval(() => {
         card.classList.remove('show');
         setTimeout(() => {
@@ -4247,6 +4289,31 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
           card.classList.add('show');
         }, 450);
       }, 4200);
+    }
+
+    function stopTimer(){
+      if (rotateTimer) { clearInterval(rotateTimer); rotateTimer = null; }
+    }
+
+    // Populate and show the card as soon as data is available, regardless of
+    // visibility, so it's ready the moment the user scrolls to it — but only
+    // keep the recurring rotation timer running while it's actually on screen.
+    function showFirstTestimonial(){
+      if (!testimonials.length) return;
+      render(i);
+      requestAnimationFrame(() => card.classList.add('show'));
+      if (isVisible) startTimer();
+    }
+
+    if (!reduceMotion) {
+      const reviewIo = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          isVisible = entry.isIntersecting;
+          if (isVisible) startTimer();
+          else stopTimer();
+        });
+      }, { threshold: 0.1 });
+      reviewIo.observe(card);
     }
 
     fetch('data/home/guestReviews.json', { cache: 'no-store' })
@@ -4260,9 +4327,8 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
         if (clean && clean.length) {
           testimonials = clean;
           i = 0;
-          startRotation();
+          showFirstTestimonial();
         }
-        // If the JSON is missing/empty, the fallback list above keeps rotating.
       })
       .catch(() => { /* guestReviews.json unavailable — card stays hidden */ });
   })();
