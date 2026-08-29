@@ -1381,7 +1381,7 @@ c2 132 -1 240 -7 270 -28 128 -158 199 -284 154z"/><path d="M3605 3181 c-44 -20 -
 97 -244 73z"/></g></g></svg></div>Bath</div>
           <div class="amenity"><div class="amenity-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M4 9h16M4 15h16M8 4v16" stroke="currentColor" stroke-width="1.4"/></svg></div>Kitchen</div>
         </div>
-        <div class="fob-badge">
+        <div class="fob-badge" id="viewDetailsFirstFloor" style="cursor:pointer;">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M2 12C2 12 5.5 5.5 12 5.5C18.5 5.5 22 12 22 12C22 12 18.5 18.5 12 18.5C5.5 18.5 2 12 2 12Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.6" class="eye-pupil-blink"/></svg>
           View More Details
         </div>
@@ -1438,7 +1438,7 @@ c2 132 -1 240 -7 270 -28 128 -158 199 -284 154z"/><path d="M3605 3181 c-44 -20 -
 97 -244 73z"/></g></g></svg></div>Bath</div>
           <div class="amenity"><div class="amenity-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M4 9h16M4 15h16M8 4v16" stroke="currentColor" stroke-width="1.4"/></svg></div>Kitchen</div>
         </div>
-        <div class="fob-badge">
+        <div class="fob-badge" id="viewDetailsSecondFloor" style="cursor:pointer;">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none"><path d="M2 12C2 12 5.5 5.5 12 5.5C18.5 5.5 22 12 22 12C22 12 18.5 18.5 12 18.5C5.5 18.5 2 12 2 12Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/><circle cx="12" cy="12" r="3" stroke="currentColor" stroke-width="1.6" class="eye-pupil-blink"/></svg>
           View More Details
         </div>
@@ -1986,7 +1986,7 @@ c2 132 -1 240 -7 270 -28 128 -158 199 -284 154z"/><path d="M3605 3181 c-44 -20 -
   <div class="photo-tour-body">
     <div class="wrap">
       <div class="pt-panel active" id="ptViewPanel">
-      <div class="photo-tour-title"><span style="color:var(--brass-light);">TAG N&deg;01</span> &mdash; View</div>
+      <div class="photo-tour-title"><span id="ptViewTagLabel" style="color:var(--brass-light);">TAG N&deg;01</span> &mdash; View</div>
 
       <div class="pt-media-toggle" role="tablist">
         <button type="button" class="pt-media-btn active" id="ptMediaPhotosBtn" role="tab" aria-selected="true" aria-label="Photos" title="Photos">
@@ -2238,12 +2238,18 @@ l2199 0 0 -1322z"/><path d="M2600 3058 c-52 -36 -65 -50 -85 -97 -13 -29 -15 -140
           <div class="pt-video-card">
             <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/DIckmTaAp1F/?utm_source=ig_web_copy_link" data-instgrm-version="14" style="margin:0 auto; max-width:540px; width:100%;"></blockquote>
           </div>
+          <div class="pt-video-card">
+            <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/DICWjodiBIT/?utm_source=ig_web_copy_link&amp;igsi=MzRlODBiNWFlZA==" data-instgrm-version="14" style="margin:0 auto; max-width:540px; width:100%;"></blockquote>
+          </div>
+          <div class="pt-video-card">
+            <blockquote class="instagram-media" data-instgrm-permalink="https://www.instagram.com/reel/DIhOx02i8zX/?utm_source=ig_web_copy_link&amp;igsi=MzRlODBiNWFlZA==" data-instgrm-version="14" style="margin:0 auto; max-width:540px; width:100%;"></blockquote>
+          </div>
         </div>
       </div>
       </div>
 
       <div class="pt-panel" id="ptInfoPanel">
-        <div class="photo-tour-title"><span style="color:var(--brass-light);">TAG N&deg;01</span> &mdash; Information</div>
+        <div class="photo-tour-title"><span id="ptInfoTagLabel" style="color:var(--brass-light);">TAG N&deg;01</span> &mdash; Information</div>
 
         <div class="pt-info-block">
           <h3>Accommodates</h3>
@@ -3593,25 +3599,117 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
     searchInput.addEventListener('input', applyFilters);
   })();
 
-  // Photo Tour overlay (Duplex Apartment - Ground Floor)
+  // Photo Tour overlay (shared by all three apartments). Each button's photos
+  // are loaded from data/properties/tagNN.json — the layout/markup stays
+  // fixed (hand-tuned masonry proportions), only the photo/video URLs are
+  // swapped in from the JSON. If a tag's JSON file doesn't exist yet (e.g.
+  // tag02.json / tag03.json not created), whatever is currently shown stays
+  // on screen — which today is TAG N°01's photos, exactly as requested.
   (function(){
-    const openBtn = document.getElementById('viewDetailsGroundFloor');
+    const tagSources = {
+      'TAG N\u00b001': 'data/properties/tag01.json',
+      'TAG N\u00b002': 'data/properties/tag02.json',
+      'TAG N\u00b003': 'data/properties/tag03.json'
+    };
+    const openButtons = [
+      { el: document.getElementById('viewDetailsGroundFloor'), tag: 'TAG N\u00b001' },
+      { el: document.getElementById('viewDetailsFirstFloor'), tag: 'TAG N\u00b002' },
+      { el: document.getElementById('viewDetailsSecondFloor'), tag: 'TAG N\u00b003' }
+    ].filter((b) => b.el);
     const backBtn = document.getElementById('photoTourBack');
     const page = document.getElementById('photoTourPage');
-    if (!openBtn || !page) return;
-    function openPage(e){
-      e.preventDefault();
-      page.classList.add('open');
-      page.setAttribute('aria-hidden', 'false');
-      page.scrollTop = 0;
-      document.body.style.overflow = 'hidden';
+    const viewTagLabel = document.getElementById('ptViewTagLabel');
+    const infoTagLabel = document.getElementById('ptInfoTagLabel');
+    if (!openButtons.length || !page) return;
+
+    // Maps each photo section's id to the matching key in JSON's view.photos.
+    const sectionPhotoKeys = {
+      'pt-living': 'livingRoom',
+      'pt-kitchenette': 'kitchenette',
+      'pt-bedroom': 'bedroom',
+      'pt-bathroom': 'bathroom',
+      'pt-exterior': 'exterior',
+      'pt-neighborhood': 'neighborhood'
+    };
+
+    function applyTagData(data){
+      if (!data) return;
+      const photos = (data.view && data.view.photos) || {};
+
+      // Fill each section's existing tiles, in order, without altering layout.
+      Object.keys(sectionPhotoKeys).forEach((sectionId) => {
+        const section = document.getElementById(sectionId);
+        const urls = photos[sectionPhotoKeys[sectionId]];
+        if (!section || !Array.isArray(urls) || !urls.length) return;
+        const imgs = section.querySelectorAll('.photo-tour-grid img');
+        imgs.forEach((img, i) => { if (urls[i]) img.src = urls[i]; });
+      });
+
+      // Top nav strip + sticky side nav: cover thumbnail = first photo of each category.
+      document.querySelectorAll('.photo-tour-nav a, .photo-tour-nav-sticky a').forEach((a) => {
+        const target = (a.getAttribute('href') || '#' + a.dataset.target).replace('#', '');
+        const urls = photos[sectionPhotoKeys[target]];
+        const img = a.querySelector('img');
+        if (img && urls && urls[0]) img.src = urls[0];
+      });
+
+      // Videos (Instagram embeds) — one card per URL in the list.
+      const videoUrls = (data.view && Array.isArray(data.view.videos)) ? data.view.videos.filter(Boolean) : [];
+      const videoGrid = document.querySelector('#ptVideosContent .pt-video-grid');
+      if (videoGrid && videoUrls.length) {
+        videoGrid.innerHTML = videoUrls.map((url) => (
+          '<div class="pt-video-card"><blockquote class="instagram-media" data-instgrm-permalink="' +
+          url.replace(/"/g, '&quot;') +
+          '" data-instgrm-version="14" style="margin:0 auto; max-width:540px; width:100%;"></blockquote></div>'
+        )).join('');
+        if (window.instgrm && window.instgrm.Embeds) {
+          window.instgrm.Embeds.process();
+        } else {
+          // Instagram's embed script hasn't loaded yet (Videos tab not opened
+          // this session) — it will process all blockquotes once it loads.
+          const igScript = document.querySelector('script[src="https://www.instagram.com/embed.js"]');
+          if (!igScript) {
+            const s = document.createElement('script');
+            s.src = 'https://www.instagram.com/embed.js';
+            s.async = true;
+            document.body.appendChild(s);
+          }
+        }
+      }
+
+      // Information panel "Where you'll sleep" photos, in card order.
+      const infoPhotos = data.information && data.information.photos;
+      if (Array.isArray(infoPhotos) && infoPhotos.length) {
+        const sleepImgs = document.querySelectorAll('#ptInfoPanel .pt-sleep-card img');
+        sleepImgs.forEach((img, i) => { if (infoPhotos[i]) img.src = infoPhotos[i]; });
+      }
+    }
+
+    function openPage(tag){
+      return function(e){
+        e.preventDefault();
+        if (viewTagLabel) viewTagLabel.textContent = tag;
+        if (infoTagLabel) infoTagLabel.textContent = tag;
+        page.classList.add('open');
+        page.setAttribute('aria-hidden', 'false');
+        page.scrollTop = 0;
+        document.body.style.overflow = 'hidden';
+
+        const src = tagSources[tag];
+        if (src) {
+          fetch(src, { cache: 'no-store' })
+            .then((res) => { if (!res.ok) throw new Error(src + ' request failed'); return res.json(); })
+            .then(applyTagData)
+            .catch(() => { /* JSON not published yet — keep whatever is already shown */ });
+        }
+      };
     }
     function closePage(){
       page.classList.remove('open');
       page.setAttribute('aria-hidden', 'true');
       document.body.style.overflow = '';
     }
-    openBtn.addEventListener('click', openPage);
+    openButtons.forEach(({ el, tag }) => el.addEventListener('click', openPage(tag)));
     if (backBtn) backBtn.addEventListener('click', closePage);
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && page.classList.contains('open')) closePage(); });
   })();
