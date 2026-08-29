@@ -1,0 +1,65 @@
+{
+  "id": "tag-03",
+  "tag": "TAG N°03",
+  "view": {
+    "photos": {
+      "livingRoom": [
+        "https://pub-6b46fd29ec2c4176b76828bf1155b68a.r2.dev/Images/apartment_0_floor/Living_Room_01.png",
+        "https://pub-6b46fd29ec2c4176b76828bf1155b68a.r2.dev/Images/apartment_0_floor/Living_Room_02.png",
+        "https://pub-6b46fd29ec2c4176b76828bf1155b68a.r2.dev/Images/apartment_0_floor/Living_Room_03.png",
+        "https://pub-6b46fd29ec2c4176b76828bf1155b68a.r2.dev/Images/apartment_0_floor/Living_Room_04.png",
+        "https://pub-6b46fd29ec2c4176b76828bf1155b68a.r2.dev/Images/apartment_0_floor/Living_Room_05.png",
+        "https://pub-6b46fd29ec2c4176b76828bf1155b68a.r2.dev/Images/apartment_0_floor/Living_Room_06.png",
+        "https://pub-6b46fd29ec2c4176b76828bf1155b68a.r2.dev/Images/apartment_0_floor/Living_Room_07.png",
+        "https://pub-6b46fd29ec2c4176b76828bf1155b68a.r2.dev/Images/apartment_0_floor/Living_Room_08.png"
+      ],
+      "kitchenette": [
+        "https://pub-6b46fd29ec2c4176b76828bf1155b68a.r2.dev/Images/apartment_0_floor/Kitchenette_01.png",
+        "https://pub-6b46fd29ec2c4176b76828bf1155b68a.r2.dev/Images/apartment_0_floor/Kitchenette_02.png",
+        "https://pub-6b46fd29ec2c4176b76828bf1155b68a.r2.dev/Images/apartment_0_floor/Kitchenette_03.png",
+        "https://pub-6b46fd29ec2c4176b76828bf1155b68a.r2.dev/Images/apartment_0_floor/Kitchenette_04.png",
+        "https://pub-6b46fd29ec2c4176b76828bf1155b68a.r2.dev/Images/apartment_0_floor/Kitchenette_05.png",
+        "https://pub-6b46fd29ec2c4176b76828bf1155b68a.r2.dev/Images/apartment_0_floor/Kitchenette_06.png"
+      ],
+      "bedroom": [
+        "https://pub-6b46fd29ec2c4176b76828bf1155b68a.r2.dev/Images/apartment_0_floor/Bedroom_01.png",
+        "https://pub-6b46fd29ec2c4176b76828bf1155b68a.r2.dev/Images/apartment_0_floor/Bedroom_02.png",
+        "https://pub-6b46fd29ec2c4176b76828bf1155b68a.r2.dev/Images/apartment_0_floor/Bedroom_03.png",
+        "https://pub-6b46fd29ec2c4176b76828bf1155b68a.r2.dev/Images/apartment_0_floor/Bedroom_04.png",
+        "https://pub-6b46fd29ec2c4176b76828bf1155b68a.r2.dev/Images/apartment_0_floor/Bedroom_05.png",
+        "https://pub-6b46fd29ec2c4176b76828bf1155b68a.r2.dev/Images/apartment_0_floor/Bedroom_06.png"
+      ],
+      "bathroom": [
+        "https://pub-6b46fd29ec2c4176b76828bf1155b68a.r2.dev/Images/apartment_0_floor/Bathroom_01.png",
+        "https://pub-6b46fd29ec2c4176b76828bf1155b68a.r2.dev/Images/apartment_0_floor/Bathroom_02.png",
+        "https://pub-6b46fd29ec2c4176b76828bf1155b68a.r2.dev/Images/apartment_0_floor/Bathroom_03.png",
+        "https://pub-6b46fd29ec2c4176b76828bf1155b68a.r2.dev/Images/apartment_0_floor/Bathroom_04.png",
+        "https://pub-6b46fd29ec2c4176b76828bf1155b68a.r2.dev/Images/apartment_0_floor/Bathroom_05.png"
+      ],
+      "exterior": [
+        "https://pub-6b46fd29ec2c4176b76828bf1155b68a.r2.dev/Images/apartment_0_floor/Neighborhood_01.png"
+      ],
+      "neighborhood": [
+        "https://pub-6b46fd29ec2c4176b76828bf1155b68a.r2.dev/Images/apartment_0_floor/Neighborhood_02.png",
+        "https://pub-6b46fd29ec2c4176b76828bf1155b68a.r2.dev/Images/apartment_0_floor/Neighborhood_03.png",
+        "https://pub-6b46fd29ec2c4176b76828bf1155b68a.r2.dev/Images/apartment_0_floor/Neighborhood_04.png",
+        "https://pub-6b46fd29ec2c4176b76828bf1155b68a.r2.dev/Images/apartment_0_floor/Neighborhood_05.png",
+        "https://pub-6b46fd29ec2c4176b76828bf1155b68a.r2.dev/Images/apartment_0_floor/Neighborhood_06.png",
+        "https://pub-6b46fd29ec2c4176b76828bf1155b68a.r2.dev/Images/apartment_0_floor/Neighborhood_07.png",
+        "https://pub-6b46fd29ec2c4176b76828bf1155b68a.r2.dev/Images/apartment_0_floor/Neighborhood_08.png",
+        "https://pub-6b46fd29ec2c4176b76828bf1155b68a.r2.dev/Images/apartment_0_floor/Neighborhood_09.png"
+      ]
+    },
+    "videos": [
+      "https://www.instagram.com/reel/DIckmTaAp1F/?utm_source=ig_web_copy_link&igsi=MzRlODBiNWFlZA==",
+      "https://www.instagram.com/reel/DICWjodiBIT/?utm_source=ig_web_copy_link&igsi=MzRlODBiNWFlZA=="
+    ]
+  },
+  "information": {
+    "photos": [
+      "https://pub-6b46fd29ec2c4176b76828bf1155b68a.r2.dev/Images/apartment_0_floor/Bedroom_01.png",
+      "https://pub-6b46fd29ec2c4176b76828bf1155b68a.r2.dev/Images/apartment_0_floor/Bedroom_01.png",
+      "https://pub-6b46fd29ec2c4176b76828bf1155b68a.r2.dev/Images/apartment_0_floor/Living_Room_04.png"
+    ]
+  }
+}
