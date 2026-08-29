@@ -3950,6 +3950,84 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
     videoObserver.observe(hero);
   }
 
+  // Hero video playlist: sequentially play the videos listed under
+  // video/videos_index.json -> videos.homeHero.desktop (or .mobile on small
+  // screens). The video files/order/device-targeting live only in that JSON
+  // file — nothing here is hardcoded, so updating the playlist never requires
+  // touching this page's code.
+  if (heroVideo) {
+    (function(){
+      // Matches the site's own mobile breakpoint (see .nav-toggle at max-width:720px).
+      const mobileQuery = window.matchMedia('(max-width: 720px)');
+
+      let homeHeroData = null; // { desktop: [urls...], mobile: [urls...] }
+      let playlist = null;
+      let playIdx = 0;
+      let activeMode = null; // 'desktop' | 'mobile'
+
+      function currentMode(){
+        return mobileQuery.matches ? 'mobile' : 'desktop';
+      }
+
+      function playAt(i){
+        playIdx = i;
+        heroVideo.loop = false; // looping is handled manually via 'ended' below
+        heroVideo.src = playlist[playIdx];
+        heroVideo.load();
+        heroVideo.play().catch(() => {});
+      }
+
+      function startMode(mode){
+        const list = homeHeroData && homeHeroData[mode];
+        if (!list || !list.length) return false;
+        activeMode = mode;
+        playlist = list;
+        playAt(0);
+        return true;
+      }
+
+      heroVideo.addEventListener('ended', () => {
+        if (!playlist || !playlist.length) return;
+        playAt((playIdx + 1) % playlist.length);
+      });
+
+      // If the viewport crosses the mobile/desktop breakpoint (resize, rotation,
+      // devtools), switch to the matching list — but only if it actually changed.
+      mobileQuery.addEventListener('change', () => {
+        const mode = currentMode();
+        if (mode !== activeMode) startMode(mode);
+      });
+
+      fetch('video/videos_index.json', { cache: 'no-store' })
+        .then((res) => {
+          if (!res.ok) throw new Error('videos_index.json request failed');
+          return res.json();
+        })
+        .then((data) => {
+          const homeHero = data && data.videos && data.videos.homeHero;
+          if (!homeHero) return;
+          function toUrls(entries){
+            if (!Array.isArray(entries)) return [];
+            return entries
+              .map((e) => (typeof e === 'string' ? e : (e && e.url)))
+              .filter(Boolean);
+          }
+          homeHeroData = {
+            desktop: toUrls(homeHero.desktop),
+            mobile: toUrls(homeHero.mobile)
+          };
+          // Prefer the list matching the current device; fall back to the other
+          // list if the preferred one is empty, so the video still plays.
+          const preferred = currentMode();
+          const fallback = preferred === 'mobile' ? 'desktop' : 'mobile';
+          if (!startMode(preferred)) startMode(fallback);
+          // If the JSON has neither list populated, the hardcoded <source> already
+          // in the markup keeps playing as a fallback (with its own native "loop").
+        })
+        .catch(() => { /* keep the fallback <source> already in the markup */ });
+    })();
+  }
+
   // Rotating guest reviews
   (function(){
     const card = document.getElementById('reviewCard');
