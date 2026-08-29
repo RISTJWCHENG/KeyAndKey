@@ -3994,7 +3994,7 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
   }
 
   // Hero video playlist: sequentially play the videos listed under
-  // videos/videos_index.json -> videos.homeHero.desktop (or .mobile on small
+  // data/home/heroVideos.json -> videos.homeHero.desktop (or .mobile on small
   // screens). The video files/order/device-targeting live only in that JSON
   // file — nothing here is hardcoded, so updating the playlist never requires
   // touching this page's code.
@@ -4074,7 +4074,7 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
         if (mode !== activeMode) startMode(mode);
       });
 
-      fetch('videos/videos_index.json', { cache: 'no-store' })
+      fetch('data/home/heroVideos.json', { cache: 'no-store' })
         .then((res) => {
           if (!res.ok) throw new Error('videos_index.json request failed');
           return res.json();
@@ -4104,7 +4104,8 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
     })();
   }
 
-  // Rotating guest reviews
+  // Rotating guest reviews — pulled from data/home/guestReviews.json so
+  // reviews can be added/edited/removed without touching this page's code.
   (function(){
     const card = document.getElementById('reviewCard');
     if (!card) return;
@@ -4112,7 +4113,8 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
     const nameEl = document.getElementById('reviewName');
     const quoteEl = document.getElementById('reviewQuote');
 
-    const testimonials = [
+    // Fallback list, used only if the JSON file can't be fetched/parsed.
+    let testimonials = [
       { name:'Sarah M.', flag:'🇺🇸', initials:'SM', quote:'Checking in with the smart locker at midnight was so easy — no waiting around.' },
       { name:'Lukas B.', flag:'🇩🇪', initials:'LB', quote:'Location right by the Royal Palace made every day of sightseeing effortless.' },
       { name:'Aiko T.', flag:'🇯🇵', initials:'AT', quote:'Spotless apartment and the self check-in code worked perfectly on arrival.' },
@@ -4130,6 +4132,8 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
     ];
 
     let i = 0;
+    let rotateTimer = null;
+
     function render(idx){
       const t = testimonials[idx % testimonials.length];
       avatarEl.textContent = t.initials;
@@ -4138,11 +4142,12 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
       quoteEl.textContent = t.quote;
     }
 
-    render(i);
-    requestAnimationFrame(() => card.classList.add('show'));
-
-    if (!reduceMotion) {
-      setInterval(() => {
+    function startRotation(){
+      render(i);
+      requestAnimationFrame(() => card.classList.add('show'));
+      if (reduceMotion || testimonials.length < 2) return;
+      if (rotateTimer) clearInterval(rotateTimer);
+      rotateTimer = setInterval(() => {
         card.classList.remove('show');
         setTimeout(() => {
           i = (i + 1) % testimonials.length;
@@ -4151,6 +4156,27 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
         }, 450);
       }, 4200);
     }
+
+    // Show the fallback list immediately so the card never sits empty while
+    // the JSON is fetched, then swap in the real data once it arrives.
+    startRotation();
+
+    fetch('data/home/guestReviews.json', { cache: 'no-store' })
+      .then((res) => {
+        if (!res.ok) throw new Error('guestReviews.json request failed');
+        return res.json();
+      })
+      .then((data) => {
+        const list = Array.isArray(data) ? data : (data && Array.isArray(data.guestReviews) ? data.guestReviews : null);
+        const clean = list && list.filter((t) => t && t.name && t.quote && t.initials);
+        if (clean && clean.length) {
+          testimonials = clean;
+          i = 0;
+          startRotation();
+        }
+        // If the JSON is missing/empty, the fallback list above keeps rotating.
+      })
+      .catch(() => { /* keep the fallback list already rotating */ });
   })();
 </script>
 
