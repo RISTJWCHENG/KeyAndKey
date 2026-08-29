@@ -3985,6 +3985,26 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
     e.preventDefault();
   }
 
+  // While Safari's address-bar chrome is collapsing/expanding during an
+  // active touch gesture, the CSS layout viewport (what `top:0;bottom:0`
+  // sizes against) can briefly lag behind the real visible screen, making
+  // the fixed panel look mis-sized until the gesture ends. window.visualViewport
+  // reports the true current visible area in real time, so syncing the
+  // panel's pixel height/position to it directly keeps it correct throughout
+  // the gesture instead of only after it settles.
+  function syncMenuViewport(){
+    if (!navLinks.classList.contains('open')) return;
+    const vv = window.visualViewport;
+    const h = vv ? vv.height : window.innerHeight;
+    const top = vv ? vv.offsetTop : 0;
+    navLinks.style.height = h + 'px';
+    navLinks.style.top = top + 'px';
+    if (navBackdrop) {
+      navBackdrop.style.height = h + 'px';
+      navBackdrop.style.top = top + 'px';
+    }
+  }
+
   function setMenuOpen(open){
     navLinks.classList.toggle('open', open);
     if (navBackdrop) navBackdrop.classList.toggle('open', open);
@@ -4001,6 +4021,11 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
       document.body.style.right = '0';
       document.body.style.width = '100%';
       document.addEventListener('touchmove', blockBackgroundTouch, { passive: false });
+      syncMenuViewport();
+      if (window.visualViewport) {
+        window.visualViewport.addEventListener('resize', syncMenuViewport);
+        window.visualViewport.addEventListener('scroll', syncMenuViewport);
+      }
     } else {
       document.body.style.position = '';
       document.body.style.top = '';
@@ -4009,6 +4034,13 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
       document.body.style.width = '';
       window.scrollTo(0, menuScrollY);
       document.removeEventListener('touchmove', blockBackgroundTouch, { passive: false });
+      navLinks.style.height = '';
+      navLinks.style.top = '';
+      if (navBackdrop) { navBackdrop.style.height = ''; navBackdrop.style.top = ''; }
+      if (window.visualViewport) {
+        window.visualViewport.removeEventListener('resize', syncMenuViewport);
+        window.visualViewport.removeEventListener('scroll', syncMenuViewport);
+      }
     }
   }
   navToggle.addEventListener('click', () => setMenuOpen(!navLinks.classList.contains('open')));
