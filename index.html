@@ -3307,8 +3307,8 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
         <svg class="foot-col-icon" viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.4"/><path d="M4 6l8 7 8-7" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
         <h5 style="color:#a9bdaf;">Contact</h5>
         <ul class="contact-text-list">
-          <li><a href="mailto:naan5me@gmail.com">naan5me@gmail.com</a></li>
-          <li><a href="tel:+32492025213">+32 492 02 52 13</a></li>
+          <li><a href="#" id="footerEmailLink"></a></li>
+          <li><a href="#" id="footerPhoneLink"></a></li>
         </ul>
         <div class="social-row">
           <a class="social-btn" href="#" id="whatsappBtn">
@@ -3323,7 +3323,7 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
             </span>
             <span>微信</span>
           </a>
-          <a class="social-btn" href="https://www.instagram.com/timeless.in.europe/" target="_blank" rel="noopener">
+          <a class="social-btn" href="#" target="_blank" rel="noopener" id="footerInstagramLink">
             <span class="social-icon">
               <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="1.5"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.5"/><circle cx="17.2" cy="6.8" r="1" fill="currentColor"/></svg>
             </span>
@@ -3353,7 +3353,7 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
   <div class="info-modal-card">
     <button class="qr-modal-close" id="bookStayClose" aria-label="Close">&times;</button>
     <div class="info-modal-icon-row">
-      <a class="icon-badge icon-email" href="mailto:naan5me@gmail.com" id="modalEmailBtn" aria-label="Email" title="naan5me@gmail.com">
+      <a class="icon-badge icon-email" href="#" id="modalEmailBtn" aria-label="Email">
         <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M4 6l8 7 8-7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </a>
       <a class="icon-badge icon-whatsapp" href="#" id="modalWhatsappBtn" aria-label="WhatsApp">
@@ -3362,15 +3362,15 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
       <a class="icon-badge icon-wechat" href="#" id="modalWechatBtn" aria-label="微信">
         <svg viewBox="0 0 24 24" fill="none"><path d="M8.6 3.2C4.4 3.2 1 5.9 1 9.3c0 1.9 1.03 3.55 2.66 4.66L3 16.4l2.77-1.14c.72.2 1.48.32 2.27.32.24 0 .48 0 .71-.03-.14-.48-.22-.99-.22-1.51 0-3.2 3.24-5.8 7.24-5.8.25 0 .5.01.74.03C15.98 5.16 12.6 3.2 8.6 3.2z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><circle cx="5.9" cy="8.4" r="0.85" fill="currentColor"/><circle cx="10.6" cy="8.4" r="0.85" fill="currentColor"/><path d="M15.9 9.5c-3.53 0-6.4 2.4-6.4 5.35 0 2.95 2.87 5.35 6.4 5.35.6 0 1.18-.07 1.73-.2L20.7 21.6l-.85-2.15c1.3-.9 2.15-2.25 2.15-3.6 0-2.95-2.87-5.35-6.4-5.35z" stroke="currentColor" stroke-width="1.3" stroke-linejoin="round"/><circle cx="14.1" cy="14.6" r="0.75" fill="currentColor"/><circle cx="17.7" cy="14.6" r="0.75" fill="currentColor"/></svg>
       </a>
-      <a class="icon-badge icon-instagram" href="https://www.instagram.com/timeless.in.europe/" target="_blank" rel="noopener" aria-label="Instagram">
+      <a class="icon-badge icon-instagram" href="#" target="_blank" rel="noopener" aria-label="Instagram" id="modalInstagramBtn">
         <svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.6"/><circle cx="17.2" cy="6.8" r="1" fill="currentColor" stroke="none"/></svg>
       </a>
-      <a class="icon-badge icon-call" href="tel:+32492025213" aria-label="Call">
+      <a class="icon-badge icon-call" href="#" aria-label="Call" id="modalCallBtn">
         <svg viewBox="0 0 24 24" fill="none"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
       </a>
     </div>
     <p class="info-modal-text">Please send me a message via <span class="chan-email">Email</span>, <span class="chan-whatsapp">WhatsApp</span>, <span class="chan-wechat">微信</span>, or <span class="chan-instagram">Instagram</span>, whichever is most convenient for you. You&rsquo;re also welcome to <span class="chan-call">call</span> me directly.</p>
-    <div class="email-toast" id="emailToast">naan5me@gmail.com &mdash; copied to clipboard</div>
+    <div class="email-toast" id="emailToast"><span id="emailToastAddress"></span> &mdash; copied to clipboard</div>
   </div>
 </div>
 
@@ -3916,9 +3916,10 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
     const emailBtn = document.getElementById('modalEmailBtn');
     const toast = document.getElementById('emailToast');
     if (!emailBtn || !toast) return;
-    const emailAddress = 'naan5me@gmail.com';
     let hideTimer = null;
     emailBtn.addEventListener('click', () => {
+      const emailAddress = emailBtn.dataset.email || '';
+      if (!emailAddress) return;
       if (navigator.clipboard && navigator.clipboard.writeText) {
         navigator.clipboard.writeText(emailAddress).catch(() => {});
       }
@@ -3926,6 +3927,54 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
       clearTimeout(hideTimer);
       hideTimer = setTimeout(() => toast.classList.remove('show'), 4000);
     });
+  })();
+
+  // Contact info — loaded from data/contact/contactInfo.json so email, phone,
+  // WhatsApp/WeChat QR codes, and Instagram link can be updated without
+  // touching this page's code.
+  (function(){
+    const footerEmailLink = document.getElementById('footerEmailLink');
+    const footerPhoneLink = document.getElementById('footerPhoneLink');
+    const footerInstagramLink = document.getElementById('footerInstagramLink');
+    const modalEmailBtn = document.getElementById('modalEmailBtn');
+    const modalInstagramBtn = document.getElementById('modalInstagramBtn');
+    const modalCallBtn = document.getElementById('modalCallBtn');
+    const emailToastAddress = document.getElementById('emailToastAddress');
+    const wechatBtn = document.getElementById('wechatBtn');
+    const whatsappBtn = document.getElementById('whatsappBtn');
+
+    fetch('data/contact/contactInfo.json', { cache: 'no-store' })
+      .then((res) => { if (!res.ok) throw new Error('contactInfo.json request failed'); return res.json(); })
+      .then((data) => {
+        const info = data && data.contactInfo;
+        if (!info) return;
+
+        if (info.email) {
+          const mailto = 'mailto:' + info.email;
+          if (footerEmailLink) { footerEmailLink.href = mailto; footerEmailLink.textContent = info.email; }
+          if (modalEmailBtn) { modalEmailBtn.dataset.email = info.email; modalEmailBtn.title = info.email; }
+          if (emailToastAddress) emailToastAddress.textContent = info.email;
+        }
+
+        if (info.phone) {
+          const tel = 'tel:' + info.phone.replace(/[^+\d]/g, '');
+          if (footerPhoneLink) { footerPhoneLink.href = tel; footerPhoneLink.textContent = info.phone; }
+          if (modalCallBtn) modalCallBtn.href = tel;
+        }
+
+        if (info.instagram) {
+          if (footerInstagramLink) footerInstagramLink.href = info.instagram;
+          if (modalInstagramBtn) modalInstagramBtn.href = info.instagram;
+        }
+
+        if (info.whatsApp && info.whatsApp.qrCodeLink && whatsappBtn) {
+          whatsappBtn.dataset.qr = info.whatsApp.qrCodeLink;
+        }
+        if (info.wechat && info.wechat.qrCodeLink && wechatBtn) {
+          wechatBtn.dataset.qr = info.wechat.qrCodeLink;
+        }
+      })
+      .catch(() => { /* contactInfo.json unavailable — contact links stay empty */ });
   })();
 
   // Shared QR modal (WeChat + WhatsApp)
@@ -3955,10 +4004,12 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
     const whatsappBtn = document.getElementById('whatsappBtn');
     const modalWechatBtn = document.getElementById('modalWechatBtn');
     const modalWhatsappBtn = document.getElementById('modalWhatsappBtn');
-    if (wechatBtn) wechatBtn.addEventListener('click', openModal('https://pub-6b46fd29ec2c4176b76828bf1155b68a.r2.dev/Images/WeChat_Contact_QR_Code.png', 'Scan to connect on 微信'));
-    if (whatsappBtn) whatsappBtn.addEventListener('click', openModal('https://pub-6b46fd29ec2c4176b76828bf1155b68a.r2.dev/Images/WhatsApp_Contact_QR_Code.png', 'Scan to connect on WhatsApp'));
-    if (modalWechatBtn) modalWechatBtn.addEventListener('click', openModal('https://pub-6b46fd29ec2c4176b76828bf1155b68a.r2.dev/Images/WeChat_Contact_QR_Code.png', 'Scan to connect on 微信'));
-    if (modalWhatsappBtn) modalWhatsappBtn.addEventListener('click', openModal('https://pub-6b46fd29ec2c4176b76828bf1155b68a.r2.dev/Images/WhatsApp_Contact_QR_Code.png', 'Scan to connect on WhatsApp'));
+    function wechatOpen(e){ e.preventDefault(); const src = wechatBtn && wechatBtn.dataset.qr; if (src) openModal(src, 'Scan to connect on \u5fae\u4fe1')(e); }
+    function whatsappOpen(e){ e.preventDefault(); const src = whatsappBtn && whatsappBtn.dataset.qr; if (src) openModal(src, 'Scan to connect on WhatsApp')(e); }
+    if (wechatBtn) wechatBtn.addEventListener('click', wechatOpen);
+    if (whatsappBtn) whatsappBtn.addEventListener('click', whatsappOpen);
+    if (modalWechatBtn) modalWechatBtn.addEventListener('click', wechatOpen);
+    if (modalWhatsappBtn) modalWhatsappBtn.addEventListener('click', whatsappOpen);
 
     backdrop.addEventListener('click', closeModal);
     closeBtn.addEventListener('click', closeModal);
