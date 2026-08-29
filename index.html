@@ -4171,6 +4171,7 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
       let playlist = null;
       let playIdx = 0;
       let activeMode = null; // 'desktop' | 'mobile'
+      let consecutiveErrors = 0;
 
       function currentMode(){
         return mobileQuery.matches ? 'mobile' : 'desktop';
@@ -4196,9 +4197,15 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
         if (!list || !list.length) return false;
         activeMode = mode;
         playlist = list;
+        consecutiveErrors = 0;
         playAt(0);
         return true;
       }
+
+      // A video that actually starts playing resets the failure counter —
+      // only a run of back-to-back failures (nothing in the list plays) trips
+      // the circuit breaker below.
+      heroVideo.addEventListener('playing', () => { consecutiveErrors = 0; });
 
       heroVideo.addEventListener('ended', () => {
         if (!playlist || !playlist.length) return;
@@ -4206,13 +4213,23 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
       });
 
       // If a listed video fails to load/play (bad URL, unsupported format,
-      // 404, etc.), skip to the next one in the list. There's no hardcoded
-      // fallback video anymore — if every URL in the JSON is bad, the hero
-      // simply stays without a video rather than showing an old baked-in one.
+      // 404, etc.), skip to the next one in the list. If EVERY video in the
+      // list fails (e.g. the whole list is .mov files this browser can't
+      // decode), stop retrying instead of looping forever — repeatedly
+      // attempting to load/decode a failing video as fast as the browser can
+      // fire error events is a real, severe cause of CPU/GPU load and device
+      // heating, not just a cosmetic glitch.
       heroVideo.addEventListener('error', () => {
-        if (playlist && playlist.length > 1) {
-          playAt((playIdx + 1) % playlist.length);
+        if (!playlist || !playlist.length) return;
+        consecutiveErrors++;
+        if (consecutiveErrors >= playlist.length) {
+          // Every video in the list has now failed at least once — give up
+          // rather than continuing to hammer the network/decoder.
+          heroVideo.removeAttribute('src');
+          heroVideo.load();
+          return;
         }
+        playAt((playIdx + 1) % playlist.length);
       });
 
       // If the viewport crosses the mobile/desktop breakpoint (resize, rotation,
