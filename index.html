@@ -248,6 +248,7 @@
   }
   .hero-meta-item{ font-family:var(--mono); font-size:13px; color:var(--stone-dim); text-shadow:0 1px 3px rgba(0,0,0,0.7); }
   .hero-meta-item b{ font-family:var(--sans); display:block; color:#ffffff; font-weight:600; font-size:14.5px; margin-bottom:4px; letter-spacing:0.01em; text-shadow:0 1px 3px rgba(0,0,0,0.7); }
+  .hero-meta-rotator{ display:contents; }
   .loc-dot{
     display:inline-block; width:8px; height:8px; border-radius:50%; background:#ff5a46;
     margin-right:8px; vertical-align:middle; position:relative;
@@ -302,6 +303,11 @@
   @media (max-width:720px){ .guest-reviews{ max-width:100%; } }
 
   @media (max-width:720px){ .hero-guests{ gap:16px; } }
+  @media (max-width:720px){
+    .hero-meta-rotator{ display:block; position:relative; min-height:38px; }
+    .hero-meta-rotator .hero-meta-item{ display:none; }
+    .hero-meta-rotator .hero-meta-item.rotator-active{ display:block; }
+  }
   .hero-cta-row{ display:flex; gap:16px; margin-top:44px; flex-wrap:wrap; }
 
   .scroll-cue{
@@ -1162,9 +1168,11 @@
     <div class="hero-meta">
       <div class="hero-meta-item"><b><span class="count-num" data-count="3" data-nopad="1">0</span> Stay Listings</b>Smart locker password self-check-in, 24/7.</div>
       <div class="hero-meta-item"><b data-count="7">00</b>Long-term residences</div>
-      <div class="hero-meta-item"><b><span class="loc-dot"></span>Central Station</b>4-5 min on foot</div>
-      <div class="hero-meta-item"><b><span class="loc-dot"></span>Palais Royal</b>7 min on foot</div>
-      <div class="hero-meta-item"><b><span class="loc-dot"></span>European Quarter</b>Neighbouring district</div>
+      <div class="hero-meta-rotator" id="heroMetaRotator">
+        <div class="hero-meta-item rotator-active"><b><span class="loc-dot"></span>Central Station</b>4-5 min on foot</div>
+        <div class="hero-meta-item"><b><span class="loc-dot"></span>Palais Royal</b>7 min on foot</div>
+        <div class="hero-meta-item"><b><span class="loc-dot"></span>European Quarter</b>Neighbouring district</div>
+      </div>
     </div>
 
     <div class="hero-guests reveal">
@@ -4001,6 +4009,54 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
       heroTitleIo.observe(heroTitleRotator);
     }
   }
+
+  // Hero location items (Central Station / Palais Royal / European Quarter):
+  // on mobile only, rotate through them one at a time every 2s to save
+  // vertical space — desktop keeps showing all three side by side, untouched.
+  (function(){
+    const rotator = document.getElementById('heroMetaRotator');
+    if (!rotator) return;
+    const items = Array.from(rotator.querySelectorAll('.hero-meta-item'));
+    if (items.length < 2) return;
+    const mobileMetaQuery = window.matchMedia('(max-width: 720px)');
+    let idx = 0;
+    let timer = null;
+    let isVisible = false;
+
+    function showIndex(i){
+      items.forEach((el, n) => el.classList.toggle('rotator-active', n === i));
+    }
+
+    function startTimer(){
+      if (timer || reduceMotion || !mobileMetaQuery.matches) return;
+      timer = setInterval(() => {
+        idx = (idx + 1) % items.length;
+        showIndex(idx);
+      }, 2000);
+    }
+    function stopTimer(){
+      if (timer) { clearInterval(timer); timer = null; }
+    }
+
+    if (!reduceMotion) {
+      const io = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          isVisible = entry.isIntersecting;
+          if (isVisible) startTimer(); else stopTimer();
+        });
+      }, { threshold: 0 });
+      io.observe(rotator);
+    }
+
+    // If the viewport crosses the mobile breakpoint (resize, rotation,
+    // devtools), start/stop the rotation and reset to the first item.
+    mobileMetaQuery.addEventListener('change', () => {
+      idx = 0;
+      showIndex(0);
+      stopTimer();
+      if (mobileMetaQuery.matches && isVisible) startTimer();
+    });
+  })();
 
   let lastY = window.scrollY;
   let ticking = false;
