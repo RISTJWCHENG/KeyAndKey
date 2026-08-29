@@ -576,10 +576,10 @@
   .steps{ margin-top:60px; }
   .steps-grid{
     display:grid; grid-template-columns:repeat(5,1fr); gap:36px;
-    border-top:0; position:relative; padding-top:8px;
+    border-top:0; position:relative; padding-top:40px;
   }
   .steps-grid::before{
-    content:''; position:absolute; left:0; right:0; top:25px; height:1px;
+    content:''; position:absolute; left:0; right:0; top:57px; height:1px;
     background:rgba(32,28,20,0.18); z-index:0;
   }
   .step{ position:relative; padding:0; border-right:0; z-index:1; }
@@ -663,6 +663,7 @@
       linear-gradient(180deg, var(--ink) 0%, #101a20 100%);
   }
   .memories-header{ display:flex; justify-content:space-between; align-items:flex-end; gap:24px; margin-bottom:36px; flex-wrap:wrap; }
+  .memories-subtitle{ font-size:16px; color:var(--stone-dim); margin-top:12px; font-weight:400; }
   .memories-toggle{ display:flex; gap:12px; margin-bottom:40px; }
   .memories-toggle button{
     width:64px; height:64px; border-radius:14px; border:1px solid rgba(143,178,217,0.35);
@@ -1270,7 +1271,7 @@
   <div class="wrap">
     <div class="section-head reveal" style="max-width:900px;">
       <div class="eyebrow">THE STAY APARTMENTS</div>
-      <h2 style="white-space:normal;"><span style="white-space:nowrap;">Three apartments, three different floors</span><br>&mdash; all in one building.</h2>
+      <h2 style="white-space:nowrap;">Three apartments. One building.</h2>
       <p>Choose the apartment that best suits your preferences, then click to explore more details.</p>
     </div>
 
@@ -1597,7 +1598,8 @@ c2 132 -1 240 -7 270 -28 128 -158 199 -284 154z"/><path d="M3605 3181 c-44 -20 -
     <div class="memories-header">
       <div>
         <div class="eyebrow">Memories</div>
-        <h2 style="margin-top:18px;">Moments shared by guests from around the world.</h2>
+        <h2 style="margin-top:18px;">Belgium Through Our Guests&rsquo; Eyes</h2>
+        <p class="memories-subtitle">Shared by Our Guests</p>
       </div>
     </div>
     <div class="memories-toggle">
@@ -4075,7 +4077,14 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
       document.body.style.left = '';
       document.body.style.right = '';
       document.body.style.width = '';
-      window.scrollTo(0, menuScrollY);
+      // Instant, not smooth — this is just un-pinning the position:fixed
+      // trick invisibly, not a user-facing navigation. Because <html> has
+      // scroll-behavior:smooth, a plain scrollTo(x,y) here would ALSO
+      // animate smoothly and could race against (and sometimes beat) the
+      // deliberate scrollIntoView animation used for nav-link clicks below,
+      // which was why tapping e.g. "Home" could end up back at the
+      // pre-menu-open position instead of at the Home section.
+      window.scrollTo({ top: menuScrollY, left: 0, behavior: 'instant' });
       document.removeEventListener('touchmove', blockBackgroundTouch, { passive: false });
       navLinks.style.height = '';
       navLinks.style.top = '';
@@ -4083,7 +4092,27 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
     }
   }
   navToggle.addEventListener('click', () => setMenuOpen(!navLinks.classList.contains('open')));
-  navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setMenuOpen(false)));
+  navLinks.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', (e) => {
+      const href = a.getAttribute('href');
+      setMenuOpen(false);
+      // For same-page section links, take explicit control of the scroll
+      // instead of letting the browser's native anchor-jump run — that jump
+      // was racing against setMenuOpen's own scroll-position restore above,
+      // and sometimes losing, which is why tapping e.g. "Home" could leave
+      // the page wherever it was before the menu opened instead of jumping
+      // to the Home section.
+      if (href && href.charAt(0) === '#' && href.length > 1) {
+        e.preventDefault();
+        const target = document.querySelector(href);
+        if (target) {
+          requestAnimationFrame(() => {
+            target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth' });
+          });
+        }
+      }
+    });
+  });
   if (navBackdrop) navBackdrop.addEventListener('click', () => setMenuOpen(false));
   document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && navLinks.classList.contains('open')) setMenuOpen(false); });
 
