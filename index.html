@@ -321,6 +321,20 @@
     100%{ top:100%; opacity:0; }
   }
   @media (max-width:720px){ .scroll-cue{ display:none; } }
+  .hero-sound-toggle{
+    position:absolute; right:32px; bottom:40px; z-index:3;
+    width:44px; height:44px; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+    background:rgba(16,28,22,0.55); border:var(--edge-brass);
+    color:#ffffff; cursor:pointer; backdrop-filter:blur(6px);
+    transition:transform 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+  }
+  .hero-sound-toggle:hover{ transform:translateY(-2px); border-color:var(--brass-light); background:rgba(16,28,22,0.75); }
+  .hero-sound-toggle svg{ width:18px; height:18px; }
+  .hero-sound-toggle .icon-unmuted{ display:none; }
+  .hero-sound-toggle.is-unmuted .icon-muted{ display:none; }
+  .hero-sound-toggle.is-unmuted .icon-unmuted{ display:block; }
+  @media (max-width:720px){ .hero-sound-toggle{ right:20px; bottom:24px; width:40px; height:40px; } }
   .btn{
     font-family:var(--mono); font-size:13px; letter-spacing:0.05em; text-transform:uppercase;
     padding:15px 28px; border-radius:999px; display:inline-flex; align-items:center; gap:10px;
@@ -1091,6 +1105,17 @@
     <source src="https://pub-6b46fd29ec2c4176b76828bf1155b68a.r2.dev/Videos/Key%20%26%20Key%20Promotional%20Video.mp4" type="video/mp4">
   </video>
   <div class="hero-video-overlay"></div>
+
+  <button class="hero-sound-toggle" id="heroSoundToggle" type="button" aria-label="Turn on video sound" aria-pressed="false">
+    <svg class="icon-muted" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M4 9v6h4l5 4V5L8 9H4Z" fill="currentColor"/>
+      <path d="M16.5 8.5l4 7M20.5 8.5l-4 7" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+    </svg>
+    <svg class="icon-unmuted" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M4 9v6h4l5 4V5L8 9H4Z" fill="currentColor"/>
+      <path d="M16.2 8.8a5 5 0 0 1 0 6.4M19 6.5a9 9 0 0 1 0 11" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+    </svg>
+  </button>
 
   <div class="wrap hero-inner">
     <div class="hero-eyebrow eyebrow"><span class="eyebrow-shimmer">Rue de Louvain 10, 1000 Brussels, Belgium</span></div>
@@ -3948,6 +3973,24 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
       });
     }, { threshold: 0.1 });
     videoObserver.observe(hero);
+  }
+
+  // Sound toggle: browsers only allow autoplay when muted, so the hero video
+  // starts muted and the visitor can opt in to sound with this button.
+  const heroSoundToggle = document.getElementById('heroSoundToggle');
+  if (heroVideo && heroSoundToggle) {
+    function syncSoundButton(){
+      const on = !heroVideo.muted;
+      heroSoundToggle.classList.toggle('is-unmuted', on);
+      heroSoundToggle.setAttribute('aria-pressed', on ? 'true' : 'false');
+      heroSoundToggle.setAttribute('aria-label', on ? 'Mute video sound' : 'Turn on video sound');
+    }
+    heroSoundToggle.addEventListener('click', () => {
+      heroVideo.muted = !heroVideo.muted;
+      if (!heroVideo.muted) heroVideo.play().catch(() => {});
+      syncSoundButton();
+    });
+    syncSoundButton();
   }
 
   // Hero video playlist: sequentially play the videos listed under
