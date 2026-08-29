@@ -3974,6 +3974,17 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
   const navToggle = document.getElementById('navToggle');
   const navBackdrop = document.getElementById('navBackdrop');
   let menuScrollY = 0;
+
+  // iOS Safari can still play its native elastic/rubber-band scroll animation
+  // mid-gesture even when the body is pinned via position:fixed — that native
+  // bounce happens a layer below the DOM's own scroll position. Explicitly
+  // blocking touchmove on anything outside the menu panel stops that native
+  // gesture from ever starting while the menu is open.
+  function blockBackgroundTouch(e){
+    if (e.target.closest && e.target.closest('.nav-links')) return; // let the panel scroll/tap normally
+    e.preventDefault();
+  }
+
   function setMenuOpen(open){
     navLinks.classList.toggle('open', open);
     if (navBackdrop) navBackdrop.classList.toggle('open', open);
@@ -3989,6 +4000,7 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
       document.body.style.left = '0';
       document.body.style.right = '0';
       document.body.style.width = '100%';
+      document.addEventListener('touchmove', blockBackgroundTouch, { passive: false });
     } else {
       document.body.style.position = '';
       document.body.style.top = '';
@@ -3996,6 +4008,7 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
       document.body.style.right = '';
       document.body.style.width = '';
       window.scrollTo(0, menuScrollY);
+      document.removeEventListener('touchmove', blockBackgroundTouch, { passive: false });
     }
   }
   navToggle.addEventListener('click', () => setMenuOpen(!navLinks.classList.contains('open')));
