@@ -3951,7 +3951,7 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
   }
 
   // Hero video playlist: sequentially play the videos listed under
-  // video/videos_index.json -> videos.homeHero.desktop (or .mobile on small
+  // videos/videos_index.json -> videos.homeHero.desktop (or .mobile on small
   // screens). The video files/order/device-targeting live only in that JSON
   // file — nothing here is hardcoded, so updating the playlist never requires
   // touching this page's code.
@@ -4031,7 +4031,7 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
         if (mode !== activeMode) startMode(mode);
       });
 
-      fetch('video/videos_index.json', { cache: 'no-store' })
+      fetch('videos/videos_index.json', { cache: 'no-store' })
         .then((res) => {
           if (!res.ok) throw new Error('videos_index.json request failed');
           return res.json();
