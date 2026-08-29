@@ -1,0 +1,14 @@
+{
+  "contactInfo": {
+    "email": "naan5me@gmail.com",
+    "whatsApp": {
+      "number": "+32 492 02 52 13",
+      "qrCodeLink": "https://pub-6b46fd29ec2c4176b76828bf1155b68a.r2.dev/Images/WhatsApp_Contact_QR_Code.png"
+    },
+    "wechat": {
+      "qrCodeLink": "https://pub-6b46fd29ec2c4176b76828bf1155b68a.r2.dev/Images/WeChat_Contact_QR_Code.png"
+    },
+    "instagram": "https://www.instagram.com/timeless.in.europe/",
+    "phone": "+32 492 02 52 13"
+  }
+}
