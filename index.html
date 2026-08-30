@@ -505,6 +505,8 @@
   .area-placeholder{ font-size:13.5px; color:rgba(32,28,20,0.5); font-style:italic; margin-top:6px; }
   .addr-block .addr{ font-family:var(--serif); font-weight:700; font-size:26px; margin-bottom:6px; letter-spacing:-0.01em; color:var(--paper-ink); }
   .addr-block .addr-sub{ font-family:var(--mono); font-size:13px; color:rgba(32,28,20,0.6); }
+  .area-subheading-row{ display:flex; align-items:center; gap:12px; }
+  .area-subheading-icon{ width:28px; height:28px; object-fit:contain; flex:none; }
   .landmark-list{ display:flex; flex-direction:column; gap:0; width:100%; max-width:100%; }
   .landmark-item{
     display:grid; grid-template-columns:170px minmax(0,1fr) 400px;
@@ -1524,7 +1526,10 @@ c2 132 -1 240 -7 270 -28 128 -158 199 -284 154z"/><path d="M3605 3181 c-44 -20 -
 
       <div class="reveal">
         <div class="addr-block">
-          <div class="addr area-subheading">Local Landmarks &amp; Attractions</div>
+          <div class="addr area-subheading area-subheading-row">
+            <img class="area-subheading-icon" src="https://pub-6b46fd29ec2c4176b76828bf1155b68a.r2.dev/icons/landmarks%20_icon.png" alt="">
+            <span>Local Landmarks &amp; Attractions</span>
+          </div>
         </div>
         <ul class="landmark-list" id="mainLandmarksList"></ul>
         <div class="landmark-toggle-row">
@@ -1537,34 +1542,49 @@ c2 132 -1 240 -7 270 -28 128 -158 199 -284 154z"/><path d="M3605 3181 c-44 -20 -
 
       <div class="reveal">
         <div class="addr-block">
-          <div class="addr area-subheading">Transportation</div>
+          <div class="addr area-subheading area-subheading-row">
+            <img class="area-subheading-icon" src="https://pub-6b46fd29ec2c4176b76828bf1155b68a.r2.dev/icons/publicTransportation_icon.png" alt="">
+            <span>Transportation</span>
+          </div>
         </div>
         <ul class="landmark-list" id="transportationList"></ul>
       </div>
 
       <div class="reveal">
         <div class="addr-block">
-          <div class="addr area-subheading">Food &amp; Drink</div>
+          <div class="addr area-subheading area-subheading-row">
+            <img class="area-subheading-icon" src="https://pub-6b46fd29ec2c4176b76828bf1155b68a.r2.dev/icons/food%26drink_icon.png" alt="">
+            <span>Food &amp; Drink</span>
+          </div>
         </div>
         <ul class="landmark-list" id="foodDrinkList"></ul>
       </div>
 
       <div class="reveal">
         <div class="addr-block">
-          <div class="addr area-subheading">Shops &amp; Convenience</div>
+          <div class="addr area-subheading area-subheading-row">
+            <img class="area-subheading-icon" src="https://pub-6b46fd29ec2c4176b76828bf1155b68a.r2.dev/icons/shops%26convenience_icon.png" alt="">
+            <span>Shops &amp; Convenience</span>
+          </div>
         </div>
         <ul class="landmark-list" id="shopsConvenienceList"></ul>
       </div>
 
       <div class="reveal">
         <div class="addr-block">
-          <div class="addr area-subheading">Laundromats</div>
+          <div class="addr area-subheading area-subheading-row">
+            <img class="area-subheading-icon" src="https://pub-6b46fd29ec2c4176b76828bf1155b68a.r2.dev/icons/Laundromats_icon.png" alt="">
+            <span>Laundromats</span>
+          </div>
         </div>
         <ul class="landmark-list" id="laundromatsList"></ul>
       </div>
       <div class="reveal">
         <div class="addr-block">
-          <div class="addr area-subheading">Public Parking (24/7)</div>
+          <div class="addr area-subheading area-subheading-row">
+            <img class="area-subheading-icon" src="https://pub-6b46fd29ec2c4176b76828bf1155b68a.r2.dev/icons/publicParking_icon.png" alt="">
+            <span>Public Parking (24/7)</span>
+          </div>
         </div>
         <ul class="landmark-list" id="publicParkingList"></ul>
       </div>
