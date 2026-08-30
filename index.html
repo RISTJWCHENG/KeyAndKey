@@ -342,10 +342,18 @@
   .hero-sound-toggle .icon-unmuted{ display:none; }
   .hero-sound-toggle.is-unmuted .icon-muted{ display:none; }
   .hero-sound-toggle.is-unmuted .icon-unmuted{ display:block; }
-  @media (max-width:720px){ .hero-sound-toggle{ right:20px; bottom:24px; width:40px; height:40px; } }
+  @media (max-width:720px){
+    .hero-sound-toggle{
+      position:fixed; top:17px; right:60px; bottom:auto; width:32px; height:32px; z-index:130;
+      opacity:0; visibility:hidden; pointer-events:none;
+      transition:opacity 0.3s ease, transform 0.25s ease, border-color 0.25s ease, background 0.25s ease;
+    }
+    .hero-sound-toggle.nav-visible{ opacity:1; visibility:visible; pointer-events:auto; }
+    .hero-sound-toggle svg{ width:16px; height:16px; }
+  }
   .btn{
     font-family:var(--mono); font-size:13px; letter-spacing:0.05em; text-transform:uppercase;
-    padding:8.5px 28px; border-radius:999px; display:inline-flex; align-items:center; gap:10px;
+    padding:9.4px 28px 7.6px; border-radius:999px; display:inline-flex; align-items:center; gap:10px;
     transition:transform 0.25s ease, background 0.25s ease, color 0.25s ease, border-color 0.25s ease;
   }
   .btn-solid{ background:var(--brass); color:var(--ink); border:1px solid var(--brass); }
@@ -1155,7 +1163,7 @@
     <div class="hero-grid">
       <div>
         <h1 class="hero-title hero-title-rotator" id="heroTitleRotator"><span class="hero-line hero-line-nowrap hero-line-gold is-active" data-line="1">One <em class="key-door">key</em> for the <em class="key-door">door</em>.</span><span class="hero-line hero-line-nowrap hero-line-teal" data-line="2">One <em class="key-city">key</em> to the <em class="key-city">city</em>.</span></h1>
-        <p class="hero-sub">Key&amp;Key Property manages self-check-in stays and long-term residences from an address at the centre of Brussels — just steps from the Royal Palace and Parliament; it also puts many of the city's most iconic landmarks and must-see attractions within easy walking distance.</p>
+        <p class="hero-sub">Key&amp;Key Property manages passworld self-check-in short-term stays and long-term residences from a central Brussels address — just steps from the Royal Palace and Parliament, with many of the city&rsquo;s iconic landmarks and must-see attractions within easy walking distance.</p>
         <div class="hero-cta-row">
           <a href="#stays" class="btn btn-solid">View the stays</a>
           <a href="#contact" class="btn btn-ghost">Let's Connect</a>
@@ -3973,6 +3981,7 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
   })();
 
   const nav = document.getElementById('nav');
+  const heroSoundToggleEl = document.getElementById('heroSoundToggle');
   pauseAnimationsWhenOffscreen(document.getElementById('keys'));
   pauseAnimationsWhenOffscreen(document.getElementById('landmarksToggleBtn'));
   pauseAnimationsWhenOffscreen(document.getElementById('location'));
@@ -4076,6 +4085,7 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
     // .nav mid-scroll would carry the open menu and its close button off
     // screen with it, making the menu impossible to dismiss)
     nav.classList.toggle('scrolled', y > 40);
+    if (heroSoundToggleEl) heroSoundToggleEl.classList.toggle('nav-visible', y > 40);
     if (!reduceMotion && !navLinks.classList.contains('open')) {
       if (y > lastY && y > 160) nav.classList.add('hide');
       else nav.classList.remove('hide');
