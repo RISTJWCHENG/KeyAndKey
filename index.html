@@ -298,7 +298,10 @@
   .review-top{ display:flex; align-items:center; justify-content:space-between; gap:10px; }
   .review-name{ font-family:var(--sans); font-size:13px; color:var(--stone); font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
   .review-stars{ color:#f0b93d; font-size:11px; letter-spacing:1.5px; flex:none; }
-  .review-quote{ font-family:var(--sans); font-size:12.5px; color:var(--stone-dim); margin-top:6px; line-height:1.55; }
+  .review-quote{
+    font-family:var(--sans); font-size:12.5px; color:var(--stone-dim); margin-top:6px; line-height:1.55;
+    min-height:58px; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden;
+  }
   .review-source{ font-family:var(--mono); font-size:9.5px; color:var(--brass-light); margin-top:9px; letter-spacing:0.08em; text-transform:uppercase; opacity:0.8; }
   @media (max-width:720px){ .guest-reviews{ max-width:100%; } }
 
@@ -898,6 +901,7 @@
     .photo-tour-header-spacer{ display:none; }
     .pt-offer-grid{ grid-template-columns:1fr; }
     .pt-amenity-list{ grid-template-columns:1fr 1fr; }
+    .pt-sleep-card{ max-width:none; width:100%; flex-basis:100%; }
   }
   .photo-tour-body{ padding:48px 0 100px; }
   .photo-tour-body > .wrap{ max-width:934px; }
