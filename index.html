@@ -4002,6 +4002,7 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
 
   const nav = document.getElementById('nav');
   const heroSoundToggleEl = document.getElementById('heroSoundToggle');
+  let heroInView = true;
   pauseAnimationsWhenOffscreen(document.getElementById('keys'));
   pauseAnimationsWhenOffscreen(document.getElementById('landmarksToggleBtn'));
   pauseAnimationsWhenOffscreen(document.getElementById('location'));
@@ -4105,7 +4106,7 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
     // .nav mid-scroll would carry the open menu and its close button off
     // screen with it, making the menu impossible to dismiss)
     nav.classList.toggle('scrolled', y > 40);
-    if (heroSoundToggleEl) heroSoundToggleEl.classList.toggle('nav-visible', y > 40);
+    if (heroSoundToggleEl) heroSoundToggleEl.classList.toggle('nav-visible', y > 40 && heroInView);
     if (!reduceMotion && !navLinks.classList.contains('open')) {
       if (y > lastY && y > 160) nav.classList.add('hide');
       else nav.classList.remove('hide');
@@ -4272,6 +4273,8 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
   if (heroVideo) {
     const videoObserver = new IntersectionObserver((entries) => {
       entries.forEach(e => {
+        heroInView = e.isIntersecting;
+        if (!heroInView && heroSoundToggleEl) heroSoundToggleEl.classList.remove('nav-visible');
         if (e.isIntersecting) heroVideo.play().catch(() => {});
         else heroVideo.pause();
       });
