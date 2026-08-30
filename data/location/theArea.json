@@ -4,89 +4,89 @@
       {
         "name": "Central Station",
         "description": "One of Brussels' main railway hubs, offering convenient connections across the city and direct train services to major destinations throughout Belgium.",
-        "distance": "550 m",
-        "walk": "7 min",
+        "distance": "450 m",
+        "walk": "6 min",
         "publicTransport": "3 min",
-        "mapLink": "https://www.google.com/maps/search/?api=1&query=Brussels+Central+Station"
+        "mapLink": "https://maps.app.goo.gl/3pVAowPGRmHpfehU8"
       },
       {
         "name": "Cathédrale des Saints-Michel-et-Gudule",
         "description": "The Gothic cathedral of Brussels, seat of the Archdiocese and host to major national ceremonies.",
         "distance": "350 m",
         "walk": "4 min",
-        "publicTransport": "2 min",
-        "mapLink": "https://www.google.com/maps/search/?api=1&query=Cathedrale+des+Saints-Michel-et-Gudule+Brussels"
+        "publicTransport": "5 min",
+        "mapLink": "https://maps.app.goo.gl/6JJyYFXzgvScAT897"
       },
       {
         "name": "Royal Palace of Brussels",
         "description": "The official palace of the King and Queen of the Belgians, used for state functions and royal duties.",
-        "distance": "600 m",
-        "walk": "7 min",
-        "publicTransport": "3 min",
-        "mapLink": "https://www.google.com/maps/search/?api=1&query=Royal+Palace+of+Brussels"
+        "distance": "750 m",
+        "walk": "10 min",
+        "publicTransport": "8 min",
+        "mapLink": "https://maps.app.goo.gl/AxFbzGmrwF2fE8y36"
       },
       {
         "name": "Parc de Bruxelles",
         "description": "The largest urban park in central Brussels, laid out between the Royal Palace and the Parliament.",
-        "distance": "10 m",
-        "walk": "1 min",
-        "publicTransport": "1 min",
-        "mapLink": "https://www.google.com/maps/search/?api=1&query=Parc+de+Bruxelles"
+        "distance": "20 m",
+        "walk": "2 min",
+        "publicTransport": "0 min",
+        "mapLink": "https://maps.app.goo.gl/EHLG7mduzECt1Khp8"
       },
       {
         "name": "Mont des Arts",
         "description": "A hilltop garden and viewpoint connecting the lower and upper town, framed by museums and the Royal Library.",
-        "distance": "700 m",
-        "walk": "9 min",
-        "publicTransport": "4 min",
-        "mapLink": "https://www.google.com/maps/search/?api=1&query=Mont+des+Arts+Brussels"
+        "distance": "750 m",
+        "walk": "10 min",
+        "publicTransport": "9 min",
+        "mapLink": "https://maps.app.goo.gl/pC6cqDk1LL49YmJ47"
       },
       {
         "name": "Grand Place",
         "description": "Brussels' UNESCO-listed central square, lined with ornate guild houses and the Gothic Town Hall.",
-        "distance": "900 m",
+        "distance": "850 m",
         "walk": "11 min",
-        "publicTransport": "5 min",
-        "mapLink": "https://www.google.com/maps/search/?api=1&query=Grand+Place+Brussels"
+        "publicTransport": "9 min",
+        "mapLink": "https://maps.app.goo.gl/mE5RWK8MFbHpMG5J8"
       },
       {
         "name": "Belgian Federal Parliament",
         "description": "The seat of Belgium's federal legislature, housed in the Palace of the Nation.",
-        "distance": "10 m",
-        "walk": "6 min",
-        "publicTransport": "3 min",
-        "mapLink": "https://www.google.com/maps/search/?api=1&query=Belgian+Federal+Parliament+Brussels"
+        "distance": "100 m",
+        "walk": "2 min",
+        "publicTransport": "0 min",
+        "mapLink": "https://maps.app.goo.gl/tPQcCdqDPqB8Zf2j7"
       },
       {
         "name": "Grand Sablon",
         "description": "An antiques and chocolate quarter built around a Gothic church, known for its boutiques and cafés.",
-        "distance": "15 m",
-        "walk": "12 min",
-        "publicTransport": "6 min",
-        "mapLink": "https://www.google.com/maps/search/?api=1&query=Grand+Sablon+Brussels"
+        "distance": "1.1 km",
+        "walk": "15 min",
+        "publicTransport": "9 min",
+        "mapLink": "https://maps.app.goo.gl/GUsewtCMtX7JvHhw5"
       },
       {
         "name": "Place Royale",
         "description": "A neoclassical square at the top of the city, home to the Royal Museums of Fine Arts and Église Saint-Jacques-sur-Coudenberg.",
-        "distance": "760 m",
-        "walk": "9 min",
-        "publicTransport": "6 min",
-        "mapLink": "https://www.google.com/maps/search/?api=1&query=Place+Royale+Brussels"
+        "distance": "700 m",
+        "walk": "10 min",
+        "publicTransport": "7 min",
+        "mapLink": "https://maps.app.goo.gl/NVaxNPSirrfZoXQVA"
       },
       {
         "name": "Royal Museums of Fine Arts of Belgium",
         "description": "One of Belgium's largest art collections, spanning Old Masters to modern works across several linked museums.",
-        "distance": "700 m",
-        "walk": "9 min",
-        "publicTransport": "45 min",
-        "mapLink": "https://www.google.com/maps/search/?api=1&query=Royal+Museums+of+Fine+Arts+of+Belgium"
+        "distance": "850 m",
+        "walk": "11 min",
+        "publicTransport": "6 min",
+        "mapLink": "https://maps.app.goo.gl/sU43yQpHesXVgAtE8"
       },
       {
         "name": "Magritte Museum",
         "description": "A museum dedicated to the surrealist painter René Magritte, holding the world's largest collection of his work.",
         "distance": "800 m",
         "walk": "11 min",
-        "publicTransport": "9 min",
+        "publicTransport": "7 min",
         "mapLink": "https://maps.app.goo.gl/BwssY6kg5LKCQgXC7"
       },
       {
