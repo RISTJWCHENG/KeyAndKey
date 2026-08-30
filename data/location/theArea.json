@@ -84,10 +84,10 @@
       {
         "name": "Magritte Museum",
         "description": "A museum dedicated to the surrealist painter René Magritte, holding the world's largest collection of his work.",
-        "distance": "710 m",
-        "walk": "9 min",
-        "publicTransport": "4 min",
-        "mapLink": "https://www.google.com/maps/search/?api=1&query=Magritte+Museum+Brussels"
+        "distance": "800 m",
+        "walk": "11 min",
+        "publicTransport": "9 min",
+        "mapLink": "https://maps.app.goo.gl/BwssY6kg5LKCQgXC7"
       },
       {
         "name": "Palace of Justice",
@@ -95,7 +95,7 @@
         "distance": "1.7 km",
         "walk": "24 min",
         "publicTransport": "11 min",
-        "mapLink": "https://www.google.com/maps/search/?api=1&query=Palace+of+Justice+Brussels"
+        "mapLink": "https://maps.app.goo.gl/xqYcLixyemmWBrXS6"
       },
       {
         "name": "European Commission",
