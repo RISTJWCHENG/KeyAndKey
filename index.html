@@ -594,12 +594,12 @@
   .landmark-link:hover::before{ opacity:0; }
   @keyframes landmarkLinkNudge{
     0%, 65%, 100%{ transform:translate(0,0); }
-    80%{ transform:translate(1.5px,-1.5px); }
+    80%{ transform:translate(3px,-3px); }
   }
   @keyframes landmarkLinkPulse{
-    0%{ opacity:0.5; transform:scale(0.9); }
-    70%{ opacity:0; transform:scale(1.35); }
-    100%{ opacity:0; transform:scale(1.35); }
+    0%{ opacity:0.6; transform:scale(0.9); }
+    70%{ opacity:0; transform:scale(1.55); }
+    100%{ opacity:0; transform:scale(1.55); }
   }
   @media (prefers-reduced-motion: reduce){
     .landmark-link::before, .landmark-link svg{ animation:none; }
@@ -1002,6 +1002,28 @@
     .photo-tour-grid{ width:100%; max-width:100%; flex:1 1 auto; }
     .photo-tour-row.two, .photo-tour-row.two-uneven{ grid-template-columns:1fr; aspect-ratio:auto; }
     .photo-tour-row.two img, .photo-tour-row.two-uneven img{ aspect-ratio:2/1; height:auto; }
+
+    /* The masonry/aspect-ratio-wrapper layout (Living room, Kitchenette,
+       Bathroom, Exterior, Neighborhood) was hand-tuned pixel-by-pixel for the
+       722px desktop grid, including fixed-pixel gaps inside percentage-based
+       calc() heights for stacked tiles. That math doesn't hold up when
+       squeezed into a narrow mobile column, so on mobile we bypass it
+       entirely and stack every photo full-width, one per row. */
+    .photo-tour-row-wrap{ height:auto !important; padding-top:0 !important; margin-bottom:14px; }
+    .photo-tour-row-wrap:last-child{ margin-bottom:0; }
+    .photo-tour-row-wrap .photo-tour-row{
+      position:static !important; flex-direction:column; gap:14px;
+    }
+    .photo-tour-row-wrap .photo-tour-row .pt-stack{
+      width:100% !important; height:auto; flex-direction:column; gap:14px;
+    }
+    .photo-tour-row-wrap .photo-tour-row .pt-tile{
+      width:100% !important; height:auto !important;
+    }
+    .photo-tour-row-wrap .photo-tour-row .pt-tile img,
+    .photo-tour-row-wrap .photo-tour-row > img{
+      width:100% !important; height:auto; aspect-ratio:4/3; object-fit:cover;
+    }
   }
 
 
