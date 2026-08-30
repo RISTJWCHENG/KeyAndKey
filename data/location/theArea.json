@@ -112,6 +112,14 @@
         "walk": "13 min",
         "publicTransport": "10 min",
         "mapLink": "https://maps.app.goo.gl/zsmKkkP9ZoJWUfr16"
+      },
+      {
+        "name": "Congress Column",
+        "description": "A historic Brussels monument commemorating Belgium’s independence and Constitution, crowned by a statue of King Leopold I and home to the Tomb of the Unknown Soldier.",
+        "distance": "400 m",
+        "walk": "5 min",
+        "publicTransport": "5 min",
+        "mapLink": "https://maps.app.goo.gl/pGycMQq5kbnCzHDs5"
       }
     ],
 
