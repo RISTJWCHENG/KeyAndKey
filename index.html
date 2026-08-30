@@ -1089,10 +1089,12 @@
     .hero-grid{ grid-template-columns:1fr; gap:36px; }
     .hero-key{ justify-self:start; width:120px; }
     .keys-grid{ grid-template-columns:1fr; gap:36px; }
-    .key-divider{ font-size:48px; }
-    .key-divider::before, .key-divider::after{ height:28px; }
-    .key-divider::before{ margin-bottom:10px; }
-    .key-divider::after{ margin-top:10px; }
+    .key-divider{ font-size:48px; width:fit-content; margin:0 auto; }
+    .key-divider::before, .key-divider::after{
+      left:auto; top:50%; width:60px; height:1px; transform:translateY(-50%);
+    }
+    .key-divider::before{ right:100%; bottom:auto; margin-bottom:0; margin-right:16px; }
+    .key-divider::after{ left:100%; top:50%; margin-top:0; margin-left:16px; }
     .split-grid{ grid-template-columns:1fr; gap:20px; }
     .fob-grid{ grid-template-columns:1fr; }
     .location-grid{ grid-template-columns:1fr; gap:44px; }
@@ -1527,7 +1529,7 @@ c2 132 -1 240 -7 270 -28 128 -158 199 -284 154z"/><path d="M3605 3181 c-44 -20 -
       <div class="reveal">
         <div class="addr-block">
           <div class="addr area-subheading area-subheading-row">
-            <img class="area-subheading-icon" src="https://pub-6b46fd29ec2c4176b76828bf1155b68a.r2.dev/icons/landmarks%20_icon.png" alt="">
+            <img class="area-subheading-icon" id="iconLocalLandmarks" src="" alt="">
             <span>Local Landmarks &amp; Attractions</span>
           </div>
         </div>
@@ -1543,7 +1545,7 @@ c2 132 -1 240 -7 270 -28 128 -158 199 -284 154z"/><path d="M3605 3181 c-44 -20 -
       <div class="reveal">
         <div class="addr-block">
           <div class="addr area-subheading area-subheading-row">
-            <img class="area-subheading-icon" src="https://pub-6b46fd29ec2c4176b76828bf1155b68a.r2.dev/icons/publicTransportation_icon.png" alt="">
+            <img class="area-subheading-icon" id="iconTransportation" src="" alt="">
             <span>Transportation</span>
           </div>
         </div>
@@ -1553,7 +1555,7 @@ c2 132 -1 240 -7 270 -28 128 -158 199 -284 154z"/><path d="M3605 3181 c-44 -20 -
       <div class="reveal">
         <div class="addr-block">
           <div class="addr area-subheading area-subheading-row">
-            <img class="area-subheading-icon" src="https://pub-6b46fd29ec2c4176b76828bf1155b68a.r2.dev/icons/food%26drink_icon.png" alt="">
+            <img class="area-subheading-icon" id="iconFoodDrink" src="" alt="">
             <span>Food &amp; Drink</span>
           </div>
         </div>
@@ -1563,7 +1565,7 @@ c2 132 -1 240 -7 270 -28 128 -158 199 -284 154z"/><path d="M3605 3181 c-44 -20 -
       <div class="reveal">
         <div class="addr-block">
           <div class="addr area-subheading area-subheading-row">
-            <img class="area-subheading-icon" src="https://pub-6b46fd29ec2c4176b76828bf1155b68a.r2.dev/icons/shops%26convenience_icon.png" alt="">
+            <img class="area-subheading-icon" id="iconShopsConvenience" src="" alt="">
             <span>Shops &amp; Convenience</span>
           </div>
         </div>
@@ -1573,7 +1575,7 @@ c2 132 -1 240 -7 270 -28 128 -158 199 -284 154z"/><path d="M3605 3181 c-44 -20 -
       <div class="reveal">
         <div class="addr-block">
           <div class="addr area-subheading area-subheading-row">
-            <img class="area-subheading-icon" src="https://pub-6b46fd29ec2c4176b76828bf1155b68a.r2.dev/icons/Laundromats_icon.png" alt="">
+            <img class="area-subheading-icon" id="iconLaundromats" src="" alt="">
             <span>Laundromats</span>
           </div>
         </div>
@@ -1582,7 +1584,7 @@ c2 132 -1 240 -7 270 -28 128 -158 199 -284 154z"/><path d="M3605 3181 c-44 -20 -
       <div class="reveal">
         <div class="addr-block">
           <div class="addr area-subheading area-subheading-row">
-            <img class="area-subheading-icon" src="https://pub-6b46fd29ec2c4176b76828bf1155b68a.r2.dev/icons/publicParking_icon.png" alt="">
+            <img class="area-subheading-icon" id="iconPublicParking" src="" alt="">
             <span>Public Parking (24/7)</span>
           </div>
         </div>
@@ -3877,6 +3879,28 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
         updateLastVisibleBorder();
       })
       .catch(() => { /* theArea.json unavailable — Location lists stay empty */ });
+
+    // Category icons — loaded from data/location/iconsArea.json so the icon
+    // image for each category can be swapped without touching this page's code.
+    const iconTargets = {
+      'Local Landmarks & Attractions': 'iconLocalLandmarks',
+      'Transportation': 'iconTransportation',
+      'Food & Drink': 'iconFoodDrink',
+      'Shops & Convenience': 'iconShopsConvenience',
+      'Laundromats': 'iconLaundromats',
+      'Public Parking': 'iconPublicParking'
+    };
+    fetch('data/location/iconsArea.json', { cache: 'no-store' })
+      .then((res) => { if (!res.ok) throw new Error('iconsArea.json request failed'); return res.json(); })
+      .then((icons) => {
+        if (!icons) return;
+        Object.keys(iconTargets).forEach((categoryKey) => {
+          const url = icons[categoryKey];
+          const img = document.getElementById(iconTargets[categoryKey]);
+          if (img && typeof url === 'string' && url) img.src = url;
+        });
+      })
+      .catch(() => { /* iconsArea.json unavailable — icons stay blank */ });
   })();
 
   // Book Your Stay Now info modal
