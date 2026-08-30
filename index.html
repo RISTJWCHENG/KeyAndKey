@@ -4106,10 +4106,15 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
     // .nav mid-scroll would carry the open menu and its close button off
     // screen with it, making the menu impossible to dismiss)
     nav.classList.toggle('scrolled', y > 40);
-    if (heroSoundToggleEl) heroSoundToggleEl.classList.toggle('nav-visible', y > 40 && heroInView);
     if (!reduceMotion && !navLinks.classList.contains('open')) {
       if (y > lastY && y > 160) nav.classList.add('hide');
       else nav.classList.remove('hide');
+    }
+    // Sound button only shows when: nav is opaque, still within Home, AND
+    // the nav bar itself isn't currently hidden (scrolled-down auto-hide) —
+    // if the nav is off-screen, the button should never show either.
+    if (heroSoundToggleEl) {
+      heroSoundToggleEl.classList.toggle('nav-visible', y > 40 && heroInView && !nav.classList.contains('hide'));
     }
     lastY = y;
 
