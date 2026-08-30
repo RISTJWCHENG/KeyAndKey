@@ -1366,7 +1366,7 @@
             <line x1="38" y1="42" x2="85" y2="42" stroke="#c69a5a" stroke-width="5"/>
           </svg>
         </div>
-        <div class="fob-tag">TAG N&deg;01</div>
+        <div class="fob-tag">TAG N&deg;10 &middot; F&deg;00</div>
         <h3 style="font-size:21px;">Duplex Apartment</h3>
         <div class="fob-loc">Ground Floor (Level 0) &middot; Entire rental unit in the heart of Brussels, Belgium</div>
         <div class="fob-amenities">
@@ -1423,7 +1423,7 @@ c2 132 -1 240 -7 270 -28 128 -158 199 -284 154z"/><path d="M3605 3181 c-44 -20 -
             <line x1="38" y1="42" x2="85" y2="42" stroke="#c69a5a" stroke-width="5"/>
           </svg>
         </div>
-        <div class="fob-tag">TAG N&deg;02</div>
+        <div class="fob-tag">TAG N&deg;10 &middot; F&deg;01</div>
         <h3 style="font-size:21px;">Duplex Apartment</h3>
         <div class="fob-loc">First Floor (Level 1) &middot; Entire rental unit in the heart of Brussels, Belgium</div>
         <div class="fob-amenities">
@@ -1480,7 +1480,7 @@ c2 132 -1 240 -7 270 -28 128 -158 199 -284 154z"/><path d="M3605 3181 c-44 -20 -
             <line x1="50" y1="15" x2="50" y2="85" stroke="#c69a5a" stroke-width="5"/>
           </svg>
         </div>
-        <div class="fob-tag">TAG N&deg;03</div>
+        <div class="fob-tag">TAG N&deg;10 &middot; F&deg;02</div>
         <h3 style="font-size:21px;">Two Bedrooms Apartment</h3>
         <div class="fob-loc">Second Floor (Level 2) &middot; Entire rental unit in the heart of Brussels, Belgium</div>
         <div class="fob-amenities">
@@ -3575,18 +3575,18 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
   // are loaded from data/properties/tagNN.json — the layout/markup stays
   // fixed (hand-tuned masonry proportions), only the photo/video URLs are
   // swapped in from the JSON. If a tag's JSON file doesn't exist yet (e.g.
-  // tag02.json / tag03.json not created), whatever is currently shown stays
+  // tagN10F01.json / tagN10F02.json not created), whatever is currently shown stays
   // on screen — which today is TAG N°01's photos, exactly as requested.
   (function(){
     const tagSources = {
-      'TAG N\u00b001': 'data/properties/tag01.json',
-      'TAG N\u00b002': 'data/properties/tag02.json',
-      'TAG N\u00b003': 'data/properties/tag03.json'
+      'TAG N\u00b010 \u00b7 F\u00b000': 'data/properties/tagN10F00.json',
+      'TAG N\u00b010 \u00b7 F\u00b001': 'data/properties/tagN10F01.json',
+      'TAG N\u00b010 \u00b7 F\u00b002': 'data/properties/tagN10F02.json'
     };
     const openButtons = [
-      { el: document.getElementById('viewDetailsGroundFloor'), tag: 'TAG N\u00b001' },
-      { el: document.getElementById('viewDetailsFirstFloor'), tag: 'TAG N\u00b002' },
-      { el: document.getElementById('viewDetailsSecondFloor'), tag: 'TAG N\u00b003' }
+      { el: document.getElementById('viewDetailsGroundFloor'), tag: 'TAG N\u00b010 \u00b7 F\u00b000' },
+      { el: document.getElementById('viewDetailsFirstFloor'), tag: 'TAG N\u00b010 \u00b7 F\u00b001' },
+      { el: document.getElementById('viewDetailsSecondFloor'), tag: 'TAG N\u00b010 \u00b7 F\u00b002' }
     ].filter((b) => b.el);
     const backBtn = document.getElementById('photoTourBack');
     const page = document.getElementById('photoTourPage');
@@ -3598,26 +3598,26 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
     // Accommodates summary is short enough to keep hardcoded here rather than
     // in the JSON files — one entry per tag.
     const accommodatesByTag = {
-      'TAG N\u00b001': '4 guests maximum \u00b7 1 bedroom \u00b7 3 beds<span class="pt-accommodates-detail">(1 double bed, 1 single bed, 1 sofa bed)</span> \u00b7 1 bath',
-      'TAG N\u00b002': '4 guests maximum \u00b7 1 bedroom \u00b7 3 beds<span class="pt-accommodates-detail">(1 double bed, 1 single bed, 1 sofa bed)</span> \u00b7 1 bath',
-      'TAG N\u00b003': '3 guests maximum \u00b7 2 bedroom \u00b7 3 beds<span class="pt-accommodates-detail">(2 single bed in first room, 1 single bed in second room)</span> \u00b7 1 bath'
+      'TAG N\u00b010 \u00b7 F\u00b000': '4 guests maximum \u00b7 1 bedroom \u00b7 3 beds<span class="pt-accommodates-detail">(1 double bed, 1 single bed, 1 sofa bed)</span> \u00b7 1 bath',
+      'TAG N\u00b010 \u00b7 F\u00b001': '4 guests maximum \u00b7 1 bedroom \u00b7 3 beds<span class="pt-accommodates-detail">(1 double bed, 1 single bed, 1 sofa bed)</span> \u00b7 1 bath',
+      'TAG N\u00b010 \u00b7 F\u00b002': '3 guests maximum \u00b7 2 bedroom \u00b7 3 beds<span class="pt-accommodates-detail">(2 single bed in first room, 1 single bed in second room)</span> \u00b7 1 bath'
     };
 
     // "Where you'll sleep" room names/bed descriptions — also short enough to
     // keep hardcoded here rather than in the JSON files. One array per tag;
     // fewer than 3 entries hides the remaining sleep card(s) for that tag.
     const sleepInfoByTag = {
-      'TAG N\u00b001': [
+      'TAG N\u00b010 \u00b7 F\u00b000': [
         { name: 'Bedroom', beds: '1 double bed' },
         { name: 'Bedroom', beds: '1 single bed' },
         { name: 'Living Room', beds: '1 sofa bed' }
       ],
-      'TAG N\u00b002': [
+      'TAG N\u00b010 \u00b7 F\u00b001': [
         { name: 'Bedroom', beds: '1 double bed' },
         { name: 'Living Room', beds: '1 single bed' },
         { name: 'Living Room', beds: '1 sofa bed' }
       ],
-      'TAG N\u00b003': [
+      'TAG N\u00b010 \u00b7 F\u00b002': [
         { name: 'Bedroom 1', beds: '2 single bed' },
         { name: 'Bedroom 2', beds: '1 single bed' }
       ]
