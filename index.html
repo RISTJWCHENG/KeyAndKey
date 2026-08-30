@@ -2158,21 +2158,21 @@ l2199 0 0 -1322z"/><path d="M2600 3058 c-52 -36 -65 -50 -85 -97 -13 -29 -15 -140
 
         <div class="pt-info-block">
           <h3>Where you&rsquo;ll sleep</h3>
-          <div class="pt-sleep-row">
-            <div class="pt-sleep-card">
+          <div class="pt-sleep-row" id="ptSleepRow">
+            <div class="pt-sleep-card" id="ptSleepCard1">
               <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='3' viewBox='0 0 4 3'%3E%3Crect width='4' height='3' fill='%2316261d'/%3E%3C/svg%3E" alt="Bedroom">
-              <div class="pt-sleep-name">Bedroom</div>
-              <div class="pt-sleep-beds">1 double bed</div>
+              <div class="pt-sleep-name" id="ptSleepName1">Bedroom</div>
+              <div class="pt-sleep-beds" id="ptSleepBeds1">1 double bed</div>
             </div>
-            <div class="pt-sleep-card">
+            <div class="pt-sleep-card" id="ptSleepCard2">
               <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='3' viewBox='0 0 4 3'%3E%3Crect width='4' height='3' fill='%2316261d'/%3E%3C/svg%3E" alt="Bedroom">
-              <div class="pt-sleep-name">Bedroom</div>
-              <div class="pt-sleep-beds">1 single bed</div>
+              <div class="pt-sleep-name" id="ptSleepName2">Bedroom</div>
+              <div class="pt-sleep-beds" id="ptSleepBeds2">1 single bed</div>
             </div>
-            <div class="pt-sleep-card">
+            <div class="pt-sleep-card" id="ptSleepCard3">
               <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='4' height='3' viewBox='0 0 4 3'%3E%3Crect width='4' height='3' fill='%2316261d'/%3E%3C/svg%3E" alt="Living Room">
-              <div class="pt-sleep-name">Living Room</div>
-              <div class="pt-sleep-beds">1 sofa bed</div>
+              <div class="pt-sleep-name" id="ptSleepName3">Living Room</div>
+              <div class="pt-sleep-beds" id="ptSleepBeds3">1 sofa bed</div>
             </div>
           </div>
         </div>
@@ -3289,6 +3289,19 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
 <script>
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  // Prevent pinch-zoom. iOS Safari deliberately ignores the viewport meta
+  // tag's user-scalable=no/maximum-scale (an intentional accessibility
+  // protection since iOS 10 that pages can't override via the meta tag), so
+  // blocking it reliably requires intercepting the actual gesture events.
+  ['gesturestart', 'gesturechange', 'gestureend'].forEach((evt) => {
+    document.addEventListener(evt, (e) => e.preventDefault());
+  });
+  // Second layer for browsers that report pinch via multi-touch touchmove
+  // instead of (or in addition to) the gesture events above.
+  document.addEventListener('touchmove', (e) => {
+    if (e.touches && e.touches.length > 1) e.preventDefault();
+  }, { passive: false });
+
   // Shared body-scroll lock for full-page overlays (Explore, Photo Tour).
   // Pins the body via position:fixed rather than overflow:hidden — hidden
   // alone doesn't reliably stop the underlying page from being scrollable/
@@ -3590,6 +3603,44 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
       'TAG N\u00b003': '3 guests maximum \u00b7 2 bedroom \u00b7 3 beds<span class="pt-accommodates-detail">(2 single bed in first room, 1 single bed in second room)</span> \u00b7 1 bath'
     };
 
+    // "Where you'll sleep" room names/bed descriptions — also short enough to
+    // keep hardcoded here rather than in the JSON files. One array per tag;
+    // fewer than 3 entries hides the remaining sleep card(s) for that tag.
+    const sleepInfoByTag = {
+      'TAG N\u00b001': [
+        { name: 'Bedroom', beds: '1 double bed' },
+        { name: 'Bedroom', beds: '1 single bed' },
+        { name: 'Living Room', beds: '1 sofa bed' }
+      ],
+      'TAG N\u00b002': [
+        { name: 'Bedroom', beds: '1 double bed' },
+        { name: 'Living Room', beds: '1 single bed' },
+        { name: 'Living Room', beds: '1 sofa bed' }
+      ],
+      'TAG N\u00b003': [
+        { name: 'Bedroom 1', beds: '2 single bed' },
+        { name: 'Bedroom 2', beds: '1 single bed' }
+      ]
+    };
+
+    function applySleepInfo(tag){
+      const rooms = sleepInfoByTag[tag] || [];
+      for (let i = 1; i <= 3; i++) {
+        const card = document.getElementById('ptSleepCard' + i);
+        const nameEl = document.getElementById('ptSleepName' + i);
+        const bedsEl = document.getElementById('ptSleepBeds' + i);
+        const room = rooms[i - 1];
+        if (!card) continue;
+        if (room) {
+          card.style.display = '';
+          if (nameEl) nameEl.textContent = room.name;
+          if (bedsEl) bedsEl.textContent = room.beds;
+        } else {
+          card.style.display = 'none';
+        }
+      }
+    }
+
     // Maps each photo section's id to the matching key in JSON's view.photos.
     const sectionPhotoKeys = {
       'pt-living': 'livingRoom',
@@ -3668,6 +3719,7 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
         if (viewTagLabel) viewTagLabel.textContent = tag;
         if (infoTagLabel) infoTagLabel.textContent = tag;
         if (accommodatesEl && accommodatesByTag[tag]) accommodatesEl.innerHTML = accommodatesByTag[tag];
+        applySleepInfo(tag);
         page.classList.add('open');
         page.setAttribute('aria-hidden', 'false');
         page.scrollTop = 0;
