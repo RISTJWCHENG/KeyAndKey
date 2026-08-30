@@ -92,26 +92,26 @@
       {
         "name": "Palace of Justice",
         "description": "A monumental 19th-century courthouse, one of the largest buildings constructed anywhere in the world in its era.",
-        "distance": "730 m",
-        "walk": "9 min",
-        "publicTransport": "42 min",
+        "distance": "1.7 km",
+        "walk": "24 min",
+        "publicTransport": "11 min",
         "mapLink": "https://www.google.com/maps/search/?api=1&query=Palace+of+Justice+Brussels"
       },
       {
         "name": "European Commission",
         "description": "The executive branch of the European Union, headquartered in the Berlaymont building in the European Quarter.",
-        "distance": "20 m",
-        "walk": "9 min",
-        "publicTransport": "4 min",
-        "mapLink": "https://www.google.com/maps/search/?api=1&query=European+Commission+Berlaymont+Brussels"
+        "distance": "1.6 km",
+        "walk": "22 min",
+        "publicTransport": "13 min",
+        "mapLink": "https://maps.app.goo.gl/V6KydF7CT3KcZH5c6"
       },
       {
         "name": "Bourse (Brussels Stock Exchange)",
         "description": "Brussels' former stock exchange building, a 19th-century landmark now home to a beer museum and event space.",
-        "distance": "1.2 km",
-        "walk": "15 min",
-        "publicTransport": "44 min",
-        "mapLink": "https://maps.app.goo.gl/1T7pRJKWbi3jJ8S36"
+        "distance": "1 km",
+        "walk": "13 min",
+        "publicTransport": "10 min",
+        "mapLink": "https://maps.app.goo.gl/zsmKkkP9ZoJWUfr16"
       }
     ],
 
