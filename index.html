@@ -3289,6 +3289,37 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
 <script>
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+  // Shared body-scroll lock for full-page overlays (Explore, Photo Tour).
+  // Pins the body via position:fixed rather than overflow:hidden — hidden
+  // alone doesn't reliably stop the underlying page from being scrollable/
+  // showing its own scrollbar on mobile, which is why two scrollbars could
+  // appear side by side (one for the overlay's own scroll area, one for the
+  // page still scrolling underneath it).
+  let bodyLockCount = 0;
+  let bodyLockScrollY = 0;
+  function lockBodyScroll(){
+    if (bodyLockCount === 0) {
+      bodyLockScrollY = window.scrollY;
+      document.body.style.position = 'fixed';
+      document.body.style.top = -bodyLockScrollY + 'px';
+      document.body.style.left = '0';
+      document.body.style.right = '0';
+      document.body.style.width = '100%';
+    }
+    bodyLockCount++;
+  }
+  function unlockBodyScroll(){
+    bodyLockCount = Math.max(0, bodyLockCount - 1);
+    if (bodyLockCount === 0) {
+      document.body.style.position = '';
+      document.body.style.top = '';
+      document.body.style.left = '';
+      document.body.style.right = '';
+      document.body.style.width = '';
+      window.scrollTo({ top: bodyLockScrollY, left: 0, behavior: 'instant' });
+    }
+  }
+
   // Several sections have decorative CSS animations set to run "infinite" —
   // fine while on screen, wasteful (and a real contributor to phone heat/
   // battery drain) if left running in the background after the user has
@@ -3475,12 +3506,12 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
       page.classList.add('open');
       page.setAttribute('aria-hidden', 'false');
       page.scrollTop = 0;
-      document.body.style.overflow = 'hidden';
+      lockBodyScroll();
     }
     function closePage(){
       page.classList.remove('open');
       page.setAttribute('aria-hidden', 'true');
-      document.body.style.overflow = '';
+      unlockBodyScroll();
     }
     openBtn.addEventListener('click', openPage);
     if (backBtn) backBtn.addEventListener('click', closePage);
@@ -3640,14 +3671,14 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
         page.classList.add('open');
         page.setAttribute('aria-hidden', 'false');
         page.scrollTop = 0;
-        document.body.style.overflow = 'hidden';
+        lockBodyScroll();
         fetchAndApply(tag);
       };
     }
     function closePage(){
       page.classList.remove('open');
       page.setAttribute('aria-hidden', 'true');
-      document.body.style.overflow = '';
+      unlockBodyScroll();
       const stickyNav = document.getElementById('photoTourNavSticky');
       if (stickyNav) stickyNav.classList.remove('visible');
     }
