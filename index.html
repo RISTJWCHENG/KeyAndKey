@@ -89,8 +89,7 @@
   }
   .nav.hide{ transform:translateY(-100%); }
   .nav.scrolled{
-    background:rgba(16,28,22,0.88);
-    backdrop-filter:blur(10px);
+    background:rgba(16,28,22,0.96);
     border-bottom:var(--edge);
     padding:14px 0;
   }
@@ -310,6 +309,7 @@
     .hero-meta-rotator .hero-meta-item.rotator-active{ display:block; }
   }
   .hero-cta-row{ display:flex; gap:16px; margin-top:44px; flex-wrap:wrap; }
+  .hero-cta-row-home .btn{ width:196px; justify-content:center; }
 
   .scroll-cue{
     position:absolute; left:32px; bottom:40px; display:flex; flex-direction:column; align-items:center; gap:12px; z-index:2;
@@ -799,7 +799,7 @@
   }
   .explore-page.open{ transform:translateX(0); }
   .explore-page-header{
-    position:sticky; top:0; z-index:2; background:rgba(16,28,22,0.92); backdrop-filter:blur(8px);
+    position:sticky; top:0; z-index:2; background:rgba(16,28,22,0.98);
     border-bottom:var(--edge); padding:24px 0;
   }
   .back-btn{
@@ -853,7 +853,7 @@
   }
   .photo-tour-page.open{ transform:translateX(0); }
   .photo-tour-header{
-    position:sticky; top:0; z-index:2; background:rgba(16,28,22,0.92); backdrop-filter:blur(8px);
+    position:sticky; top:0; z-index:2; background:rgba(16,28,22,0.98);
     border-bottom:var(--edge); padding:24px 0;
   }
   .photo-tour-header-inner{ display:flex; align-items:center; justify-content:space-between; }
@@ -1225,9 +1225,11 @@
       <div>
         <h1 class="hero-title hero-title-rotator" id="heroTitleRotator"><span class="hero-line hero-line-nowrap hero-line-gold is-active" data-line="1">One <em class="key-door">key</em> for the <em class="key-door">door</em>.</span><span class="hero-line hero-line-nowrap hero-line-teal" data-line="2">One <em class="key-city">key</em> to the <em class="key-city">city</em>.</span></h1>
         <p class="hero-sub">Key&amp;Key Property manages passworld self-check-in short-term stays and long-term residences from a central Brussels address — just steps from the Royal Palace and Parliament, with many of the city&rsquo;s iconic landmarks and must-see attractions within easy walking distance.</p>
-        <div class="hero-cta-row">
+        <div class="hero-cta-row hero-cta-row-home">
           <a href="#stays" class="btn btn-solid">View the stays</a>
-          <a href="#contact" class="btn btn-ghost">Let's Connect</a>
+          <a href="#contact" class="btn btn-ghost">Let's Connect
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
         </div>
       </div>
       <div class="hero-key-wrap" id="heroKeyWrap">
@@ -4209,6 +4211,7 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
   const heroSoundToggleEl = document.getElementById('heroSoundToggle');
   let heroInView = true;
   pauseAnimationsWhenOffscreen(document.getElementById('keys'));
+  pauseAnimationsWhenOffscreen(document.getElementById('stays'));
   pauseAnimationsWhenOffscreen(document.getElementById('landmarksToggleBtn'));
   pauseAnimationsWhenOffscreen(document.getElementById('location'));
   pauseAnimationsWhenOffscreen(document.getElementById('explore'));
