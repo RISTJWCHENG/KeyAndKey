@@ -3924,7 +3924,7 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
 
     const dockObserver = new IntersectionObserver((entries) => {
       entries.forEach(entry => {
-        const shouldShow = !entry.isIntersecting && entry.boundingClientRect.top < 0 && panelView.classList.contains('active');
+        const shouldShow = page.classList.contains('open') && !entry.isIntersecting && entry.boundingClientRect.top < 0 && panelView.classList.contains('active');
         stickyNav.classList.toggle('visible', shouldShow);
       });
     }, { root: page, threshold: 0 });
