@@ -987,6 +987,34 @@
   .photo-tour-grid{ flex:0 0 722px; width:722px; max-width:722px; min-width:0; display:flex; flex-direction:column; gap:14px; }
   .photo-tour-row{ display:grid; gap:14px; }
   .photo-tour-row-wrap{ position:relative; width:100%; height:0; }
+  /* Simple, robust fallback layout for an incomplete category's surviving
+     row-wrap(s) — same technique as the mobile single-column layout, but
+     applied via class so it works identically at ANY viewport width. Used
+     instead of trying to preserve/rescale the hand-tuned masonry ratios,
+     which proved unreliable to normalize consistently. */
+  .photo-tour-row-wrap.pt-simple-fallback{
+    height:auto !important; padding-top:0 !important;
+  }
+  .photo-tour-row-wrap.pt-simple-fallback .photo-tour-row{
+    position:static !important; top:auto !important; right:auto !important;
+    bottom:auto !important; left:auto !important;
+    display:flex !important; flex-direction:column !important; gap:14px !important;
+    width:100% !important; max-width:100% !important; box-sizing:border-box;
+  }
+  .photo-tour-row-wrap.pt-simple-fallback .photo-tour-row .pt-stack{
+    width:100% !important; max-width:100% !important; height:auto !important;
+    flex-direction:column !important; gap:14px !important; box-sizing:border-box;
+  }
+  .photo-tour-row-wrap.pt-simple-fallback .photo-tour-row .pt-tile{
+    width:100% !important; max-width:100% !important; height:auto !important;
+    box-sizing:border-box; min-height:220px;
+  }
+  .photo-tour-row-wrap.pt-simple-fallback .photo-tour-row .pt-tile img,
+  .photo-tour-row-wrap.pt-simple-fallback .photo-tour-row > img{
+    width:100% !important; max-width:100% !important; height:auto !important;
+    object-fit:cover; box-sizing:border-box; display:block !important;
+    min-height:220px;
+  }
   .photo-tour-row-wrap .photo-tour-row{ position:absolute; top:0; right:0; bottom:0; left:0; display:flex; gap:14px; }
   .photo-tour-row-wrap .photo-tour-row .pt-tile{ height:100%; border-radius:12px; overflow:hidden; }
   .photo-tour-row-wrap .photo-tour-row .pt-tile img{ width:100%; height:100%; display:block; }
@@ -3600,14 +3628,6 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
   // tagN10F01.json / tagN10F02.json not created), whatever is currently shown stays
   // on screen — which today is TAG N°01's photos, exactly as requested.
   (function(){
-    // Matches the mobile breakpoint where the masonry layout is bypassed
-    // entirely in favor of a simple single-column stack (see the
-    // max-width:700px block in <style>). Used below to skip the desktop-only
-    // pixel-based row normalization when in that mode — applying both at
-    // once caused the two to conflict in the narrow zone right around this
-    // breakpoint (e.g. with devtools docked open shrinking the viewport).
-    const mobilePhotoQuery = window.matchMedia('(max-width: 700px)');
-
     const tagSources = {
       'TAG N\u00b010 \u00b7 F\u00b000': 'data/properties/tagN10F00.json',
       'TAG N\u00b010 \u00b7 F\u00b001': 'data/properties/tagN10F01.json',
@@ -3756,6 +3776,7 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
           row.style.display = '';
           row.style.paddingTop = row.dataset.origPaddingTop;
           row.style.height = '';
+          row.classList.remove('pt-simple-fallback');
         });
 
         if (!Array.isArray(urls) || !urls.length) return;
@@ -3766,7 +3787,11 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
         const categoryIncomplete = urls.length < imgs.length;
 
         // Collapse any row/row-wrap whose every image ended up hidden, so no
-        // empty gap is left in the stacked mobile layout.
+        // empty gap is left in the stacked layout. Any surviving row-wrap in
+        // an incomplete category switches to the simple, proven single-
+        // column fallback layout (same technique used on mobile) instead of
+        // trying to rescale its hand-tuned masonry ratio, which repeatedly
+        // proved unreliable to normalize consistently across viewport sizes.
         section.querySelectorAll('.photo-tour-row-wrap').forEach((wrap) => {
           const rowImgs = wrap.querySelectorAll('img');
           const visibleImgs = Array.from(rowImgs).filter((img) => {
@@ -3776,26 +3801,11 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
           });
           if (!visibleImgs.length) {
             wrap.style.display = 'none';
-          } else if (categoryIncomplete && !mobilePhotoQuery.matches) {
-            // Every surviving row-wrap's padding-top ratio was hand-tuned
-            // assuming the category's full photo set — including whichever
-            // sibling row-wraps just got hidden above — would all render
-            // together. A category with fewer photos than that full set
-            // means a tall/portrait survivor was designed to be visually
-            // balanced by content that's no longer there. Rather than swap
-            // in a different padding-top percentage (which depends on the
-            // browser correctly recomputing a percentage-based box against
-            // width after a JS mutation — inconsistent enough across
-            // browsers to be the suspected cause of a persistent layout gap
-            // bug), measure the row's actual current width directly and set
-            // an explicit pixel height for a standard 3:2 photo ratio.
-            // Desktop only — mobile's own CSS already handles this case.
-            const ratio = parseFloat(wrap.dataset.origPaddingTop) || 0;
-            if (ratio > 66.67) {
-              const w = wrap.getBoundingClientRect().width;
-              wrap.style.paddingTop = '0px';
-              wrap.style.height = Math.round(w * 0.6667) + 'px';
-            }
+            wrap.classList.remove('pt-simple-fallback');
+          } else if (categoryIncomplete) {
+            wrap.classList.add('pt-simple-fallback');
+          } else {
+            wrap.classList.remove('pt-simple-fallback');
           }
         });
         section.querySelectorAll('.photo-tour-row.full, .photo-tour-row.two, .photo-tour-row.two-uneven').forEach((row) => {
