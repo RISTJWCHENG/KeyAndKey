@@ -1001,8 +1001,10 @@
     .photo-tour-section{ flex-direction:column; gap:14px; }
     .photo-tour-label{ position:static !important; top:auto !important; flex:none !important; margin-bottom:4px; }
     .photo-tour-grid{ width:100% !important; max-width:100% !important; flex:1 1 auto; box-sizing:border-box; }
-    .photo-tour-row.two, .photo-tour-row.two-uneven{ grid-template-columns:1fr; aspect-ratio:auto; }
-    .photo-tour-row.two img, .photo-tour-row.two-uneven img{ height:auto; }
+    .photo-tour-row.full, .photo-tour-row.two, .photo-tour-row.two-uneven{
+      grid-template-columns:1fr; aspect-ratio:auto; min-height:220px;
+    }
+    .photo-tour-row.full img, .photo-tour-row.two img, .photo-tour-row.two-uneven img{ height:auto; min-height:220px; }
 
     /* Category thumbnail strip: fixed 3-columns x 2-rows grid instead of the
        flex-wrap layout, which wrapped inconsistently depending on exact
@@ -1024,12 +1026,14 @@
     .photo-tour-row-wrap{
       height:auto !important; padding-top:0 !important;
       width:100% !important; max-width:100% !important; box-sizing:border-box;
+      min-height:220px;
     }
     .photo-tour-row-wrap .photo-tour-row{
       position:static !important;
       top:auto !important; right:auto !important; bottom:auto !important; left:auto !important;
       display:flex !important; flex-direction:column !important; gap:14px !important;
       width:100% !important; max-width:100% !important; box-sizing:border-box;
+      min-height:220px;
     }
     .photo-tour-row-wrap .photo-tour-row .pt-stack{
       width:100% !important; max-width:100% !important; height:auto !important;
@@ -1037,11 +1041,13 @@
     }
     .photo-tour-row-wrap .photo-tour-row .pt-tile{
       width:100% !important; max-width:100% !important; height:auto !important; box-sizing:border-box;
+      min-height:220px;
     }
     .photo-tour-row-wrap .photo-tour-row .pt-tile img,
     .photo-tour-row-wrap .photo-tour-row > img{
       width:100% !important; max-width:100% !important; height:auto !important;
       object-fit:cover; box-sizing:border-box; display:block !important;
+      min-height:220px;
     }
   }
 
@@ -2161,7 +2167,7 @@ l2199 0 0 -1322z"/><path d="M2600 3058 c-52 -36 -65 -50 -85 -97 -13 -29 -15 -140
       </div>
 
       <div class="pt-panel" id="ptInfoPanel">
-        <div class="photo-tour-title"><span id="ptInfoTagLabel" style="color:var(--brass-light);">TAG N&deg;01</span> &mdash; Information</div>
+        <div class="photo-tour-title"><span id="ptInfoTagLabel" style="color:var(--brass-light);">TAG N&deg;01</span> &mdash; Info</div>
 
         <div class="pt-info-block">
           <h3>Accommodates</h3>
@@ -3662,6 +3668,45 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
       'pt-exterior': 'exterior',
       'pt-neighborhood': 'neighborhood'
     };
+    const photoKeyToSectionId = {};
+    Object.keys(sectionPhotoKeys).forEach((id) => { photoKeyToSectionId[sectionPhotoKeys[id]] = id; });
+
+    // Reorders the photo sections (and their matching thumbnail nav links) to
+    // follow the actual key order in the JSON's view.photos object, instead
+    // of always showing the fixed order baked into the static markup.
+    function reorderPhotoSections(photos){
+      const orderedIds = Object.keys(photos)
+        .map((key) => photoKeyToSectionId[key])
+        .filter(Boolean);
+      // Any section whose key the JSON didn't include stays available,
+      // appended after the ones the JSON did specify.
+      Object.keys(sectionPhotoKeys).forEach((id) => {
+        if (orderedIds.indexOf(id) === -1) orderedIds.push(id);
+      });
+
+      const content = document.getElementById('ptPhotosContent');
+      if (content) {
+        orderedIds.forEach((id) => {
+          const section = document.getElementById(id);
+          if (section) content.appendChild(section);
+        });
+      }
+
+      const navStrip = document.querySelector('.photo-tour-nav');
+      if (navStrip) {
+        orderedIds.forEach((id) => {
+          const link = navStrip.querySelector('a[href="#' + id + '"]');
+          if (link) navStrip.appendChild(link);
+        });
+      }
+      const stickyNav = document.getElementById('photoTourNavSticky');
+      if (stickyNav) {
+        orderedIds.forEach((id) => {
+          const link = stickyNav.querySelector('a[data-target="' + id + '"]');
+          if (link) stickyNav.appendChild(link);
+        });
+      }
+    }
 
     // Neutral placeholder — same one baked into the static markup's initial
     // <img> tags — used to clear a slot's image when the current tag doesn't
@@ -3671,6 +3716,7 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
     function applyTagData(data){
       if (!data) return;
       const photos = (data.view && data.view.photos) || {};
+      reorderPhotoSections(photos);
 
       // Fill each section's existing tiles, in order, without altering layout.
       Object.keys(sectionPhotoKeys).forEach((sectionId) => {
