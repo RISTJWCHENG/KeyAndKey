@@ -4,6 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <title>Key & Key — Brussels, Rue de Louvain</title>
+<link rel="icon" type="image/png" href="https://pub-6b46fd29ec2c4176b76828bf1155b68a.r2.dev/Images/KEY%26KEY_favicon.png">
+<link rel="apple-touch-icon" href="https://pub-6b46fd29ec2c4176b76828bf1155b68a.r2.dev/Images/KEY%26KEY_favicon.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=optional" rel="stylesheet">
@@ -3720,13 +3722,53 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
       const photos = (data.view && data.view.photos) || {};
       reorderPhotoSections(photos);
 
-      // Fill each section's existing tiles, in order, without altering layout.
+      // Show exactly as many photo tiles as the JSON provides for each
+      // category — no blank/placeholder-looking boxes for slots the JSON
+      // doesn't fill. Reset first so switching to a tag with MORE photos
+      // than the previous one re-reveals tiles that a prior tag had hidden.
+      function hidePhotoTile(img){
+        const tile = img.closest('.pt-tile');
+        if (tile) tile.style.display = 'none';
+        else img.style.display = 'none';
+      }
       Object.keys(sectionPhotoKeys).forEach((sectionId) => {
         const section = document.getElementById(sectionId);
+        if (!section) return;
         const urls = photos[sectionPhotoKeys[sectionId]];
-        if (!section || !Array.isArray(urls) || !urls.length) return;
         const imgs = section.querySelectorAll('.photo-tour-grid img');
-        imgs.forEach((img, i) => { if (urls[i]) img.src = urls[i]; });
+
+        // Reset: every tile visible before applying this tag's actual count.
+        imgs.forEach((img) => {
+          img.style.display = '';
+          const tile = img.closest('.pt-tile');
+          if (tile) tile.style.display = '';
+        });
+        section.querySelectorAll('.photo-tour-row-wrap, .photo-tour-row.full, .photo-tour-row.two, .photo-tour-row.two-uneven').forEach((row) => {
+          row.style.display = '';
+        });
+
+        if (!Array.isArray(urls) || !urls.length) return;
+        imgs.forEach((img, i) => {
+          if (urls[i]) img.src = urls[i];
+          else hidePhotoTile(img);
+        });
+
+        // Collapse any row/row-wrap whose every image ended up hidden, so no
+        // empty gap is left in the stacked mobile layout.
+        section.querySelectorAll('.photo-tour-row-wrap').forEach((wrap) => {
+          const rowImgs = wrap.querySelectorAll('img');
+          const anyVisible = Array.from(rowImgs).some((img) => {
+            const tile = img.closest('.pt-tile');
+            const el = tile || img;
+            return el.style.display !== 'none';
+          });
+          if (!anyVisible) wrap.style.display = 'none';
+        });
+        section.querySelectorAll('.photo-tour-row.full, .photo-tour-row.two, .photo-tour-row.two-uneven').forEach((row) => {
+          const rowImgs = row.querySelectorAll('img');
+          const anyVisible = Array.from(rowImgs).some((img) => img.style.display !== 'none');
+          if (!anyVisible) row.style.display = 'none';
+        });
       });
 
       // Top nav strip + sticky side nav: cover thumbnail = first photo of each category.
