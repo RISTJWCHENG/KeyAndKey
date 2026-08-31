@@ -3600,6 +3600,14 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
   // tagN10F01.json / tagN10F02.json not created), whatever is currently shown stays
   // on screen — which today is TAG N°01's photos, exactly as requested.
   (function(){
+    // Matches the mobile breakpoint where the masonry layout is bypassed
+    // entirely in favor of a simple single-column stack (see the
+    // max-width:700px block in <style>). Used below to skip the desktop-only
+    // pixel-based row normalization when in that mode — applying both at
+    // once caused the two to conflict in the narrow zone right around this
+    // breakpoint (e.g. with devtools docked open shrinking the viewport).
+    const mobilePhotoQuery = window.matchMedia('(max-width: 700px)');
+
     const tagSources = {
       'TAG N\u00b010 \u00b7 F\u00b000': 'data/properties/tagN10F00.json',
       'TAG N\u00b010 \u00b7 F\u00b001': 'data/properties/tagN10F01.json',
@@ -3747,6 +3755,7 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
           if (row.dataset.origPaddingTop === undefined) row.dataset.origPaddingTop = row.style.paddingTop || '';
           row.style.display = '';
           row.style.paddingTop = row.dataset.origPaddingTop;
+          row.style.height = '';
         });
 
         if (!Array.isArray(urls) || !urls.length) return;
@@ -3767,18 +3776,26 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
           });
           if (!visibleImgs.length) {
             wrap.style.display = 'none';
-          } else if (categoryIncomplete) {
+          } else if (categoryIncomplete && !mobilePhotoQuery.matches) {
             // Every surviving row-wrap's padding-top ratio was hand-tuned
             // assuming the category's full photo set — including whichever
             // sibling row-wraps just got hidden above — would all render
             // together. A category with fewer photos than that full set
-            // means any tall/portrait survivor (ratio > 90%, taller than
-            // square) was designed to be visually balanced by content that's
-            // no longer there, so it gets a standard 3:2 landscape ratio
-            // instead, regardless of whether this row originally held one
-            // image or several.
+            // means a tall/portrait survivor was designed to be visually
+            // balanced by content that's no longer there. Rather than swap
+            // in a different padding-top percentage (which depends on the
+            // browser correctly recomputing a percentage-based box against
+            // width after a JS mutation — inconsistent enough across
+            // browsers to be the suspected cause of a persistent layout gap
+            // bug), measure the row's actual current width directly and set
+            // an explicit pixel height for a standard 3:2 photo ratio.
+            // Desktop only — mobile's own CSS already handles this case.
             const ratio = parseFloat(wrap.dataset.origPaddingTop) || 0;
-            if (ratio > 66.67) wrap.style.paddingTop = '66.67%';
+            if (ratio > 66.67) {
+              const w = wrap.getBoundingClientRect().width;
+              wrap.style.paddingTop = '0px';
+              wrap.style.height = Math.round(w * 0.6667) + 'px';
+            }
           }
         });
         section.querySelectorAll('.photo-tour-row.full, .photo-tour-row.two, .photo-tour-row.two-uneven').forEach((row) => {
