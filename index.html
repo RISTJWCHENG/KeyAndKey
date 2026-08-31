@@ -97,7 +97,7 @@
   }
   .nav-row{ display:flex; align-items:center; justify-content:space-between; }
   .brand{ display:flex; align-items:baseline; gap:10px; font-family:var(--mono); font-size:14px; letter-spacing:0.08em; }
-  .brand-mark{ width:22px; height:22px; object-fit:contain; object-position:bottom; transition:transform 0.1s linear; will-change:transform; }
+  .brand-mark{ width:22px; height:22px; object-fit:contain; object-position:bottom; }
   .brand-name{ text-transform:none; }
   .brand-name b{ color:var(--brass-light); font-weight:500; }
   .brand-suffix{ font-weight:400; letter-spacing:0.02em; color:#000; opacity:1; margin-left:2px; }
@@ -284,9 +284,8 @@
   /* ===================== GUEST REVIEWS (rotating) ===================== */
   .guest-reviews{ margin-top:30px; max-width:440px; }
   .review-card{
-    display:flex; gap:14px; align-items:flex-start; background:rgba(29,50,38,0.55);
+    display:flex; gap:14px; align-items:flex-start; background:rgba(22,38,29,0.78);
     border:1px solid rgba(236,229,214,0.14); border-radius:16px; padding:16px 18px;
-    backdrop-filter:blur(6px);
     opacity:0; transform:translateY(16px) scale(0.96);
     transition:opacity 0.5s ease, transform 0.5s ease;
   }
@@ -335,8 +334,8 @@
     position:absolute; right:32px; bottom:40px; z-index:3;
     width:44px; height:44px; border-radius:50%;
     display:flex; align-items:center; justify-content:center;
-    background:rgba(16,28,22,0.55); border:var(--edge-brass);
-    color:#ffffff; cursor:pointer; backdrop-filter:blur(6px);
+    background:rgba(16,28,22,0.75); border:var(--edge-brass);
+    color:#ffffff; cursor:pointer;
     transition:transform 0.25s ease, border-color 0.25s ease, background 0.25s ease;
   }
   .hero-sound-toggle:hover{ transform:translateY(-2px); border-color:var(--brass-light); background:rgba(16,28,22,0.75); }
