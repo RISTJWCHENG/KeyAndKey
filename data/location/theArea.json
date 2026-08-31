@@ -1,232 +1,245 @@
 {
   "The Area": {
-    "Local Landmarks & Attractions": [
-      {
-        "name": "Central Station",
-        "description": "One of Brussels' main railway hubs, offering convenient connections across the city and direct train services to major destinations throughout Belgium.",
-        "distance": "450 m",
-        "walk": "6 min",
-        "publicTransport": "3 min",
-        "mapLink": "https://maps.app.goo.gl/3pVAowPGRmHpfehU8"
-      },
-      {
-        "name": "Cathédrale des Saints-Michel-et-Gudule",
-        "description": "The Gothic cathedral of Brussels, seat of the Archdiocese and host to major national ceremonies.",
-        "distance": "350 m",
-        "walk": "4 min",
-        "publicTransport": "5 min",
-        "mapLink": "https://maps.app.goo.gl/UZYR7awLSRurLSp96"
-      },
-      {
-        "name": "Royal Palace of Brussels",
-        "description": "The official palace of the King and Queen of the Belgians, used for state functions and royal duties.",
-        "distance": "750 m",
-        "walk": "10 min",
-        "publicTransport": "8 min",
-        "mapLink": "https://maps.app.goo.gl/AxFbzGmrwF2fE8y36"
-      },
-      {
-        "name": "Parc de Bruxelles",
-        "description": "The largest urban park in central Brussels, laid out between the Royal Palace and the Parliament.",
-        "distance": "20 m",
-        "walk": "2 min",
-        "publicTransport": "0 min",
-        "mapLink": "https://maps.app.goo.gl/EHLG7mduzECt1Khp8"
-      },
-      {
-        "name": "Mont des Arts",
-        "description": "A hilltop garden and viewpoint connecting the lower and upper town, framed by museums and the Royal Library.",
-        "distance": "750 m",
-        "walk": "10 min",
-        "publicTransport": "9 min",
-        "mapLink": "https://maps.app.goo.gl/pC6cqDk1LL49YmJ47"
-      },
-      {
-        "name": "Grand Place",
-        "description": "Brussels' UNESCO-listed central square, lined with ornate guild houses and the Gothic Town Hall.",
-        "distance": "850 m",
-        "walk": "11 min",
-        "publicTransport": "9 min",
-        "mapLink": "https://maps.app.goo.gl/mE5RWK8MFbHpMG5J8"
-      },
-      {
-        "name": "Belgian Federal Parliament",
-        "description": "The seat of Belgium's federal legislature, housed in the Palace of the Nation.",
-        "distance": "100 m",
-        "walk": "2 min",
-        "publicTransport": "0 min",
-        "mapLink": "https://maps.app.goo.gl/tPQcCdqDPqB8Zf2j7"
-      },
-      {
-        "name": "Grand Sablon",
-        "description": "An antiques and chocolate quarter built around a Gothic church, known for its boutiques and cafés.",
-        "distance": "1.1 km",
-        "walk": "15 min",
-        "publicTransport": "9 min",
-        "mapLink": "https://maps.app.goo.gl/GUsewtCMtX7JvHhw5"
-      },
-      {
-        "name": "Place Royale",
-        "description": "A neoclassical square at the top of the city, home to the Royal Museums of Fine Arts and Église Saint-Jacques-sur-Coudenberg.",
-        "distance": "700 m",
-        "walk": "10 min",
-        "publicTransport": "7 min",
-        "mapLink": "https://maps.app.goo.gl/NVaxNPSirrfZoXQVA"
-      },
-      {
-        "name": "Royal Museums of Fine Arts of Belgium",
-        "description": "One of Belgium's largest art collections, spanning Old Masters to modern works across several linked museums.",
-        "distance": "850 m",
-        "walk": "11 min",
-        "publicTransport": "6 min",
-        "mapLink": "https://maps.app.goo.gl/sU43yQpHesXVgAtE8"
-      },
-      {
-        "name": "Magritte Museum",
-        "description": "A museum dedicated to the surrealist painter René Magritte, holding the world's largest collection of his work.",
-        "distance": "800 m",
-        "walk": "11 min",
-        "publicTransport": "7 min",
-        "mapLink": "https://maps.app.goo.gl/BwssY6kg5LKCQgXC7"
-      },
-      {
-        "name": "Palace of Justice",
-        "description": "A monumental 19th-century courthouse, one of the largest buildings constructed anywhere in the world in its era.",
-        "distance": "1.7 km",
-        "walk": "24 min",
-        "publicTransport": "11 min",
-        "mapLink": "https://maps.app.goo.gl/xqYcLixyemmWBrXS6"
-      },
-      {
-        "name": "European Commission",
-        "description": "The executive branch of the European Union, headquartered in the Berlaymont building in the European Quarter.",
-        "distance": "1.6 km",
-        "walk": "22 min",
-        "publicTransport": "13 min",
-        "mapLink": "https://maps.app.goo.gl/V6KydF7CT3KcZH5c6"
-      },
-      {
-        "name": "Bourse (Brussels Stock Exchange)",
-        "description": "Brussels' former stock exchange building, a 19th-century landmark now home to a beer museum and event space.",
-        "distance": "1 km",
-        "walk": "13 min",
-        "publicTransport": "10 min",
-        "mapLink": "https://maps.app.goo.gl/zsmKkkP9ZoJWUfr16"
-      },
-      {
-        "name": "Congress Column",
-        "description": "A historic Brussels monument commemorating Belgium’s independence and Constitution, crowned by a statue of King Leopold I and home to the Tomb of the Unknown Soldier.",
-        "distance": "400 m",
-        "walk": "5 min",
-        "publicTransport": "5 min",
-        "mapLink": "https://maps.app.goo.gl/pGycMQq5kbnCzHDs5"
-      }
-    ],
-
-    "Transportation": [
-      {
-        "name": "Bus Stop (Parc)",
-        "description": "Bus Lines 29, 63, 65 & 66, offering convenient connections to central Brussels and surrounding neighbourhoods.",
-        "distance": "5 m",
-        "walk": "0.1 min",
-        "mapLink": "https://maps.app.goo.gl/1vSeGv8z2waw15Jr8"
-      },
-      {
-        "name": "Tram Stop (Parc)",
-        "description": "Tram Lines 92 & 93, offering convenient connections to key areas across central Brussels.",
-        "distance": "130 m",
-        "walk": "2 min",
-        "mapLink": "https://maps.app.goo.gl/noE76qxs7gLvYtyM6"
-      },
-      {
-        "name": "Metro Station (Parc)",
-        "description": "Metro Lines 1 & 5, providing convenient connections to Brussels city centre, major railway stations and key destinations across the city.",
-        "distance": "160 m",
-        "walk": "2 min",
-        "mapLink": "https://maps.app.goo.gl/TuXLjReQjjdceXD88"
-      },
-      {
-        "name": "Train Station (Central Station / Gare Centrale)",
-        "description": "A railway hub in the heart of Brussels, offering local and national train connections, including easy access to Brussels Airport and major Belgian cities.",
-        "distance": "350 m",
-        "walk": "5 min",
-        "mapLink": "https://maps.app.goo.gl/deHmb2kPRA2BzmrU8"
-      }
-    ],
-
-    "Food & Drink": [
-      {
-        "name": "Léopold Café Royal",
-        "description": "A welcoming café in Brussels, offering specialty coffee, brunch, bagels, fresh juices, and homemade pastries—perfect for breakfast, lunch, or a coffee break.",
-        "distance": "26 m",
-        "walk": "0.5 min",
-        "mapLink": "https://maps.app.goo.gl/nBpaaSFxm4dwFDGv9"
-      },
-      {
-        "name": "PAUL",
-        "description": "A historic French bakery founded in 1889, offering freshly baked bread, pastries, croissants, sandwiches, and coffee—perfect for breakfast or a quick bite.",
-        "distance": "50 m",
-        "walk": "0.7 min",
-        "mapLink": "https://maps.app.goo.gl/kP7kU4JXwZzp4QZz9"
-      },
-      {
-        "name": "Beat",
-        "description": "A vibrant Belgian restaurant and bar in Brussels, offering Belgian-inspired cuisine, brunch, cocktails, and casual dining in a stylish and welcoming setting.",
-        "distance": "51 m",
-        "walk": "0.8 min",
-        "mapLink": "https://maps.app.goo.gl/gnKjz7WqNnYAzTAK8"
-      }
-    ],
-
-    "Shops & Convenience": [
-      {
-        "name": "Carrefour express Rue des Colonies",
-        "description": "Open Monday–Friday, 7:30 AM–8:00 PM; Saturday & Sunday, 10:00 AM–9:00 PM.",
-        "distance": "230 m",
-        "walk": "3 min",
-        "mapLink": "https://maps.app.goo.gl/k3SQEDXVWZXMJAvH6"
-      },
-      {
-        "name": "Carrefour express Brussel Congres",
-        "description": "Open Monday–Friday, 7:00 AM–9:00 PM; Saturday & Sunday, 8:00 AM–9:00 PM.",
-        "distance": "220 m",
-        "walk": "3 min",
-        "mapLink": "https://maps.app.goo.gl/fu8UrtmCYJirc23E7"
-      }
-    ],
-
-    "Laundromats": [
-      {
-        "name": "Belwash",
-        "description": "Convenient self-service laundry facilities. Open daily, 7:00 AM–10:00 PM.",
-        "distance": "190 m",
-        "walk": "3 min",
-        "mapLink": "https://maps.app.goo.gl/rCpuaUWynF49ff3U9"
-      }
-    ],
-
-    "Public Parking (24/7)": [
-      {
-        "name": "Onepark – Sainte-Gudule",
-        "description": "A convenient covered car park near Brussels Central Station, offering 24/7 access and a central location.",
-        "distance": "200 m",
-        "walk": "2.5 min",
-        "mapLink": "https://maps.app.goo.gl/TKwGubrdthH49FcJ7"
-      },
-      {
-        "name": "Indigo Parking – Parking Royal",
-        "description": "A convenient car park in central Brussels, offering secure parking, EV charging, and easy ticketless access with license plate recognition.",
-        "distance": "240 m",
-        "walk": "3 min",
-        "mapLink": "https://maps.app.goo.gl/3iDi69rzSoxJDKHSA"
-      },
-      {
-        "name": "Street Parking",
-        "description": "Paid on-street parking is available on Rue de Louvain and surrounding streets, subject to local parking regulations and availability.",
-        "distance": "Around",
-        "walk": "1–3 min",
-        "mapLink": "https://maps.app.goo.gl/osB6Gkz2Rx18WUMZ6"
-      }
-    ]
+    "Local Landmarks & Attractions": {
+      "icon": "https://pub-6b46fd29ec2c4176b76828bf1155b68a.r2.dev/Images/iconsArea/landmarks%20_icon.png",
+      "items": [
+        {
+          "name": "Central Station",
+          "description": "One of Brussels' main railway hubs, offering convenient connections across the city and direct train services to major destinations throughout Belgium.",
+          "distance": "450 m",
+          "walk": "6 min",
+          "publicTransport": "3 min",
+          "mapLink": "https://maps.app.goo.gl/3pVAowPGRmHpfehU8"
+        },
+        {
+          "name": "Cathédrale des Saints-Michel-et-Gudule",
+          "description": "The Gothic cathedral of Brussels, seat of the Archdiocese and host to major national ceremonies.",
+          "distance": "350 m",
+          "walk": "4 min",
+          "publicTransport": "5 min",
+          "mapLink": "https://maps.app.goo.gl/UZYR7awLSRurLSp96"
+        },
+        {
+          "name": "Royal Palace of Brussels",
+          "description": "The official palace of the King and Queen of the Belgians, used for state functions and royal duties.",
+          "distance": "750 m",
+          "walk": "10 min",
+          "publicTransport": "8 min",
+          "mapLink": "https://maps.app.goo.gl/AxFbzGmrwF2fE8y36"
+        },
+        {
+          "name": "Parc de Bruxelles",
+          "description": "The largest urban park in central Brussels, laid out between the Royal Palace and the Parliament.",
+          "distance": "20 m",
+          "walk": "2 min",
+          "publicTransport": "0 min",
+          "mapLink": "https://maps.app.goo.gl/EHLG7mduzECt1Khp8"
+        },
+        {
+          "name": "Mont des Arts",
+          "description": "A hilltop garden and viewpoint connecting the lower and upper town, framed by museums and the Royal Library.",
+          "distance": "750 m",
+          "walk": "10 min",
+          "publicTransport": "9 min",
+          "mapLink": "https://maps.app.goo.gl/pC6cqDk1LL49YmJ47"
+        },
+        {
+          "name": "Grand Place",
+          "description": "Brussels' UNESCO-listed central square, lined with ornate guild houses and the Gothic Town Hall.",
+          "distance": "850 m",
+          "walk": "11 min",
+          "publicTransport": "9 min",
+          "mapLink": "https://maps.app.goo.gl/mE5RWK8MFbHpMG5J8"
+        },
+        {
+          "name": "Belgian Federal Parliament",
+          "description": "The seat of Belgium's federal legislature, housed in the Palace of the Nation.",
+          "distance": "100 m",
+          "walk": "2 min",
+          "publicTransport": "0 min",
+          "mapLink": "https://maps.app.goo.gl/tPQcCdqDPqB8Zf2j7"
+        },
+        {
+          "name": "Grand Sablon",
+          "description": "An antiques and chocolate quarter built around a Gothic church, known for its boutiques and cafés.",
+          "distance": "1.1 km",
+          "walk": "15 min",
+          "publicTransport": "9 min",
+          "mapLink": "https://maps.app.goo.gl/GUsewtCMtX7JvHhw5"
+        },
+        {
+          "name": "Place Royale",
+          "description": "A neoclassical square at the top of the city, home to the Royal Museums of Fine Arts and Église Saint-Jacques-sur-Coudenberg.",
+          "distance": "700 m",
+          "walk": "10 min",
+          "publicTransport": "7 min",
+          "mapLink": "https://maps.app.goo.gl/NVaxNPSirrfZoXQVA"
+        },
+        {
+          "name": "Royal Museums of Fine Arts of Belgium",
+          "description": "One of Belgium's largest art collections, spanning Old Masters to modern works across several linked museums.",
+          "distance": "850 m",
+          "walk": "11 min",
+          "publicTransport": "6 min",
+          "mapLink": "https://maps.app.goo.gl/sU43yQpHesXVgAtE8"
+        },
+        {
+          "name": "Magritte Museum",
+          "description": "A museum dedicated to the surrealist painter René Magritte, holding the world's largest collection of his work.",
+          "distance": "800 m",
+          "walk": "11 min",
+          "publicTransport": "7 min",
+          "mapLink": "https://maps.app.goo.gl/BwssY6kg5LKCQgXC7"
+        },
+        {
+          "name": "Palace of Justice",
+          "description": "A monumental 19th-century courthouse, one of the largest buildings constructed anywhere in the world in its era.",
+          "distance": "1.7 km",
+          "walk": "24 min",
+          "publicTransport": "11 min",
+          "mapLink": "https://maps.app.goo.gl/xqYcLixyemmWBrXS6"
+        },
+        {
+          "name": "European Commission",
+          "description": "The executive branch of the European Union, headquartered in the Berlaymont building in the European Quarter.",
+          "distance": "1.6 km",
+          "walk": "22 min",
+          "publicTransport": "13 min",
+          "mapLink": "https://maps.app.goo.gl/V6KydF7CT3KcZH5c6"
+        },
+        {
+          "name": "Bourse (Brussels Stock Exchange)",
+          "description": "Brussels' former stock exchange building, a 19th-century landmark now home to a beer museum and event space.",
+          "distance": "1 km",
+          "walk": "13 min",
+          "publicTransport": "10 min",
+          "mapLink": "https://maps.app.goo.gl/zsmKkkP9ZoJWUfr16"
+        },
+        {
+          "name": "Congress Column",
+          "description": "A historic Brussels monument commemorating Belgium’s independence and Constitution, crowned by a statue of King Leopold I and home to the Tomb of the Unknown Soldier.",
+          "distance": "400 m",
+          "walk": "5 min",
+          "publicTransport": "5 min",
+          "mapLink": "https://maps.app.goo.gl/pGycMQq5kbnCzHDs5"
+        }
+      ]
+    },
+    "Transportation": {
+      "icon": "https://pub-6b46fd29ec2c4176b76828bf1155b68a.r2.dev/Images/iconsArea/publicTransportation_icon.png",
+      "items": [
+        {
+          "name": "Bus Stop (Parc)",
+          "description": "Bus Lines 29, 63, 65 & 66, offering convenient connections to central Brussels and surrounding neighbourhoods.",
+          "distance": "5 m",
+          "walk": "0.1 min",
+          "mapLink": "https://maps.app.goo.gl/1vSeGv8z2waw15Jr8"
+        },
+        {
+          "name": "Tram Stop (Parc)",
+          "description": "Tram Lines 92 & 93, offering convenient connections to key areas across central Brussels.",
+          "distance": "130 m",
+          "walk": "2 min",
+          "mapLink": "https://maps.app.goo.gl/noE76qxs7gLvYtyM6"
+        },
+        {
+          "name": "Metro Station (Parc)",
+          "description": "Metro Lines 1 & 5, providing convenient connections to Brussels city centre, major railway stations and key destinations across the city.",
+          "distance": "160 m",
+          "walk": "2 min",
+          "mapLink": "https://maps.app.goo.gl/TuXLjReQjjdceXD88"
+        },
+        {
+          "name": "Train Station (Central Station / Gare Centrale)",
+          "description": "A railway hub in the heart of Brussels, offering local and national train connections, including easy access to Brussels Airport and major Belgian cities.",
+          "distance": "350 m",
+          "walk": "5 min",
+          "mapLink": "https://maps.app.goo.gl/deHmb2kPRA2BzmrU8"
+        }
+      ]
+    },
+    "Food & Drink": {
+      "icon": "https://pub-6b46fd29ec2c4176b76828bf1155b68a.r2.dev/Images/iconsArea/food%26drink_icon.png",
+      "items": [
+        {
+          "name": "Léopold Café Royal",
+          "description": "A welcoming café in Brussels, offering specialty coffee, brunch, bagels, fresh juices, and homemade pastries—perfect for breakfast, lunch, or a coffee break.",
+          "distance": "26 m",
+          "walk": "0.5 min",
+          "mapLink": "https://maps.app.goo.gl/nBpaaSFxm4dwFDGv9"
+        },
+        {
+          "name": "PAUL",
+          "description": "A historic French bakery founded in 1889, offering freshly baked bread, pastries, croissants, sandwiches, and coffee—perfect for breakfast or a quick bite.",
+          "distance": "50 m",
+          "walk": "0.7 min",
+          "mapLink": "https://maps.app.goo.gl/kP7kU4JXwZzp4QZz9"
+        },
+        {
+          "name": "Beat",
+          "description": "A vibrant Belgian restaurant and bar in Brussels, offering Belgian-inspired cuisine, brunch, cocktails, and casual dining in a stylish and welcoming setting.",
+          "distance": "51 m",
+          "walk": "0.8 min",
+          "mapLink": "https://maps.app.goo.gl/gnKjz7WqNnYAzTAK8"
+        }
+      ]
+    },
+    "Shops & Convenience": {
+      "icon": "https://pub-6b46fd29ec2c4176b76828bf1155b68a.r2.dev/Images/iconsArea/shops%26convenience_icon.png",
+      "items": [
+        {
+          "name": "Carrefour express Rue des Colonies",
+          "description": "Open Monday–Friday, 7:30 AM–8:00 PM; Saturday & Sunday, 10:00 AM–9:00 PM.",
+          "distance": "230 m",
+          "walk": "3 min",
+          "mapLink": "https://maps.app.goo.gl/k3SQEDXVWZXMJAvH6"
+        },
+        {
+          "name": "Carrefour express Brussel Congres",
+          "description": "Open Monday–Friday, 7:00 AM–9:00 PM; Saturday & Sunday, 8:00 AM–9:00 PM.",
+          "distance": "220 m",
+          "walk": "3 min",
+          "mapLink": "https://maps.app.goo.gl/fu8UrtmCYJirc23E7"
+        }
+      ]
+    },
+    "Laundromats": {
+      "icon": "https://pub-6b46fd29ec2c4176b76828bf1155b68a.r2.dev/Images/iconsArea/Laundromats_icon.png",
+      "items": [
+        {
+          "name": "Belwash",
+          "description": "Convenient self-service laundry facilities. Open daily, 7:00 AM–10:00 PM.",
+          "distance": "190 m",
+          "walk": "3 min",
+          "mapLink": "https://maps.app.goo.gl/rCpuaUWynF49ff3U9"
+        }
+      ]
+    },
+    "Public Parking (24/7)": {
+      "icon": "https://pub-6b46fd29ec2c4176b76828bf1155b68a.r2.dev/Images/iconsArea/publicParking_icon.png",
+      "items": [
+        {
+          "name": "Onepark – Sainte-Gudule",
+          "description": "A convenient covered car park near Brussels Central Station, offering 24/7 access and a central location.",
+          "distance": "200 m",
+          "walk": "2.5 min",
+          "mapLink": "https://maps.app.goo.gl/TKwGubrdthH49FcJ7"
+        },
+        {
+          "name": "Indigo Parking – Parking Royal",
+          "description": "A convenient car park in central Brussels, offering secure parking, EV charging, and easy ticketless access with license plate recognition.",
+          "distance": "240 m",
+          "walk": "3 min",
+          "mapLink": "https://maps.app.goo.gl/3iDi69rzSoxJDKHSA"
+        },
+        {
+          "name": "Street Parking",
+          "description": "Paid on-street parking is available on Rue de Louvain and surrounding streets, subject to local parking regulations and availability.",
+          "distance": "Around",
+          "walk": "1–3 min",
+          "mapLink": "https://maps.app.goo.gl/osB6Gkz2Rx18WUMZ6"
+        }
+      ]
+    }
   }
 }
