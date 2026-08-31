@@ -3744,7 +3744,9 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
           if (tile) tile.style.display = '';
         });
         section.querySelectorAll('.photo-tour-row-wrap, .photo-tour-row.full, .photo-tour-row.two, .photo-tour-row.two-uneven').forEach((row) => {
+          if (row.dataset.origPaddingTop === undefined) row.dataset.origPaddingTop = row.style.paddingTop || '';
           row.style.display = '';
+          row.style.paddingTop = row.dataset.origPaddingTop;
         });
 
         if (!Array.isArray(urls) || !urls.length) return;
@@ -3752,17 +3754,32 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
           if (urls[i]) img.src = urls[i];
           else hidePhotoTile(img);
         });
+        const categoryIncomplete = urls.length < imgs.length;
 
         // Collapse any row/row-wrap whose every image ended up hidden, so no
         // empty gap is left in the stacked mobile layout.
         section.querySelectorAll('.photo-tour-row-wrap').forEach((wrap) => {
           const rowImgs = wrap.querySelectorAll('img');
-          const anyVisible = Array.from(rowImgs).some((img) => {
+          const visibleImgs = Array.from(rowImgs).filter((img) => {
             const tile = img.closest('.pt-tile');
             const el = tile || img;
             return el.style.display !== 'none';
           });
-          if (!anyVisible) wrap.style.display = 'none';
+          if (!visibleImgs.length) {
+            wrap.style.display = 'none';
+          } else if (categoryIncomplete) {
+            // Every surviving row-wrap's padding-top ratio was hand-tuned
+            // assuming the category's full photo set — including whichever
+            // sibling row-wraps just got hidden above — would all render
+            // together. A category with fewer photos than that full set
+            // means any tall/portrait survivor (ratio > 90%, taller than
+            // square) was designed to be visually balanced by content that's
+            // no longer there, so it gets a standard 3:2 landscape ratio
+            // instead, regardless of whether this row originally held one
+            // image or several.
+            const ratio = parseFloat(wrap.dataset.origPaddingTop) || 0;
+            if (ratio > 90) wrap.style.paddingTop = '66.67%';
+          }
         });
         section.querySelectorAll('.photo-tour-row.full, .photo-tour-row.two, .photo-tour-row.two-uneven').forEach((row) => {
           const rowImgs = row.querySelectorAll('img');
