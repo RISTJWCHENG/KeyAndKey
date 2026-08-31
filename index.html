@@ -3778,7 +3778,7 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
             // instead, regardless of whether this row originally held one
             // image or several.
             const ratio = parseFloat(wrap.dataset.origPaddingTop) || 0;
-            if (ratio > 90) wrap.style.paddingTop = '66.67%';
+            if (ratio > 66.67) wrap.style.paddingTop = '66.67%';
           }
         });
         section.querySelectorAll('.photo-tour-row.full, .photo-tour-row.two, .photo-tour-row.two-uneven').forEach((row) => {
