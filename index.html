@@ -3982,6 +3982,17 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
       });
     }
 
+    // Each category in theArea.json is now { icon, items } — icon and its
+    // list live together, so both come from the same category object.
+    const iconTargets = {
+      'Local Landmarks & Attractions': 'iconLocalLandmarks',
+      'Transportation': 'iconTransportation',
+      'Food & Drink': 'iconFoodDrink',
+      'Shops & Convenience': 'iconShopsConvenience',
+      'Laundromats': 'iconLaundromats',
+      'Public Parking (24/7)': 'iconPublicParking'
+    };
+
     fetch('data/location/theArea.json', { cache: 'no-store' })
       .then((res) => { if (!res.ok) throw new Error('theArea.json request failed'); return res.json(); })
       .then((data) => {
@@ -3989,44 +4000,28 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
         if (!area) return;
 
         Object.keys(categoryTargets).forEach((categoryKey) => {
-          const entries = area[categoryKey];
+          const category = area[categoryKey];
+          const entries = category && category.items;
           const ul = document.getElementById(categoryTargets[categoryKey]);
-          if (!ul || !Array.isArray(entries)) return;
-          ul.innerHTML = '';
-          entries.forEach((entry, i) => {
-            const li = buildItem(entry);
-            if (categoryKey === 'Local Landmarks & Attractions' && i >= VISIBLE_COUNT) {
-              li.classList.add('landmark-extra');
-            }
-            ul.appendChild(li);
-          });
+          if (ul && Array.isArray(entries)) {
+            ul.innerHTML = '';
+            entries.forEach((entry, i) => {
+              const li = buildItem(entry);
+              if (categoryKey === 'Local Landmarks & Attractions' && i >= VISIBLE_COUNT) {
+                li.classList.add('landmark-extra');
+              }
+              ul.appendChild(li);
+            });
+          }
+
+          const iconUrl = category && category.icon;
+          const img = document.getElementById(iconTargets[categoryKey]);
+          if (img && typeof iconUrl === 'string' && iconUrl) img.src = iconUrl;
         });
 
         updateLastVisibleBorder();
       })
-      .catch(() => { /* theArea.json unavailable — Location lists stay empty */ });
-
-    // Category icons — loaded from data/location/iconsArea.json so the icon
-    // image for each category can be swapped without touching this page's code.
-    const iconTargets = {
-      'Local Landmarks & Attractions': 'iconLocalLandmarks',
-      'Transportation': 'iconTransportation',
-      'Food & Drink': 'iconFoodDrink',
-      'Shops & Convenience': 'iconShopsConvenience',
-      'Laundromats': 'iconLaundromats',
-      'Public Parking': 'iconPublicParking'
-    };
-    fetch('data/location/iconsArea.json', { cache: 'no-store' })
-      .then((res) => { if (!res.ok) throw new Error('iconsArea.json request failed'); return res.json(); })
-      .then((icons) => {
-        if (!icons) return;
-        Object.keys(iconTargets).forEach((categoryKey) => {
-          const url = icons[categoryKey];
-          const img = document.getElementById(iconTargets[categoryKey]);
-          if (img && typeof url === 'string' && url) img.src = url;
-        });
-      })
-      .catch(() => { /* iconsArea.json unavailable — icons stay blank */ });
+      .catch(() => { /* theArea.json unavailable — Location lists and icons stay empty */ });
   })();
 
   // Book Your Stay Now info modal
