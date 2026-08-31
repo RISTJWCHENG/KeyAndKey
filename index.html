@@ -39,7 +39,7 @@
   }
 
   *{ margin:0; padding:0; box-sizing:border-box; }
-  html{ scroll-behavior:smooth; overflow-x:hidden; }
+  html{ scroll-behavior:smooth; overflow-x:hidden; touch-action:manipulation; }
   body{
     background:var(--ink);
     color:var(--stone);
@@ -48,6 +48,7 @@
     line-height:1.6;
     -webkit-font-smoothing:antialiased;
     overflow-x:hidden;
+    touch-action:manipulation;
   }
   ::selection{ background:var(--brass); color:var(--ink); }
   .anim-paused, .anim-paused *, .anim-paused::before, .anim-paused::after, .anim-paused *::before, .anim-paused *::after{ animation-play-state:paused !important; }
@@ -3345,11 +3346,17 @@ c-14 15 -37 33 -52 41 -29 15 -78 19 -78 7z"/><path d="M1876 2119 c-41 -33 -69 -1
   ['gesturestart', 'gesturechange', 'gestureend'].forEach((evt) => {
     document.addEventListener(evt, (e) => e.preventDefault());
   });
-  // Second layer for browsers that report pinch via multi-touch touchmove
-  // instead of (or in addition to) the gesture events above.
-  document.addEventListener('touchmove', (e) => {
+  // Second layer for browsers that report pinch via multi-touch touch
+  // events instead of (or in addition to) the gesture events above. Checked
+  // on touchstart AND touchmove — the browser can commit to a pinch-zoom
+  // gesture the moment a second finger first touches down, especially if a
+  // scroll gesture is already in progress; blocking only at touchmove was
+  // too late for that case.
+  function blockPinchTouch(e){
     if (e.touches && e.touches.length > 1) e.preventDefault();
-  }, { passive: false });
+  }
+  document.addEventListener('touchstart', blockPinchTouch, { passive: false });
+  document.addEventListener('touchmove', blockPinchTouch, { passive: false });
 
   // Shared body-scroll lock for full-page overlays (Explore, Photo Tour).
   // Pins the body via position:fixed rather than overflow:hidden — hidden
