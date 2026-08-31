@@ -39,7 +39,7 @@
   }
 
   *{ margin:0; padding:0; box-sizing:border-box; }
-  html{ scroll-behavior:smooth; overflow-x:hidden; touch-action:manipulation; }
+  html{ scroll-behavior:smooth; overflow-x:hidden; touch-action:pan-x pan-y; }
   body{
     background:var(--ink);
     color:var(--stone);
@@ -48,7 +48,7 @@
     line-height:1.6;
     -webkit-font-smoothing:antialiased;
     overflow-x:hidden;
-    touch-action:manipulation;
+    touch-action:pan-x pan-y;
   }
   ::selection{ background:var(--brass); color:var(--ink); }
   .anim-paused, .anim-paused *, .anim-paused::before, .anim-paused::after, .anim-paused *::before, .anim-paused *::after{ animation-play-state:paused !important; }
