@@ -999,10 +999,10 @@
   }
   @media (max-width:700px){
     .photo-tour-section{ flex-direction:column; gap:14px; }
-    .photo-tour-label{ position:static; }
-    .photo-tour-grid{ width:100%; max-width:100%; flex:1 1 auto; }
+    .photo-tour-label{ position:static !important; top:auto !important; flex:none !important; margin-bottom:4px; }
+    .photo-tour-grid{ width:100% !important; max-width:100% !important; flex:1 1 auto; box-sizing:border-box; }
     .photo-tour-row.two, .photo-tour-row.two-uneven{ grid-template-columns:1fr; aspect-ratio:auto; }
-    .photo-tour-row.two img, .photo-tour-row.two-uneven img{ aspect-ratio:2/1; height:auto; }
+    .photo-tour-row.two img, .photo-tour-row.two-uneven img{ height:auto; }
 
     /* Category thumbnail strip: fixed 3-columns x 2-rows grid instead of the
        flex-wrap layout, which wrapped inconsistently depending on exact
@@ -1016,20 +1016,32 @@
        722px desktop grid, including fixed-pixel gaps inside percentage-based
        calc() heights for stacked tiles. That math doesn't hold up when
        squeezed into a narrow mobile column, so on mobile we bypass it
-       entirely and stack every photo full-width, one per row. */
-    .photo-tour-row-wrap{ height:auto !important; padding-top:0 !important; }
+       entirely and stack every photo full-width, one per row. Every
+       position/sizing property the desktop rule sets is explicitly reset
+       here (not just "position"), since leftover absolute-positioning
+       offsets have been observed to still affect layout on some mobile
+       browsers even once the element itself becomes static. */
+    .photo-tour-row-wrap{
+      height:auto !important; padding-top:0 !important;
+      width:100% !important; max-width:100% !important; box-sizing:border-box;
+    }
     .photo-tour-row-wrap .photo-tour-row{
-      position:static !important; flex-direction:column; gap:14px;
+      position:static !important;
+      top:auto !important; right:auto !important; bottom:auto !important; left:auto !important;
+      display:flex !important; flex-direction:column !important; gap:14px !important;
+      width:100% !important; max-width:100% !important; box-sizing:border-box;
     }
     .photo-tour-row-wrap .photo-tour-row .pt-stack{
-      width:100% !important; height:auto; flex-direction:column; gap:14px;
+      width:100% !important; max-width:100% !important; height:auto !important;
+      flex-direction:column !important; gap:14px !important; box-sizing:border-box;
     }
     .photo-tour-row-wrap .photo-tour-row .pt-tile{
-      width:100% !important; height:auto !important;
+      width:100% !important; max-width:100% !important; height:auto !important; box-sizing:border-box;
     }
     .photo-tour-row-wrap .photo-tour-row .pt-tile img,
     .photo-tour-row-wrap .photo-tour-row > img{
-      width:100% !important; height:auto; aspect-ratio:4/3; object-fit:cover;
+      width:100% !important; max-width:100% !important; height:auto !important;
+      object-fit:cover; box-sizing:border-box; display:block !important;
     }
   }
 
